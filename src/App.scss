@@ -9,21 +9,36 @@
 body {
   // width: 768px;
   background-color: $one;
+  overflow: hidden;
 }
 
 .outer-wrapper {
   max-width: 768px;
   margin: 0 auto;
+  visibility: hidden;
+  opacity: 0;
 }
 .app-frame {
   height: 100vh;
   width: 100%;
   position: relative;
   padding: 10px;
+  color: $four;
+  overflow: hidden;
+  word-break: break-all;
   // border: 1px solid seagreen;
 }
 
 @media (max-width: 768px) {
+  .outer-wrapper {
+    visibility: visible;
+    opacity: 1;
+  }
+
+  .app-frame {
+    // height: calc(100vh - 10px);
+  }
+
   .add-button {
     cursor: pointer;
     position: absolute;
@@ -48,6 +63,7 @@ body {
     outline: none;
     transition: all .2s ease;
     text-align: center;
+    user-select: none;
   }
   .add-button:active {
     transform: translate(0px, -6px);
@@ -88,6 +104,7 @@ body {
   }
 
   .modal-left-btn, .modal-right-btn {
+    outline: none;
     position: absolute;
     bottom: 0;
     margin-left: 20px;
@@ -119,7 +136,7 @@ body {
   }
   .modal-title {
     width: 100%;
-    height: 60px;
+    height: 40px;
     margin-top: 4px;
     // padding-top: 105px;
     background-color: transparent;
@@ -127,21 +144,22 @@ body {
     padding: 0 20px;
     outline: none;
     color: $four;
-    font-size: 18px;
+    font-size: 14px;
+    font-weight: 600;
     // border-bottom: 1px solid $one;
-    box-shadow:
-      0 1.4px 2.2px rgba(0, 0, 0, 0.021),
-      0 3.9px 6px rgba(0, 0, 0, 0.031),
-      0 9.3px 14.5px rgba(0, 0, 0, 0.04),
-      0 31px 48px rgba(0, 0, 0, 0.06)
-    ;
+    // box-shadow:
+    //   0 1.4px 2.2px rgba(0, 0, 0, 0.021),
+    //   0 3.9px 6px rgba(0, 0, 0, 0.031),
+    //   0 9.3px 14.5px rgba(0, 0, 0, 0.04),
+    //   0 31px 48px rgba(0, 0, 0, 0.06)
+    // ;
   }
   .modal-textarea {
     height: calc(100vh - 160px);
     width: 100%;
     resize: none;
-    padding: 15px 20px;
-    font-size: 16px;
+    padding: 10px 20px;
+    font-size: 12px;
     border: 0px;
     outline: none;
     background-color: transparent;
