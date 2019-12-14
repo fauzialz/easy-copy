@@ -22,10 +22,11 @@ body {
   height: 100vh;
   width: 100%;
   position: relative;
-  padding: 10px;
+  // padding: 10px;
   color: $four;
   overflow: hidden;
-  word-break: break-all;
+  word-break: break-word;
+  hyphens: auto;
   // border: 1px solid seagreen;
 }
 
@@ -44,25 +45,27 @@ body {
     position: absolute;
     bottom: 0;
     right: 0;
-    width: 60px;
-    height: 60px;
+    width: 50px;
+    height: 50px;
     border-radius: 50%;
     border: 0px;
     background-color: $two;
-    box-shadow:
-      0 1.4px 2.2px rgba(0, 0, 0, 0.021),
-      0 3.9px 6px rgba(0, 0, 0, 0.031),
-      0 9.3px 14.5px rgba(0, 0, 0, 0.04),
-      0 31px 48px rgba(0, 0, 0, 0.06)
-    ;
-    margin-right: 22px;
-    margin-bottom: 20px;
+    // box-shadow:
+    //   0 1.4px 2.2px rgba(0, 0, 0, 0.021),
+    //   0 3.9px 6px rgba(0, 0, 0, 0.031),
+    //   0 9.3px 14.5px rgba(0, 0, 0, 0.04),
+    //   0 31px 48px rgba(0, 0, 0, 0.06)
+    // ;
+    margin-right: 26px;
+    box-shadow: 0px 1px 8px 1px rgba(0,0,0,0.26);
+    margin-bottom: 30px;
     font-size: 40px;
     color: $three;
     padding-top: 3.5px;
     outline: none;
     transition: all .2s ease;
     text-align: center;
+    // border: 1px solid $one;
     user-select: none;
   }
   .add-button:active {
@@ -89,18 +92,20 @@ body {
 
   .modal-wrapper {
     position: relative;
-    width: calc(100% - 20px);
-    height: calc(100vh - 20px);
+    // width: calc(100% - 20px);
+    // height: calc(100vh - 20px);
+    width: 100%;
+    height: 100vh;
     margin: 0 auto;
-    margin-top: 10px;
+    padding-top: 10px;
     background-color: $two;
-    border-radius: 10px;
-    box-shadow:
-      0 1.4px 2.2px rgba(0, 0, 0, 0.021),
-      0 3.9px 6px rgba(0, 0, 0, 0.031),
-      0 9.3px 14.5px rgba(0, 0, 0, 0.04),
-      0 31px 48px rgba(0, 0, 0, 0.06)
-    ;
+    // border-radius: 10px;
+    // box-shadow:
+    //   0 1.4px 2.2px rgba(0, 0, 0, 0.021),
+    //   0 3.9px 6px rgba(0, 0, 0, 0.031),
+    //   0 9.3px 14.5px rgba(0, 0, 0, 0.04),
+    //   0 31px 48px rgba(0, 0, 0, 0.06)
+    // ;
   }
 
   .modal-left-btn, .modal-right-btn {
@@ -167,5 +172,99 @@ body {
   }
   .modal-title::placeholder, .modal-textarea::placeholder {
     color: #708492;
+  }
+
+  .list-wrapper {
+    padding: 10px;
+    padding-bottom: 90px;
+    height: 100%;
+    width: 100%;
+    overflow-x: auto;
+  }
+  .list-tile {
+    background-color: $two;
+    padding: 15px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    font-size: 12px;
+    box-shadow: 0px 6px 8px 1px rgba(0,0,0,0.09);
+    color: $four;
+  }
+  .list-title {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+  .list-content {
+    width: calc(100% - 25px);
+    padding-right: 37px;
+    position: relative;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    // border-right: 2px solid $one;
+    // border-radius: 8px;
+    .list-button {
+      position: absolute;
+      right: 0;
+      top: 0;
+      transform: translate(25px, 0px);
+      width: 50px;
+      border-radius: 4px;
+      border: 0px;
+      height: 22px;
+      font-size: 12px;
+      outline: none;
+      background-color: $one;
+      color: $three;
+      transition: all .4s ease;
+    }
+    .list-button:active {
+      transform: translate(20px);
+    }
+    .list-boundary-line {
+      border-bottom: 2px solid $one;
+      position: absolute;
+      width: 25px;
+      right: 0;
+      top: 0;
+      height: 100%;
+      border-right: 2px solid $one;
+      border-radius: 0 0 8px 0;
+    }
+    .copy-sign-on, .copy-sign-off {
+      position: absolute;
+      background-color: $three;
+      font-weight: 600;
+      color: $one;
+      right: 0;
+      top: 0;
+      height: 22px;
+      transform: translate(-40px);
+      padding: 0 10px;
+      padding-top: 4px;
+      border-radius: 4px;
+      box-shadow: 0px 1px 8px 1px rgba(0,0,0,0.26);
+      visibility: visible;
+      opacity: 1;
+      transition: all .3s ease;
+    }
+    .copy-sign-off {
+      transform: translate(-20px);
+      visibility: hidden;
+      opacity: 0;
+    }
+  }
+
+  .on-list-empty {
+    text-align: center;
+    font-size: 13px;
+    width: 200px;
+    margin: 0 auto;
+    margin-top: 44vh;
+    color: $font-blur;
+    svg {
+      height: 20px;
+      margin-top: 7px;
+    }
   }
 }
