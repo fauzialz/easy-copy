@@ -1,5 +1,6 @@
 import React, {useEffect, useState, useRef} from 'react';
 import './App.scss';
+import { Helmet } from 'react-helmet'
 import Emoji from './components/emoji'
 import localforage from 'localforage'
 import LOCAL from './config';
@@ -127,6 +128,12 @@ function App() {
 
   return (
     <div className="outer-wrapper">
+
+      <Helmet>
+        <title>Easy Copy</title>
+        <meta name="App to store your text and copy it with ease." content="Easy Copy Mobile Web Application." />
+      </Helmet>
+
       <div className="app-frame">
         <div className="list-wrapper">
 
