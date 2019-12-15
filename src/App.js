@@ -1,10 +1,11 @@
 import React, {useEffect, useState, useRef} from 'react';
 import './App.scss';
-import Emoji from './components/Emoji'
+import Emoji from './components/emoji'
 import localforage from 'localforage'
 import LOCAL from './config';
-import { Obj } from './services'
+import { Obj, Str } from './services'
 import {CopyToClipboard} from 'react-copy-to-clipboard'
+import Modal from './components/modal';
 
 function ModelForm() {
   this.id = ''
@@ -14,13 +15,16 @@ function ModelForm() {
   ]
   this.tags = []
   this.deleted = false
+  this.pinned = false
 }
 
 function App() {
   const [data, setData] = useState([])
-  const [openModal, setOpenModal] = useState(false)
+  const [openAdd, setOpenAdd] = useState(false)
+  const [openEdit, setOpenEdit] = useState(false)
   const [form, setForm] = useState(new ModelForm())
-  const ref = useRef(null)
+  const refAdd = useRef(null)
+  const refEdit = useRef(null)
 
   useEffect(() => {
     try {
@@ -35,9 +39,9 @@ function App() {
   }, [])
 
   const modalOpen = () => {
-    setOpenModal(true)
+    setOpenAdd(true)
     setTimeout(() => {
-      ref.current.focus()
+      refAdd.current.focus()
     }, 100);
     let temp = form
     if(data.length === 0) {
@@ -66,7 +70,8 @@ function App() {
   }
 
   const onClose = () => {
-    setOpenModal(false)
+    setOpenAdd(false)
+    setOpenEdit(false)
     setForm(new ModelForm())
   }
 
@@ -86,16 +91,38 @@ function App() {
 
   const onCopy = (id, index) => {
     let temp = data
-    // temp[index].contents.forEach( (content, i) => {
-    //   if(content.id === id) {
-      //   }
-      // })
     temp[index].contents[0].copied = true
     setData(Obj.deepCopy(temp))
     setTimeout(() => {
       temp[index].contents[0].copied = false
       setData(Obj.deepCopy(temp))
     }, 1300);
+  }
+
+  const onEdit = item => {
+    setForm(Obj.deepCopy(item))
+    setOpenEdit(true)
+    setTimeout(() => {
+      refEdit.current.focus()
+    }, 100);
+  }
+
+  const onEditSubmit = () => {
+    let temp = data
+    if(form.contents[0].text === "") {
+      onClose()
+      return
+    }
+    for(let i in temp) {
+      if(temp[i].id === form.id) {
+        temp[i] = Obj.deepCopy(form)
+      }
+    }
+    localforage.setItem(LOCAL.tableName, temp).then( res => {
+      console.log(res)
+      setData(res)
+      onClose()
+    })
   }
 
   return (
@@ -107,10 +134,18 @@ function App() {
             <div className="on-list-empty">{LOCAL.onListEmpty}<br/><Emoji /></div>
           : data.map((e, i) => (
             <div className="list-tile" key={e.id}>
-              {e.title?<div className="list-title">{e.title}</div>: null}
-              <div className="list-content">{e.contents[0].text}
-                <div className={e.contents[0].copied? "copy-sign-on" : "copy-sign-off"}>Copied to clipboard!</div>
+              {e.title?<div className="list-title" onClick={() => onEdit(e)}>{e.title}</div>: null}
+              <div className="list-content"> 
+
+                {/* TEXT Content */}
+                <div className="list-text" onClick={() => onEdit(e)}>
+                  {Str.jsxNewLine(e.contents[0].text)}
+                </div>
+
+                <div className={e.contents[0].copied? "copy-sign-on" : "copy-sign-off"}>{LOCAL.onCopy}!</div>
                 <div className="list-boundary-line" />
+                
+                {/* COPY BUTTON */}
                 <CopyToClipboard text={e.contents[0].text} onCopy={() => onCopy(e.contents[0].id, i)}>
                   <button className="list-button">Copy</button>
                 </CopyToClipboard>
@@ -122,15 +157,8 @@ function App() {
 
         <button className="add-button" onClick={modalOpen}>+</button>
 
-        <div className={openModal? "modal-open" : "modal-close"}>
-          <div className="modal-wrapper">
-            <button className="modal-left-btn" onClick={onClose}>Cancel</button>
-            <button className="modal-right-btn" onClick={onSubmit}>Save</button>
-            
-            <input className="modal-title" placeholder="Title (optional)" value={form.title} onChange={onChangeTitle} />
-            <textarea ref={ref} className="modal-textarea" placeholder="Text to copy" value={form.contents[0].text} onChange={onChangeText} />
-          </div>
-        </div>
+        <Modal form={form} openModal={openAdd} onClose={onClose} onSubmit={onSubmit} onChangeTitle={onChangeTitle} onChangeText={onChangeText} ref={refAdd} />
+        <Modal form={form} openModal={openEdit} onClose={onClose} onSubmit={onEditSubmit} onChangeTitle={onChangeTitle} onChangeText={onChangeText} ref={refEdit} />
       </div>
     </div>
   );

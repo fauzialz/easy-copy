@@ -160,7 +160,7 @@ body {
     // ;
   }
   .modal-textarea {
-    height: calc(100vh - 160px);
+    height: calc(100vh - 135px);
     width: 100%;
     resize: none;
     padding: 10px 20px;
@@ -216,7 +216,7 @@ body {
       outline: none;
       background-color: $one;
       color: $three;
-      transition: all .4s ease;
+      transition: all .3s ease;
     }
     .list-button:active {
       transform: translate(20px);
@@ -247,6 +247,9 @@ body {
       visibility: visible;
       opacity: 1;
       transition: all .3s ease;
+    }
+    .copy-sign-on {
+      transition-delay: .1s;
     }
     .copy-sign-off {
       transform: translate(-20px);
