@@ -126,6 +126,12 @@ function App() {
     })
   }
 
+  const onPinButton = () => {
+    let temp = form
+    temp.pinned = !form.pinned
+    setForm(Obj.deepCopy(temp))
+  }
+
   return (
     <div className="outer-wrapper">
 
@@ -164,8 +170,8 @@ function App() {
 
         <button className="add-button" onClick={modalOpen}>+</button>
 
-        <Modal form={form} openModal={openAdd} onClose={onClose} onSubmit={onSubmit} onChangeTitle={onChangeTitle} onChangeText={onChangeText} ref={refAdd} />
-        <Modal form={form} openModal={openEdit} onClose={onClose} onSubmit={onEditSubmit} onChangeTitle={onChangeTitle} onChangeText={onChangeText} ref={refEdit} />
+        <Modal form={form} openModal={openAdd} onClose={onClose} onSubmit={onSubmit} onChangeTitle={onChangeTitle} onChangeText={onChangeText} ref={refAdd} onPinButton={onPinButton} />
+        <Modal form={form} openModal={openEdit} onClose={onClose} onSubmit={onEditSubmit} onChangeTitle={onChangeTitle} onChangeText={onChangeText} ref={refEdit} onPinButton={onPinButton}/>
       </div>
     </div>
   );
