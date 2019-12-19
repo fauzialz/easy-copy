@@ -12,7 +12,7 @@ body {
   overflow: hidden;
 }
 
-button {
+button, input {
   border: none;
   background-color: transparent;
   outline: none;
@@ -42,9 +42,9 @@ button {
     opacity: 1;
   }
 
-  .app-frame {
-    // height: calc(100vh - 10px);
-  }
+  // .app-frame {
+  //   // height: calc(100vh - 10px);
+  // }
 
   .add-button {
     cursor: pointer;

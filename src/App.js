@@ -11,6 +11,7 @@ import Modal from './components/modal';
 function ModelForm() {
   this.id = ''
   this.title = ''
+  this.listContents = false
   this.contents = [
     { id : '', text : '', copied : false, deleted : false }
   ]
@@ -126,9 +127,15 @@ function App() {
     })
   }
 
-  const onPinButton = () => {
+  const btnOperations = property => {
     let temp = form
-    temp.pinned = !form.pinned
+    temp[property] = !form[property]
+    setForm(Obj.deepCopy(temp))
+  }
+
+  const addList = () => {
+    let temp = form
+    temp.contents.push({ id : '', text : '', copied : false, deleted : false })
     setForm(Obj.deepCopy(temp))
   }
 
@@ -170,8 +177,8 @@ function App() {
 
         <button className="add-button" onClick={modalOpen}>+</button>
 
-        <Modal form={form} openModal={openAdd} onClose={onClose} onSubmit={onSubmit} onChangeTitle={onChangeTitle} onChangeText={onChangeText} ref={refAdd} onPinButton={onPinButton} />
-        <Modal form={form} openModal={openEdit} onClose={onClose} onSubmit={onEditSubmit} onChangeTitle={onChangeTitle} onChangeText={onChangeText} ref={refEdit} onPinButton={onPinButton}/>
+        <Modal form={form} openModal={openAdd} onClose={onClose} onSubmit={onSubmit} onChangeTitle={onChangeTitle} onChangeText={onChangeText} ref={refAdd} btnOperations={btnOperations} addList={addList} />
+        <Modal form={form} openModal={openEdit} onClose={onClose} onSubmit={onEditSubmit} onChangeTitle={onChangeTitle} onChangeText={onChangeText} ref={refEdit} btnOperations={btnOperations} addList={addList} />
       </div>
     </div>
   );

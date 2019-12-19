@@ -22,20 +22,20 @@
     
     .modal-wrapper {
         position: relative;
-        // height: calc(100vh - 20px);
+        height: 100vh;
         width: 100%;
         // width: calc(100% - 20px);
-        height: calc(100vh - 50px);
+        // height: calc(100vh - 50px);
         margin: 0 auto;
-        padding-top: 10px;
+        padding-top: 2px;
         background-color: $two;
-        border-radius: 20px 20px 0 0;
-        box-shadow: 0px -7px 10px -3px rgba(0, 0, 0, 0.13);
+        // border-radius: 24px 24px 0 0;
+        box-shadow: 0px -7px 10px -3px rgba(0, 0, 0, 0.089);
     }
 
     .modal-header {
-        margin-top: 6px;
-        margin-bottom: 4px;
+        margin-top: 10px;
+        margin-bottom: 2px;
         height: 40px;
         width: 100%;
         position: relative;
@@ -74,16 +74,28 @@
             // border-radius: 4px;
         }
         .modal-pin-btn-on {
-            color: $four;
+            color: $three;
         }
+    }
+
+    .modal-footer {
+        z-index: 1;
+        position: absolute;
+        bottom: 0;
+        // border: 1px solid springgreen;
+        height: 52px;
+        width: 100%;
+        padding-bottom: 12px;
+        background-color: $two;
+
     }
     
     .modal-left-btn, .modal-right-btn {
         outline: none;
         position: absolute;
-        bottom: 0;
+        // bottom: 0;
         margin-left: 20px;
-        margin-bottom: 12px;
+        // margin-bottom: 12px;
         background-color: transparent;
         color: $font-blur;
         border: 0px;
@@ -97,6 +109,7 @@
         // background-color: $three;
         // border: 2px solid $font-blur;
         margin-right: 12px;
+        padding-top: 2px;
         // margin-bottom: 24px;
         border-radius: 8px;
         color: $two;
@@ -111,7 +124,7 @@
         // ;
       }
     .modal-left-btn {
-        margin-left: 4px;
+        margin-left: 1px;
         font-size: 15px;
         // transform: translate(-14px, 4px);
     }
@@ -136,7 +149,7 @@
         // ;
     }
     .modal-textarea {
-        height: calc(100vh - 170px);
+        height: calc(100vh - 160px);
         width: 100%;
         resize: none;
         padding: 10px 20px;
@@ -146,7 +159,71 @@
         background-color: transparent;
         color: $four;
     }
+    .multipletext-slot {
+        width: 100%;
+        height: calc(100vh - 160px);
+        // border: 1px solid springgreen;
+        overflow-y: auto;
+        padding-bottom: 10px;
+        .multipletext-list {
+            height: 30px;
+            width: 100%;
+            border: 1px solid salmon;
+            position: relative;
+            .multipletext-text {
+                padding-left: 20px;
+                font-size: 12px;
+                color: $four;
+                margin-top: 6px;
+                width: calc(100% - 50px);
+            }
+        }
+        .mutlipletext-add {
+            height: 30px;
+            padding-left: 20px;
+            color: $four;
+            font-size: 12px;
+            text-align: left;
+            width: 100%;
+            // border: 1px solid sandybrown;
+            svg {
+                font-size: 14px;
+                color: $font-blur;
+                margin-right: 10px;
+            }
+        }
+    }
+
     .modal-title::placeholder, .modal-textarea::placeholder {
         color: #708492;
+    }
+
+    .modal-options-on, .modal-options-off {
+        width: 100%;
+        position: absolute;
+        bottom: 0;
+        padding: 20px 0;
+        background-color: $two;
+        // border: 1px solid springgreen;
+        box-shadow: 0px -7px 10px -3px rgba(0, 0, 0, 0.089);
+        transform: translate(0px, 80px);
+        transition: all .3s ease;
+    }
+    .modal-options-on {
+        transform: translate(0px, -38px);
+    }
+    .modal-options-btn {
+        text-align: left;
+        width: 100%;
+        padding-left: 20px;
+        color: $font-blur;
+        font-weight: 600;
+        font-size: 14px;
+        svg {
+            font-size: 16px;
+            margin-right: 12px;
+        }
+        margin-bottom:8px;
+        height: 30px;
     }
 }
