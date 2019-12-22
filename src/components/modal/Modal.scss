@@ -166,16 +166,38 @@
         overflow-y: auto;
         padding-bottom: 10px;
         .multipletext-list {
-            height: 30px;
+            height: 36px;
             width: 100%;
-            border: 1px solid salmon;
+            // border: 1px solid salmon;
             position: relative;
             .multipletext-text {
                 padding-left: 20px;
                 font-size: 12px;
                 color: $four;
-                margin-top: 6px;
-                width: calc(100% - 50px);
+                margin-top: 8px;
+                width: calc(100% - 100px);
+            }
+            .multipletext-close {
+                // border: 1px solid springgreen;
+                position: absolute;
+                right: 0;
+                width: 50px;
+                height: 36px;
+                color: $font-blur;
+                padding-right: 17px;
+                padding-bottom: 6px;
+            }
+            .multipletext-addinfo {
+                position: absolute;
+                right: 0;
+                width: 40px;
+                height: 30px;
+                margin-right: 50px;
+                font-size: 12px;
+                padding-top: 2px ;
+                color: $font-blur;
+                // background-color: $font-blur;
+                font-size: 16px;
             }
         }
         .mutlipletext-add {

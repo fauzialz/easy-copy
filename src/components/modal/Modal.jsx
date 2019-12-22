@@ -2,7 +2,7 @@ import React, {forwardRef, useState} from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import './Modal.scss'
 
-const Modal = forwardRef(({openModal, onSubmit, onClose, form, onChangeTitle, onChangeText, btnOperations, addList}, ref) => {
+const Modal = forwardRef(({openModal, onSubmit, onClose, form, onChangeTitle, onChangeText, btnOperations, addList, closeList, singularMultipleSwitch}, ref) => {
     const [openOptions, setOpenOptions] = useState(false)
     const [showAdd, setShowAdd] = useState(true)
 
@@ -32,6 +32,13 @@ const Modal = forwardRef(({openModal, onSubmit, onClose, form, onChangeTitle, on
         }, 2400);
     }
 
+    const changeMode = () => {
+        singularMultipleSwitch()
+        setTimeout(() => {
+            setOpenOptions(false)
+        }, 200);
+    }
+
 
     return (
         <div className={openModal? "modal-open" : "modal-close"}>
@@ -50,22 +57,34 @@ const Modal = forwardRef(({openModal, onSubmit, onClose, form, onChangeTitle, on
                 
                 {!form.listContents?
                     <textarea ref={ref} 
+                        autoFocus
                         className="modal-textarea"
                         placeholder="Text to copy"
                         value={form.contents[0].text}
                         onChange={onChangeText}
+                        name="0"
                     />:
                     <div className="multipletext-slot">{
                         form.contents.map( (content, i) => (
                             <div className="multipletext-list" key={i}>
-                                <input className="multipletext-text" />
+                                <input className="multipletext-text" autoFocus
+                                    name={i}
+                                    value={content.text}
+                                    onChange={onChangeText}
+                                />
+                                <button className="multipletext-addinfo">
+                                    <FontAwesomeIcon icon="info-circle" />
+                                </button>
+                                <button className="multipletext-close" onClick={() => closeList(i)}>
+                                    <FontAwesomeIcon icon="times" />
+                                </button>
                             </div>
                         ))
                     }
                         {showAdd?
                         <button className="mutlipletext-add" onClick={onAddList}>
                             <FontAwesomeIcon icon="plus" />
-                            Text
+                            New Text
                         </button>
                         :null}
                     </div>
@@ -76,7 +95,7 @@ const Modal = forwardRef(({openModal, onSubmit, onClose, form, onChangeTitle, on
                     <button className="modal-right-btn" onClick={() => checkOptions(onSubmit)}><FontAwesomeIcon icon="save" /></button>
                 </div>
                 <div className={openOptions? "modal-options-on" : "modal-options-off"}>
-                    <button className="modal-options-btn" onClick={() => checkOptions(() => btnOperations('listContents'))}>
+                    <button className="modal-options-btn" onClick={changeMode}>
                         <FontAwesomeIcon icon={!form.listContents? "cubes" : "cube"} />
                         {!form.listContents? 'Multiple Text' : 'Singular Text'}
                     </button>
