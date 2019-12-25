@@ -11,6 +11,8 @@ import Modal from './components/modal';
 function ModelContent() {
   this.text = ''
   this.copied = false
+  this.withInfo = false
+  this.info = ''
 }
 
 function ModelForm() {
@@ -72,15 +74,22 @@ function App() {
 
   const onChangeText = e => {
     let temp = form
-    // console.log(e.target.name)
-    temp.contents[e.target.name].text = e.target.value
+    let node = e.target.name.split('-')
+    temp.contents[node[0]][node[1]] = e.target.value
     setForm(Obj.deepCopy(temp))
   }
+
+  // const onChangeInfo = e => {
+  //   let temp = form
+  //   te
+  // }
 
   const onClose = () => {
     setOpenAdd(false)
     setOpenEdit(false)
-    setForm(new ModelForm())
+    setTimeout(() => {
+      setForm(new ModelForm())
+    }, 200);
   }
 
   const onSubmit = () => {
@@ -110,9 +119,11 @@ function App() {
   const onEdit = item => {
     setForm(Obj.deepCopy(item))
     setOpenEdit(true)
-    setTimeout(() => {
-      refEdit.current.focus()
-    }, 100);
+    if(!item.listContents){
+      setTimeout(() => {
+        refEdit.current.focus()
+      }, 100);
+    }
   }
 
   const onEditSubmit = () => {
@@ -150,6 +161,12 @@ function App() {
     temp.contents.splice(i, 1)
     setForm(Obj.deepCopy(temp))
   }
+
+  const infoSwitch = i => {
+    let temp = form
+    temp.contents[i].withInfo = !temp.contents[i].withInfo
+    setForm(Obj.deepCopy(temp))
+  }
   
   const singularMultipleSwitch = () => {
     let temp = form
@@ -171,35 +188,55 @@ function App() {
       <div className="app-frame">
         <div className="list-wrapper">
 
-          {data.length === 0?
+          {(data.filter(e => e.deleted === false).length) === 0 ?
             <div className="on-list-empty">{LOCAL.onListEmpty}<br/><Emoji /></div>
-          : data.map((e, i) => (
-            <div className="list-tile" key={e.id}>
-              {e.title?<div className="list-title" onClick={() => onEdit(e)}>{e.title}</div>: null}
-              <div className="list-content"> 
+            : data.map((e, i) => {
+              if(e.deleted) return null
+              return (
+                <div className="list-tile" key={e.id}>
+                  {e.title?<div className="list-title" onClick={() => onEdit(e)}>{e.title}</div>: null}
+                  <div className="list-content"> 
 
-                {/* TEXT Content */}
-                <div className="list-text" onClick={() => onEdit(e)}>
-                  {Str.jsxNewLine(e.contents[0].text)}
+                    {/* TEXT Content */}
+                    <div className="list-text" onClick={() => onEdit(e)}>
+                      {Str.jsxNewLine(e.contents[0].text)}
+                    </div>
+
+                    <div className={e.contents[0].copied? "copy-sign-on" : "copy-sign-off"}>{LOCAL.onCopy}!</div>
+                    <div className="list-boundary-line" />
+                    
+                    {/* COPY BUTTON */}
+                    <CopyToClipboard text={e.contents[0].text} onCopy={() => onCopy(e.contents[0].id, i)}>
+                      <button className="list-button">Copy</button>
+                    </CopyToClipboard>
+                  </div>
                 </div>
-
-                <div className={e.contents[0].copied? "copy-sign-on" : "copy-sign-off"}>{LOCAL.onCopy}!</div>
-                <div className="list-boundary-line" />
-                
-                {/* COPY BUTTON */}
-                <CopyToClipboard text={e.contents[0].text} onCopy={() => onCopy(e.contents[0].id, i)}>
-                  <button className="list-button">Copy</button>
-                </CopyToClipboard>
-              </div>
-            </div>
-          ))}
+              )
+          })}
 
         </div>
 
         <button className="add-button" onClick={modalOpen}>+</button>
 
-        <Modal form={form} openModal={openAdd} onClose={onClose} onSubmit={onSubmit} onChangeTitle={onChangeTitle} onChangeText={onChangeText} ref={refAdd} btnOperations={btnOperations} addList={addList} closeList={closeList} singularMultipleSwitch={singularMultipleSwitch} />
-        <Modal form={form} openModal={openEdit} onClose={onClose} onSubmit={onEditSubmit} onChangeTitle={onChangeTitle} onChangeText={onChangeText} ref={refEdit} btnOperations={btnOperations} addList={addList} closeList={closeList} singularMultipleSwitch={singularMultipleSwitch} />
+        <Modal form={form} 
+          openModal={openAdd}
+          onClose={onClose} 
+          onSubmit={onSubmit} 
+          onChangeTitle={onChangeTitle}
+          onChangeText={onChangeText}
+          ref={refAdd} btnOperations={btnOperations} 
+          addList={addList} closeList={closeList} 
+          singularMultipleSwitch={singularMultipleSwitch}
+          infoSwitch={infoSwitch}
+        />
+        <Modal form={form} openModal={openEdit} 
+          onClose={onClose} onSubmit={onEditSubmit}
+          onChangeTitle={onChangeTitle} onChangeText={onChangeText}
+          ref={refEdit} btnOperations={btnOperations}
+          addList={addList} closeList={closeList} 
+          singularMultipleSwitch={singularMultipleSwitch}
+          infoSwitch={infoSwitch}  
+        />
       </div>
     </div>
   );

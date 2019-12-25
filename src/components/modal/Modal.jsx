@@ -2,7 +2,7 @@ import React, {forwardRef, useState} from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import './Modal.scss'
 
-const Modal = forwardRef(({openModal, onSubmit, onClose, form, onChangeTitle, onChangeText, btnOperations, addList, closeList, singularMultipleSwitch}, ref) => {
+const Modal = forwardRef(({openModal, onSubmit, onClose, form, onChangeTitle, onChangeText, btnOperations, addList, closeList, singularMultipleSwitch, infoSwitch}, ref) => {
     const [openOptions, setOpenOptions] = useState(false)
     const [showAdd, setShowAdd] = useState(true)
 
@@ -56,28 +56,42 @@ const Modal = forwardRef(({openModal, onSubmit, onClose, form, onChangeTitle, on
                 <input className="modal-title" placeholder="Title (optional)" value={form.title} onChange={onChangeTitle} />
                 
                 {!form.listContents?
+
+                    /* SIUNGLAR TEXT */
                     <textarea ref={ref} 
                         autoFocus
                         className="modal-textarea"
                         placeholder="Text to copy"
                         value={form.contents[0].text}
                         onChange={onChangeText}
-                        name="0"
+                        name="0-text"
                     />:
+
+                    /* MULITPLE TEXT */
                     <div className="multipletext-slot">{
                         form.contents.map( (content, i) => (
-                            <div className="multipletext-list" key={i}>
+                            <div className={content.withInfo? "multipletext-list-withInfo" : "multipletext-list"} key={i}>
                                 <input className="multipletext-text" autoFocus
-                                    name={i}
+                                    name={i + "-text"}
                                     value={content.text}
                                     onChange={onChangeText}
                                 />
-                                <button className="multipletext-addinfo">
-                                    <FontAwesomeIcon icon="info-circle" />
+                                <button className={content.withInfo? "multipletext-addinfo-on" : "multipletext-addinfo-off"} onClick={() => infoSwitch(i)}>
+                                    <FontAwesomeIcon icon="comment-dots" />
                                 </button>
                                 <button className="multipletext-close" onClick={() => closeList(i)}>
                                     <FontAwesomeIcon icon="times" />
                                 </button>
+                                <div className="info-base">
+                                    <div className="info-relative">
+                                        <div className="info-pipe" />
+                                        <input className="info-text" placeholder="Short comment"
+                                            name={i + "-info"}
+                                            value={content.info}
+                                            onChange={onChangeText}
+                                        />
+                                    </div>
+                                </div>
                             </div>
                         ))
                     }

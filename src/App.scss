@@ -90,9 +90,11 @@ button, input {
     padding: 15px;
     border-radius: 4px;
     margin-bottom: 10px;
-    font-size: 12px;
     box-shadow: 0px 6px 8px 1px rgba(0,0,0,0.09);
     color: $four;
+  }
+  .list-text {
+    font-size: 13px;
   }
   .list-title {
     font-size: 14px;
