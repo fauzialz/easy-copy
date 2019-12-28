@@ -1,7 +1,9 @@
 import React, {forwardRef, useState} from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import './Modal.scss'
-import LOCAL from '../../config'
+// import LOCAL from '../../config'
+import Singular from './mode/Singular'
+import Multiple from './mode/Multiple'
 
 const Modal = forwardRef(({openModal, onSubmit, onClose, form, onChangeTitle, onChangeText, btnOperations, addList, closeList, singularMultipleSwitch, onPin, infoSwitch}, ref) => {
     const [openOptions, setOpenOptions] = useState(false)
@@ -59,68 +61,21 @@ const Modal = forwardRef(({openModal, onSubmit, onClose, form, onChangeTitle, on
                 {!form.listContents?
 
                     /* SIUNGLAR TEXT */
-                    <textarea ref={ref} 
-                        autoFocus
-                        className="modal-textarea"
-                        placeholder="Text to copy"
-                        value={form.contents[0].text}
+                    <Singular
+                        ref={ref}
+                        form={form}
                         onChange={onChangeText}
-                        name="0-text"
-                    />:
+                    /> :
 
                     /* MULITPLE TEXT */
-                    <div className="multipletext-slot">{
-                        form.contents.map( (content, i) => (
-                            <div className={content.withInfo? "multipletext-list-withInfo" : "multipletext-list"} key={i}>
-                                {/* CONTENT ARROW */}
-                                <div className="multipletext-arrow">
-                                    <FontAwesomeIcon icon="caret-right" />
-                                </div>
-
-                                {/* CONTENT INPUT */}
-                                <input className="multipletext-text" autoFocus
-                                    name={i + "-text"}
-                                    value={content.text}
-                                    onChange={onChangeText}
-                                    autoComplete="off"
-                                />
-
-                                {/* ADD INFO BUTTON */}
-                                <button className={content.withInfo? "multipletext-addinfo-on" : "multipletext-addinfo-off"} onClick={() => infoSwitch(i)}>
-                                    <FontAwesomeIcon icon="comment-dots" />
-                                </button>
-
-                                {/* CLOSE CONTENT BUTTON */}
-                                <button className="multipletext-close" onClick={() => closeList(i)}>
-                                    <FontAwesomeIcon icon="times" />
-                                </button>
-
-                                {/* CONTENT INFO INPUT */}
-                                <div className="info-base">
-                                    <div className="info-relative">
-                                        <div className="info-pipe" />
-                                        <input className="info-text" placeholder="Add short comment here!"
-                                            name={i + "-info"}
-                                            value={content.info}
-                                            onChange={onChangeText}
-                                            autoComplete="off"
-                                        />
-                                        {content.info.length> 0 && <div className="info-count">{content.info.length}/{LOCAL.infoLength}</div>}
-                                    </div>
-                                </div>
-
-                            </div>
-                        ))
-                    }
-                        {showAdd?
-
-                        /* ADD CONTENT BUTTON */
-                        <button className="mutlipletext-add" onClick={onAddList}>
-                            <FontAwesomeIcon icon="plus" />
-                            <div>New Text</div>
-                        </button>
-                        :null}
-                    </div>
+                    <Multiple
+                        form={form}
+                        onChange={onChangeText}
+                        infoSwitch={infoSwitch}
+                        closeList={closeList}
+                        showAdd={showAdd}
+                        onAddList={onAddList}
+                    />
                 }
 
                 <div className="modal-footer">
