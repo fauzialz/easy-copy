@@ -1,8 +1,9 @@
 import React, {forwardRef, useState} from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import './Modal.scss'
+import LOCAL from '../../config'
 
-const Modal = forwardRef(({openModal, onSubmit, onClose, form, onChangeTitle, onChangeText, btnOperations, addList, closeList, singularMultipleSwitch, infoSwitch}, ref) => {
+const Modal = forwardRef(({openModal, onSubmit, onClose, form, onChangeTitle, onChangeText, btnOperations, addList, closeList, singularMultipleSwitch, onPin, infoSwitch}, ref) => {
     const [openOptions, setOpenOptions] = useState(false)
     const [showAdd, setShowAdd] = useState(true)
 
@@ -48,7 +49,7 @@ const Modal = forwardRef(({openModal, onSubmit, onClose, form, onChangeTitle, on
                         <FontAwesomeIcon icon="arrow-left" />
                     </button>
                     {/* <div className="center-text">Easy Copy</div> */}
-                    <button className={form.pinned ? "modal-pin-btn-on" : "modal-pin-btn-off" } onClick={() => btnOperations('pinned')}>
+                    <button className={form.pinned ? "modal-pin-btn-on" : "modal-pin-btn-off" } onClick={onPin}>
                         <FontAwesomeIcon icon="thumbtack" />
                     </button>
                 </div>
@@ -71,6 +72,7 @@ const Modal = forwardRef(({openModal, onSubmit, onClose, form, onChangeTitle, on
                     <div className="multipletext-slot">{
                         form.contents.map( (content, i) => (
                             <div className={content.withInfo? "multipletext-list-withInfo" : "multipletext-list"} key={i}>
+                                {/* CONTENT ARROW */}
                                 <div className="multipletext-arrow">
                                     <FontAwesomeIcon icon="caret-right" />
                                 </div>
@@ -80,6 +82,7 @@ const Modal = forwardRef(({openModal, onSubmit, onClose, form, onChangeTitle, on
                                     name={i + "-text"}
                                     value={content.text}
                                     onChange={onChangeText}
+                                    autoComplete="off"
                                 />
 
                                 {/* ADD INFO BUTTON */}
@@ -96,11 +99,13 @@ const Modal = forwardRef(({openModal, onSubmit, onClose, form, onChangeTitle, on
                                 <div className="info-base">
                                     <div className="info-relative">
                                         <div className="info-pipe" />
-                                        <input className="info-text" placeholder="short comment"
+                                        <input className="info-text" placeholder="Add short comment here!"
                                             name={i + "-info"}
                                             value={content.info}
                                             onChange={onChangeText}
+                                            autoComplete="off"
                                         />
+                                        {content.info.length> 0 && <div className="info-count">{content.info.length}/{LOCAL.infoLength}</div>}
                                     </div>
                                 </div>
 

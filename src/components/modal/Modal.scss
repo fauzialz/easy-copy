@@ -41,7 +41,7 @@
         width: 40px;
         border-radius: 50%;
         margin-left: 6px;
-        color: $font-blur;
+        color: $five;
     }
     .center-text {
         font-size: 11px;
@@ -61,7 +61,7 @@
         width: 28px;
         height: 28px;
         font-size: 16px;
-        color: $font-blur;
+        // color: $font-blur;
     }
     .modal-pin-btn-on {
         color: $three;
@@ -84,7 +84,7 @@
     position: absolute;
     margin-left: 20px;
     background-color: transparent;
-    color: $font-blur;
+    color: $five;
     border: 0px;
     width: 50px;
     height: 40px;
@@ -96,7 +96,7 @@
     margin-right: 12px;
     padding-top: 2px;
     border-radius: 8px;
-    color: $two;
+    // color: $two;
     color: $four;
     font-size: 20px;
     }
@@ -157,7 +157,7 @@
             right: 0;
             width: 50px;
             height: 36px;
-            color: $font-blur;
+            color: $five;
             padding-right: 17px;
             padding-bottom: 3px;
             padding-top: 3px;
@@ -170,7 +170,7 @@
             margin-right: 50px;
             font-size: 14px;
             padding-top: 2px ;
-            color: $font-blur;
+            color: $five;
             margin-top: 3px;
             font-size: 16px;
         }
@@ -195,7 +195,7 @@
         .info-text {
             color: $three;
             margin-top: 4px;
-            width: 110px;
+            width: 200px;
             padding: 5px 8px;
             border-radius: 4px;
             margin-right: 20px;
@@ -212,6 +212,15 @@
             border-bottom: 2px solid $one;
             border-radius: 0 4px;
         }
+        .info-count {
+            position: absolute;
+            right: 0;
+            top: 0;
+            font-size: 12px;
+            color: $font-blur;
+            margin-right: 23px;
+            margin-top: 10px;
+        }
     }
     .mutlipletext-add {
         height: 30px;
@@ -221,16 +230,16 @@
         color: $four;
         font-size: 12px;
         text-align: left;
-        width: 100px;
+        width: 120px;
         svg {
             float: left;
-            font-size: 14px;
-            color: $font-blur;
+            font-size: 13px;
+            color: $five;
         }
         div {
             float: left;
             margin-left: 12px;
-            margin-top: 1px;
+            margin-top: 0px;
         }
     }
 }
@@ -256,11 +265,12 @@
     text-align: left;
     width: 100%;
     padding-left: 20px;
-    color: $font-blur;
     font-weight: 600;
+    color: $font-blur;
     font-size: 14px;
     svg {
         font-size: 16px;
+        color: $five;
         margin-right: 12px;
     }
     margin-bottom:8px;

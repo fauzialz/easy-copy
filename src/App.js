@@ -75,14 +75,13 @@ function App() {
   const onChangeText = e => {
     let temp = form
     let node = e.target.name.split('-')
-    temp.contents[node[0]][node[1]] = e.target.value
+    if(node[1] === 'info') {
+      if(e.target.value.length <= LOCAL.infoLength) {
+        temp.contents[node[0]][node[1]] = e.target.value
+      }
+    }else temp.contents[node[0]][node[1]] = e.target.value
     setForm(Obj.deepCopy(temp))
   }
-
-  // const onChangeInfo = e => {
-  //   let temp = form
-  //   te
-  // }
 
   const onClose = () => {
     setOpenAdd(false)
@@ -92,13 +91,42 @@ function App() {
     }, 200);
   }
 
+  /*  Check on multiple text mode if info is empty */
+  const formCheck = formData => {
+    if(!formData.listContents) return formData
+    let temp = Obj.deepCopy(formData)
+    for(let i in temp.contents) {
+      if(temp.contents[i].withInfo && temp.contents[i].info.length === 0) {
+        temp.contents[i].withInfo = false
+      }
+    }
+    return temp
+  }
+
+  /* Change pinned value on edit direcly change DB. */
+  const onPinEdit = () => {
+    let dataTemp = data
+    let formTemp = form
+    formTemp.pinned = !form.pinned
+    setForm(Obj.deepCopy(formTemp))
+    for(let i in dataTemp) {
+      if(dataTemp[i].id === form.id) {
+        dataTemp[i] = Obj.deepCopy(formTemp)
+      }
+    }
+    localforage.setItem(LOCAL.tableName, dataTemp).then( res => {
+      console.log(res)
+      setData(res)
+    })
+  }
+
   const onSubmit = () => {
     let temp = data
     if(form.contents[0].text === "") {
       onClose()
       return
     }
-    temp.push(form)
+    temp.push(formCheck(form))
     localforage.setItem(LOCAL.tableName, temp).then( res => {
       console.log(res)
       setData(res)
@@ -134,7 +162,7 @@ function App() {
     }
     for(let i in temp) {
       if(temp[i].id === form.id) {
-        temp[i] = Obj.deepCopy(form)
+        temp[i] = formCheck(form)
       }
     }
     localforage.setItem(LOCAL.tableName, temp).then( res => {
@@ -221,6 +249,7 @@ function App() {
         <Modal form={form} 
           openModal={openAdd}
           onClose={onClose} 
+          onPin = {() => btnOperations('pinned')}
           onSubmit={onSubmit} 
           onChangeTitle={onChangeTitle}
           onChangeText={onChangeText}
@@ -232,6 +261,7 @@ function App() {
         <Modal form={form} openModal={openEdit} 
           onClose={onClose} onSubmit={onEditSubmit}
           onChangeTitle={onChangeTitle} onChangeText={onChangeText}
+          onPin = {onPinEdit}
           ref={refEdit} btnOperations={btnOperations}
           addList={addList} closeList={closeList} 
           singularMultipleSwitch={singularMultipleSwitch}
