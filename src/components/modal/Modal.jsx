@@ -1,7 +1,6 @@
 import React, {forwardRef, useState} from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import './Modal.scss'
-// import LOCAL from '../../config'
 import Singular from './mode/Singular'
 import Multiple from './mode/Multiple'
 

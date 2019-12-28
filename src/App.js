@@ -7,6 +7,8 @@ import LOCAL from './config';
 import { Obj, Str } from './services'
 import {CopyToClipboard} from 'react-copy-to-clipboard'
 import Modal from './components/modal';
+import Headbar from './components/headbar';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 function ModelContent() {
   this.text = ''
@@ -214,6 +216,7 @@ function App() {
       </Helmet>
 
       <div className="app-frame">
+        <Headbar />
         <div className="list-wrapper">
 
           {(data.filter(e => e.deleted === false).length) === 0 ?
@@ -230,13 +233,21 @@ function App() {
                       {Str.jsxNewLine(e.contents[0].text)}
                     </div>
 
-                    <div className={e.contents[0].copied? "copy-sign-on" : "copy-sign-off"}>{LOCAL.onCopy}!</div>
                     <div className="list-boundary-line" />
                     
                     {/* COPY BUTTON */}
-                    <CopyToClipboard text={e.contents[0].text} onCopy={() => onCopy(e.contents[0].id, i)}>
-                      <button className="list-button">Copy</button>
-                    </CopyToClipboard>
+                    <div className="list-button-base">
+                      <div className="list-button-tablecell">
+                        <div className="list-button-relative">
+                          <CopyToClipboard text={e.contents[0].text} onCopy={() => onCopy(e.contents[0].id, i)}>
+                            <button className="list-button">
+                              <FontAwesomeIcon icon="copy" />
+                            </button>
+                          </CopyToClipboard>
+                          <div className={e.contents[0].copied? "copy-sign-on" : "copy-sign-off"}>{LOCAL.onCopy}</div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               )
@@ -244,7 +255,9 @@ function App() {
 
         </div>
 
-        <button className="add-button" onClick={modalOpen}>+</button>
+        <button className="add-button" onClick={modalOpen}>
+          <FontAwesomeIcon icon="plus" />
+        </button>
 
         <Modal form={form} 
           openModal={openAdd}

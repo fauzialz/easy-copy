@@ -7,6 +7,7 @@
     position: absolute;
     width: 100%;
     height: 100vh;
+    z-index: 100;
     background-color: $one;
     top: 0;
     left: 0;
@@ -24,7 +25,7 @@
     width: 100%;
     margin: 0 auto;
     padding-top: 2px;
-    background-color: $two;
+    background-color: $one;
     box-shadow: 0px -7px 10px -3px rgba(0, 0, 0, 0.089);
 }
 
@@ -75,7 +76,7 @@
     height: 52px;
     width: 100%;
     padding-bottom: 12px;
-    background-color: $two;
+    background-color: $one;
 
 }
 
@@ -107,7 +108,7 @@
 .modal-title {
     width: 100%;
     height: 40px;
-    margin-top: 4px;
+    margin-top: 10px;
     background-color: transparent;
     border: 0px;
     padding: 0 20px;
@@ -121,6 +122,7 @@
     width: 100%;
     resize: none;
     padding: 10px 20px;
+    margin-top: 4px;
     border: 0px;
     outline: none;
     background-color: transparent;
@@ -131,6 +133,7 @@
     height: calc(100vh - 160px);
     overflow-y: auto;
     padding-bottom: 10px;
+    margin-top: 4px;
     .multipletext-list, .multipletext-list-withInfo {
         height: 36px;
         width: 100%;
@@ -150,7 +153,7 @@
             padding-left: 12px;
             color: $four;
             margin-top: 9px;
-            width: calc(100% - 120px);
+            width: calc(100% - 130px);
         }
         .multipletext-close {
             position: absolute;
@@ -208,8 +211,8 @@
             height: 19px;
             width: 9px;
             float: left;
-            border-left: 2px solid $one;
-            border-bottom: 2px solid $one;
+            border-left: 2px solid $zero;
+            border-bottom: 2px solid $zero;
             border-radius: 0 4px;
         }
         .info-count {
@@ -226,7 +229,7 @@
         height: 30px;
         padding-left: 20px;
         margin-left: 20px;
-        margin-top: 5px;
+        margin-top: 2px;
         color: $four;
         font-size: 12px;
         text-align: left;
@@ -253,8 +256,8 @@
     position: absolute;
     bottom: 0;
     padding: 20px 0;
-    background-color: $two;
-    box-shadow: 0px -7px 10px -3px rgba(0, 0, 0, 0.089);
+    background-color: $one;
+    box-shadow: 0px -8px 6px -3px rgba(0, 0, 0, 0.089);
     transform: translate(0px, 80px);
     transition: all .3s ease;
 }

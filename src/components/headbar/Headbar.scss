@@ -1,0 +1,35 @@
+@import '../../styles/pallete';
+
+.headbar-base {
+    width: 100%;
+    position: absolute;
+    z-index: 99;
+}
+.headbar-frame {
+    width: calc(100% - 30px);
+    margin: 15px;
+    height: 40px;
+    margin-bottom: 0px;
+    background-color: $two;
+    border-radius: 6px;
+    // border: 1px solid $two;
+    box-shadow: 0px 3px 3px 1px rgba(0,0,0,0.09);
+    // box-shadow: 0px 1px 8px 1px rgba(0,0,0,0.26);
+}
+.headbar-btn {
+    font-size: 18px;
+    color: $four;
+    padding-left: 15px;
+    padding-top: 11px;
+    float: left;
+}
+.headbar-search {
+    float: left;
+    height: 100%;
+    margin-left: 12px;
+    color: $four;
+    width: calc(100% - 50px);
+}
+.headbar-search::placeholder {
+    color: $font-blur;
+}
