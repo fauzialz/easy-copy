@@ -4,30 +4,12 @@ import { Helmet } from 'react-helmet'
 import Emoji from './components/emoji'
 import localforage from 'localforage'
 import LOCAL from './config';
-import { Obj, Str } from './services'
+import { Obj, Str, Form } from './services'
 import {CopyToClipboard} from 'react-copy-to-clipboard'
 import Modal from './components/modal';
 import Headbar from './components/headbar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
-function ModelContent() {
-  this.text = ''
-  this.copied = false
-  this.withInfo = false
-  this.info = ''
-}
-
-function ModelForm() {
-  this.id = ''
-  this.title = ''
-  this.listContents = false
-  this.contents = [
-    new ModelContent()
-  ]
-  this.tags = []
-  this.deleted = false
-  this.pinned = false
-}
+import { ModelContent, ModelForm } from './model';
 
 function App() {
   const [data, setData] = useState([])
@@ -93,18 +75,6 @@ function App() {
     }, 200);
   }
 
-  /*  Check on multiple text mode if info is empty */
-  const formCheck = formData => {
-    if(!formData.listContents) return formData
-    let temp = Obj.deepCopy(formData)
-    for(let i in temp.contents) {
-      if(temp.contents[i].withInfo && temp.contents[i].info.length === 0) {
-        temp.contents[i].withInfo = false
-      }
-    }
-    return temp
-  }
-
   /* Change pinned value on edit direcly change DB. */
   const onPinEdit = () => {
     let dataTemp = data
@@ -128,7 +98,7 @@ function App() {
       onClose()
       return
     }
-    temp.push(formCheck(form))
+    temp.push(Form.formCheck(form))
     localforage.setItem(LOCAL.tableName, temp).then( res => {
       console.log(res)
       setData(res)
@@ -164,7 +134,7 @@ function App() {
     }
     for(let i in temp) {
       if(temp[i].id === form.id) {
-        temp[i] = formCheck(form)
+        temp[i] = Form.formCheck(form)
       }
     }
     localforage.setItem(LOCAL.tableName, temp).then( res => {
