@@ -119,11 +119,6 @@ function App() {
   const onEdit = item => {
     setForm(Obj.deepCopy(item))
     setOpenEdit(true)
-    if(!item.listContents){
-      setTimeout(() => {
-        refEdit.current.focus()
-      }, 100);
-    }
   }
 
   const onEditSubmit = () => {

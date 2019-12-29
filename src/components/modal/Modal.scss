@@ -12,264 +12,130 @@
     top: 0;
     left: 0;
     transform: translate(0px, 0px);
+    .modal-wrapper {
+        position: relative;
+        height: 100vh;
+        width: 100%;
+        margin: 0 auto;
+        padding-top: 2px;
+        background-color: $one;
+        box-shadow: 0px -7px 10px -3px rgba(0, 0, 0, 0.089);
+        
+        /* MODAL HEADER TILE */
+        .modal-header {
+            margin-top: 10px;
+            margin-bottom: 2px;
+            height: 40px;
+            width: 100%;
+            position: relative;
+            .modal-back-btn, .modal-pin-btn-on, .modal-pin-btn-off {
+                float: left;
+                height: 100%;
+                font-size: 20px;
+                width: 40px;
+                border-radius: 50%;
+                margin-left: 10px;
+                color: $five;
+            }
+            .modal-pin-btn-on, .modal-pin-btn-off {
+                float: right;
+                margin-top: 7px;
+                margin-right: 18px;
+                text-align: center;
+                width: 28px;
+                height: 28px;
+                font-size: 17px;
+                // color: $font-blur;
+            }
+            .modal-pin-btn-on {
+                color: $three;
+            }
+        }
+        
+        /* MODAL TITLE */
+        .modal-title {
+            width: 100%;
+            height: 40px;
+            margin-top: 10px;
+            background-color: transparent;
+            border: 0px;
+            padding: 0 20px;
+            outline: none;
+            color: $four;
+            font-size: 15.5px;
+            font-weight: 600;
+        }
+        .modal-title::placeholder {
+            color: $font-blur;
+        }
+        
+        /* MODAL FOOTER TILE */
+        .modal-footer {
+            z-index: 1;
+            position: absolute;
+            bottom: 0;
+            height: 52px;
+            width: 100%;
+            padding-bottom: 12px;
+            background-color: $one;
+            .modal-left-btn, .modal-right-btn {
+                outline: none;
+                position: absolute;
+                margin-left: 20px;
+                background-color: transparent;
+                color: $five;
+                border: 0px;
+                width: 50px;
+                height: 40px;
+                font-size: 20px;
+                font-weight: 600;
+            }
+            .modal-right-btn {
+                right: 0;
+                margin-right: 12px;
+                padding-top: 2px;
+                border-radius: 8px;
+                color: $four;
+                font-size: 22px;
+                }
+            .modal-left-btn {
+                margin-left: 1px;
+                font-size: 17px;
+            }
+        }
+        
+        /* MODAL OPTION TILE */
+        .modal-options-on, .modal-options-off {
+            width: 100%;
+            position: absolute;
+            bottom: 0;
+            padding: 18px 0;
+            background-color: $one;
+            box-shadow: 0px -8px 6px -3px rgba(0, 0, 0, 0.089);
+            transform: translate(0px, 80px);
+            transition: all .3s ease;
+            .modal-options-btn {
+                text-align: left;
+                width: 100%;
+                padding-left: 20px;
+                color: $four;
+                font-size: 14px;
+                svg {
+                    font-size: 16px;
+                    color: $five;
+                    margin-right: 22px;
+                }
+                margin-bottom:8px;
+                height: 34px;
+            }
+        }
+        .modal-options-on {
+            transform: translate(0px, -38px);
+        }
+    }
 }
 .modal-close {
     visibility: hidden;
     opacity: 0;
     transform: translate(0px, 30px);
-}
-
-.modal-wrapper {
-    position: relative;
-    height: 100vh;
-    width: 100%;
-    margin: 0 auto;
-    padding-top: 2px;
-    background-color: $one;
-    box-shadow: 0px -7px 10px -3px rgba(0, 0, 0, 0.089);
-}
-
-.modal-header {
-    margin-top: 10px;
-    margin-bottom: 2px;
-    height: 40px;
-    width: 100%;
-    position: relative;
-    .modal-back-btn, .modal-pin-btn-on, .modal-pin-btn-off {
-        float: left;
-        height: 100%;
-        font-size: 20px;
-        width: 40px;
-        border-radius: 50%;
-        margin-left: 10px;
-        color: $five;
-    }
-    .modal-pin-btn-on, .modal-pin-btn-off {
-        float: right;
-        margin-top: 7px;
-        margin-right: 18px;
-        text-align: center;
-        width: 28px;
-        height: 28px;
-        font-size: 17px;
-        // color: $font-blur;
-    }
-    .modal-pin-btn-on {
-        color: $three;
-    }
-}
-
-.modal-footer {
-    z-index: 1;
-    position: absolute;
-    bottom: 0;
-    height: 52px;
-    width: 100%;
-    padding-bottom: 12px;
-    background-color: $one;
-
-}
-
-.modal-left-btn, .modal-right-btn {
-    outline: none;
-    position: absolute;
-    margin-left: 20px;
-    background-color: transparent;
-    color: $five;
-    border: 0px;
-    width: 50px;
-    height: 40px;
-    font-size: 20px;
-    font-weight: 600;
-}
-.modal-right-btn {
-    right: 0;
-    margin-right: 12px;
-    padding-top: 2px;
-    border-radius: 8px;
-    // color: $two;
-    color: $four;
-    font-size: 22px;
-    }
-.modal-left-btn {
-    margin-left: 1px;
-    font-size: 18px;
-}
-.modal-title {
-    width: 100%;
-    height: 40px;
-    margin-top: 10px;
-    background-color: transparent;
-    border: 0px;
-    padding: 0 20px;
-    outline: none;
-    color: $four;
-    font-size: 15.5px;
-    font-weight: 600;
-}
-.modal-textarea {
-    height: calc(100vh - 160px);
-    width: 100%;
-    resize: none;
-    padding: 10px 20px;
-    // margin-top: 2px;
-    border: 0px;
-    font-size: 14px;
-    outline: none;
-    background-color: transparent;
-    color: $four;
-}
-.multipletext-slot {
-    width: 100%;
-    height: calc(100vh - 160px);
-    overflow-y: auto;
-    padding-bottom: 10px;
-    // margin-top: 2px;
-    .multipletext-list, .multipletext-list-withInfo {
-        height: 36px;
-        width: 100%;
-        position: relative;
-        transition: all .2s ease;
-        overflow: hidden;
-        .multipletext-arrow {
-            svg {
-                color: $font-blur;
-                font-size: 18px;
-            }
-            float: left;
-            margin-top: 9px;
-            margin-left: 24px;
-        }
-        .multipletext-text {
-            padding-left: 12px;
-            color: $four;
-            margin-top: 9px;
-            font-size: 14px;
-            width: calc(100% - 134px);
-        }
-        .multipletext-close {
-            position: absolute;
-            right: 0;
-            width: 50px;
-            height: 36px;
-            color: $five;
-            font-size: 16px;
-            padding-right: 22px;
-            padding-bottom: 3px;
-            padding-top: 3px;
-        }
-        .multipletext-addinfo-off, .multipletext-addinfo-on {
-            position: absolute;
-            right: 0;
-            width: 40px;
-            height: 30px;
-            margin-right: 50px;
-            font-size: 14px;
-            padding-top: 2px ;
-            color: $five;
-            margin-top: 3px;
-            font-size: 17px;
-        }
-        .multipletext-addinfo-on{
-            color: $three;
-        }
-    }
-    .multipletext-list-withInfo {
-        height: 72px;
-    }
-    .info-base {
-        width: 100%;
-        height: 36px;
-        position: absolute;
-        top: 0;
-        transform: translate(0px, 36px);
-        .info-relative {
-            position: relative;
-            height: 100%;
-            width: calc(100% - 40px);
-        }
-        .info-text {
-            color: $three;
-            margin-top: 4px;
-            width: 200px;
-            padding: 5px 8px;
-            font-size: 14px;
-            border-radius: 4px;
-            margin-right: 20px;
-        }
-        .info-text::placeholder {
-            color: $font-blur;
-        }
-        .info-pipe {
-            margin-left: 25px;
-            height: 19px;
-            width: 9px;
-            float: left;
-            border-left: 2px solid $zero;
-            border-bottom: 2px solid $zero;
-            border-radius: 0 4px;
-        }
-        .info-count {
-            position: absolute;
-            right: 0;
-            top: 0;
-            font-size: 12px;
-            color: $font-blur;
-            margin-right: 23px;
-            margin-top: 10px;
-        }
-    }
-    .mutlipletext-add {
-        height: 32px;
-        padding-left: 20px;
-        margin-left: 20px;
-        margin-top: 2px;
-        color: $four;
-        font-size: 14px;
-        text-align: left;
-        width: 120px;
-        svg {
-            float: left;
-            font-size: 15px;
-            color: $five;
-        }
-        div {
-            float: left;
-            margin-left: 12px;
-            margin-top: 0px;
-        }
-    }
-}
-
-.modal-title::placeholder, .modal-textarea::placeholder {
-    color: #708492;
-}
-
-.modal-options-on, .modal-options-off {
-    width: 100%;
-    position: absolute;
-    bottom: 0;
-    padding: 18px 0;
-    background-color: $one;
-    box-shadow: 0px -8px 6px -3px rgba(0, 0, 0, 0.089);
-    transform: translate(0px, 80px);
-    transition: all .3s ease;
-}
-.modal-options-on {
-    transform: translate(0px, -38px);
-}
-.modal-options-btn {
-    text-align: left;
-    width: 100%;
-    padding-left: 20px;
-    font-weight: 600;
-    color: $font-blur;
-    font-size: 15.5px;
-    svg {
-        font-size: 18px;
-        color: $five;
-        margin-right: 12px;
-    }
-    margin-bottom:8px;
-    height: 34px;
 }

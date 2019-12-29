@@ -1,6 +1,8 @@
 import React, {forwardRef} from 'react'
+import './Singular.scss'
 
 const Singular = forwardRef(({form, onChange},ref) => (
+    /* JUST THIS SIMPLE TEXTAREA */
     <textarea 
         ref={ref}
         autoFocus

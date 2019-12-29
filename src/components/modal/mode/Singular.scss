@@ -1,0 +1,16 @@
+@import '../../../styles/pallete';
+
+.modal-textarea {
+    height: calc(100vh - 160px);
+    width: 100%;
+    resize: none;
+    padding: 10px 20px;
+    border: 0px;
+    font-size: 14px;
+    outline: none;
+    background-color: transparent;
+    color: $four;
+}
+.modal-textarea::placeholder {
+    color: $font-blur;
+}

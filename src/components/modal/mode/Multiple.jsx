@@ -1,10 +1,11 @@
-import React, {Fragment, useState, useRef} from 'react'
+import React, {Fragment, useState} from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import LOCAL from '../../../config'
+import './Multiple.scss'
 
 const Multiple = ({form, onChange, infoSwitch, closeList, showAdd, onAddList, onFocus, onInfoBlur }) => {
     const [refs, setRefs] = useState({})
-    refs['info0'] = useRef(null)
+    /* TODO!!! create refs for main input text */
 
     /* Use to create dynamic ref for every new input info */
     const createRef = e => {
@@ -17,6 +18,12 @@ const Multiple = ({form, onChange, infoSwitch, closeList, showAdd, onAddList, on
             }
         }
     }
+    
+    /* Reset Refs when deleting a list */
+    const onDelete = i => {
+        setRefs({})
+        closeList(i)
+    }
 
     /* Make info input auto focus when input botton hited */
     const onInfoButton = i => {
@@ -24,7 +31,7 @@ const Multiple = ({form, onChange, infoSwitch, closeList, showAdd, onAddList, on
         if(!form.contents[i].withInfo) {
             setTimeout(() => {
                 input.current.focus()
-            }, 200);
+            }, 300);
         }
         infoSwitch(i)
     }
@@ -33,14 +40,16 @@ const Multiple = ({form, onChange, infoSwitch, closeList, showAdd, onAddList, on
         <div className="multipletext-slot">{
             form.contents.map( (content, i) => (
                 <div className={content.withInfo? "multipletext-list-withInfo" : "multipletext-list"} key={i}>
-                    {/* CONTENT ARROW */}
+
+                    {/* CONTENT ARROW DECORATION*/}
                     <div className="multipletext-arrow">
                         <FontAwesomeIcon icon="caret-right" />
                     </div>
 
                     {/* CONTENT INPUT */}
-                    <input className="multipletext-text"
+                    <input
                         autoFocus
+                        className="multipletext-text"
                         name={i + "-text"}
                         value={content.text}
                         onChange={onChange}
@@ -48,8 +57,10 @@ const Multiple = ({form, onChange, infoSwitch, closeList, showAdd, onAddList, on
                         onFocus={onFocus}
                     />
 
+                    {/* LIST BUTTON SEGMENT */}
                     {content.focus?
                         <Fragment>
+
                             {/* ADD INFO BUTTON */}
                             <button
                                 className={content.withInfo? "multipletext-addinfo-on" : "multipletext-addinfo-off"}
@@ -57,10 +68,10 @@ const Multiple = ({form, onChange, infoSwitch, closeList, showAdd, onAddList, on
                                 <FontAwesomeIcon icon="comment-dots" />
                             </button>
 
-                            {/* CLOSE CONTENT BUTTON */}
+                            {/* CLOSE/DELETE CONTENT BUTTON */}
                             <button
                                 className="multipletext-close"
-                                onClick={() => closeList(i)}>
+                                onClick={() => onDelete(i)}>
                                 <FontAwesomeIcon icon="times" />
                             </button>
                         </Fragment>: null
@@ -69,9 +80,14 @@ const Multiple = ({form, onChange, infoSwitch, closeList, showAdd, onAddList, on
                     {/* CONTENT INFO INPUT */}
                     <div className="info-base">
                         <div className="info-relative">
+
+                            {/* INFO PIPE DECORATION */}
                             <div className="info-pipe" />
-                            <input className="info-text" 
-                                ref={i === 0? refs.info0 : e => createRef(e)}
+
+                            {/* INFO INPUT TEXT */}
+                            <input 
+                                className="info-text" 
+                                ref={e => createRef(e)}
                                 placeholder="Add short comment here!"
                                 name={i + "-info"}
                                 value={content.info}
@@ -80,21 +96,27 @@ const Multiple = ({form, onChange, infoSwitch, closeList, showAdd, onAddList, on
                                 onBlur={onInfoBlur}
                                 autoComplete="off"
                             />
-                            {content.info.length> 0 && content.infoFocus && <div className="info-count">{content.info.length}/{LOCAL.infoLength}</div>}
+
+                            {/* INFO INPUT TEXT LENGTH INDICATOR */}
+                            {   content.info.length> 0 && 
+                                content.infoFocus && 
+                                <div className="info-count">
+                                    {content.info.length}/{LOCAL.infoLength}
+                                </div>
+                            }
                         </div>
                     </div>
-
                 </div>
             ))
         }
+            {/* ADD CONTENT BUTTON */}
             {showAdd?
-            /* ADD CONTENT BUTTON */
-            <button className="mutlipletext-add" 
-                onClick={onAddList}>
-                <FontAwesomeIcon icon="plus" />
-                <div>New Text</div>
-            </button>
-            :null}
+                <button className="mutlipletext-add" 
+                    onClick={onAddList}>
+                    <FontAwesomeIcon icon="plus" />
+                    <div>New Text</div>
+                </button> : null
+            }
         </div>
     )
 }
