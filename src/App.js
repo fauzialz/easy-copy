@@ -4,12 +4,12 @@ import { Helmet } from 'react-helmet'
 import Emoji from './components/emoji'
 import localforage from 'localforage'
 import LOCAL from './config';
-import { Obj, Str, Form } from './services'
-import {CopyToClipboard} from 'react-copy-to-clipboard'
+import { Obj, Form } from './services'
 import Modal from './components/modal';
 import Headbar from './components/headbar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ModelContent, ModelForm } from './model';
+import List from './components/list';
 
 function App() {
   const [data, setData] = useState([])
@@ -177,9 +177,37 @@ function App() {
     btnOperations('listContents')
   }
 
+  const onMultipleFocus = e => {
+    let temp = form
+    let node = e.target.name.split('-')
+    // console.log(node)
+    for(let i in temp.contents) {
+      if(i !== node[0]) {
+        temp.contents[i].focus = false
+        temp.contents[i].infoFocus = false
+        // if(node[1] === 'info'){
+          // }
+        }else{
+          temp.contents[i].focus = true
+          if(node[1] === 'info'){
+            temp.contents[i].infoFocus = true
+          }
+        }
+      }
+      setForm(Obj.deepCopy(temp))
+    }
+    
+  const onInfoBlur = () => {
+    let temp = form
+    for(let i in temp.contents) {
+      temp.contents[i].infoFocus = false
+    }
+    setForm(Obj.deepCopy(temp))
+  }
+
   return (
     <div className="outer-wrapper">
-
+      
       <Helmet>
         <title>Easy Copy</title>
         <meta name="App to store your text and copy it with ease." content="Easy Copy Mobile Web Application." />
@@ -191,37 +219,8 @@ function App() {
 
           {(data.filter(e => e.deleted === false).length) === 0 ?
             <div className="on-list-empty">{LOCAL.onListEmpty}<br/><Emoji /></div>
-            : data.map((e, i) => {
-              if(e.deleted) return null
-              return (
-                <div className="list-tile" key={e.id}>
-                  {e.title?<div className="list-title" onClick={() => onEdit(e)}>{e.title}</div>: null}
-                  <div className="list-content"> 
-
-                    {/* TEXT Content */}
-                    <div className="list-text" onClick={() => onEdit(e)}>
-                      {Str.jsxNewLine(e.contents[0].text)}
-                    </div>
-
-                    <div className="list-boundary-line" />
-                    
-                    {/* COPY BUTTON */}
-                    <div className="list-button-base">
-                      <div className="list-button-tablecell">
-                        <div className="list-button-relative">
-                          <CopyToClipboard text={e.contents[0].text} onCopy={() => onCopy(e.contents[0].id, i)}>
-                            <button className="list-button">
-                              <FontAwesomeIcon icon="copy" />
-                            </button>
-                          </CopyToClipboard>
-                          <div className={e.contents[0].copied? "copy-sign-on" : "copy-sign-off"}>{LOCAL.onCopy}</div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )
-          })}
+            : <List data={data} onEdit={onEdit} onCopy={onCopy} />
+          }
 
         </div>
 
@@ -240,7 +239,9 @@ function App() {
           addList={addList} closeList={closeList} 
           singularMultipleSwitch={singularMultipleSwitch}
           infoSwitch={infoSwitch}
-        />
+          onFocus={onMultipleFocus}
+          onInfoBlur={onInfoBlur}
+          />
         <Modal form={form} openModal={openEdit} 
           onClose={onClose} onSubmit={onEditSubmit}
           onChangeTitle={onChangeTitle} onChangeText={onChangeText}
@@ -249,6 +250,8 @@ function App() {
           addList={addList} closeList={closeList} 
           singularMultipleSwitch={singularMultipleSwitch}
           infoSwitch={infoSwitch}  
+          onFocus={onMultipleFocus}
+          onInfoBlur={onInfoBlur}
         />
       </div>
     </div>

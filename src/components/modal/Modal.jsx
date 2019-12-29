@@ -4,7 +4,21 @@ import './Modal.scss'
 import Singular from './mode/Singular'
 import Multiple from './mode/Multiple'
 
-const Modal = forwardRef(({openModal, onSubmit, onClose, form, onChangeTitle, onChangeText, btnOperations, addList, closeList, singularMultipleSwitch, onPin, infoSwitch}, ref) => {
+const Modal = forwardRef(({
+    openModal, 
+    onSubmit, 
+    onClose,
+    form,
+    onChangeTitle,
+    onChangeText,
+    btnOperations,
+    addList,
+    closeList,
+    singularMultipleSwitch,
+    onPin, infoSwitch, onFocus,
+    onInfoBlur
+    }, ref ) => {
+        
     const [openOptions, setOpenOptions] = useState(false)
     const [showAdd, setShowAdd] = useState(true)
 
@@ -74,6 +88,8 @@ const Modal = forwardRef(({openModal, onSubmit, onClose, form, onChangeTitle, on
                         closeList={closeList}
                         showAdd={showAdd}
                         onAddList={onAddList}
+                        onFocus={onFocus}
+                        onInfoBlur={onInfoBlur}
                     />
                 }
 
