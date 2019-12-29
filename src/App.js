@@ -83,7 +83,7 @@ function App() {
     setForm(Obj.deepCopy(formTemp))
     for(let i in dataTemp) {
       if(dataTemp[i].id === form.id) {
-        dataTemp[i] = Obj.deepCopy(formTemp)
+        dataTemp[i].pinned = formTemp.pinned
       }
     }
     localforage.setItem(LOCAL.tableName, dataTemp).then( res => {
@@ -98,7 +98,7 @@ function App() {
       onClose()
       return
     }
-    temp.push(Form.formCheck(form))
+    temp.push(Form.formFilter(form))
     localforage.setItem(LOCAL.tableName, temp).then( res => {
       console.log(res)
       setData(res)
@@ -129,7 +129,7 @@ function App() {
     }
     for(let i in temp) {
       if(temp[i].id === form.id) {
-        temp[i] = Form.formCheck(form)
+        temp[i] = Form.formFilter(form)
       }
     }
     localforage.setItem(LOCAL.tableName, temp).then( res => {
