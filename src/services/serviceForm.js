@@ -1,7 +1,7 @@
 import { Obj } from "."
 
 export default {
-    /*  Check on multiple text mode if info is empty */
+    /* Fitler mutliple text input before save to DB */
     formFilter : formData => {
       if(!formData.listContents) return formData
       let temp = Obj.deepCopy(formData)

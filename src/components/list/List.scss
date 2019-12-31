@@ -1,0 +1,128 @@
+@import '../../styles/pallete';
+
+.list-wrapper {
+    padding: 10px;
+    padding-top: 80px; //ready for header
+    padding-bottom: 90px;
+    height: 100%;
+    width: 100%;
+    overflow-x: auto;
+
+    .on-list-empty {
+        text-align: center;
+        font-size: 13px;
+        width: 200px;
+        margin: 0 auto;
+        margin-top: 44vh;
+        color: $font-blur;
+        svg {
+            height: 20px;
+            margin-top: 7px;
+        }
+    }
+
+    .list-tile {
+        background-color: $one;
+        padding: 15px;
+        border-radius: 4px;
+        margin-bottom: 10px;
+        border: 1px solid $font-blur;
+        box-shadow: 0px 3px 3px 1px rgba(0,0,0,0.09);
+        color: $four;
+
+        .list-title {
+            font-size: 15.5px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .list-content {
+            width: calc(100% - 25px);
+            padding-right: 37px;
+            position: relative;
+            padding-top: 4px;
+            padding-bottom: 4px;
+            .list-text {
+                font-size: 14px;
+            }
+            .list-boundary-line {
+                position: absolute;
+                width: 20px;
+                right: 0;
+                top: 0;
+                height: calc(100% - 12px);
+                margin-top: 6.5px;
+                border-top: 2px solid $two;
+                border-bottom: 2px solid $two;
+                border-right: 2px solid $two;
+                border-radius: 0 8px 8px 0;
+            }
+            .list-button-base {
+                position: absolute;
+                // border: 1px solid salmon;
+                height: calc(100% + 16px);
+                display: table;
+                transform: translate(0px, -8.5px);
+                // height: 100%;
+                right: 0;
+                top: 0;
+                .list-button-tablecell {
+                    display: table-cell;
+                    // position: relative;
+                    vertical-align: middle;
+                    .list-button-relative {
+                        position: relative;
+                        .list-button {
+                            // position: absolute;
+                            // right: 0;
+                            // top: 0;
+                            transform: translate(24px, 1px);
+                            width: 50px;
+                            border-radius: 4px;
+                            // border: 0px;
+                            // height: 30px;
+                            font-size: 18px;
+                            padding-top: 8px;
+                            padding-bottom: 7px;
+                            outline: none;
+                            background-color: $one;
+                            color: $three;
+                            transition: all .2s ease;
+                        }
+                        .copy-sign-on, .copy-sign-off {
+                            position: absolute;
+                            background-color: $two;
+                            border: 1px solid $font-blur;
+                            font-weight: 400;
+                            color: $three;
+                            width: 124px;
+                            right: 0;
+                            font-size: 13px;
+                            top: 0;
+                            height: 25px;
+                            transform: translate(-25px);
+                            padding: 0 10px;
+                            padding-top: 3px;
+                            text-align: center;
+                            // padding-bottom: px;
+                            border-radius: 12px;
+                            margin-top: 5px;
+                            box-shadow: 0px 4px 3px 1px rgba(0, 0, 0, 0.15);
+                            visibility: visible;
+                            opacity: 1;
+                            transition: all .3s ease;
+                        }
+                        .copy-sign-on {
+                            transition-delay: .1s;
+                        }
+                        .copy-sign-off {
+                            transform: translate(-20px);
+                            visibility: hidden;
+                            opacity: 0;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

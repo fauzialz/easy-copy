@@ -1,7 +1,6 @@
 import React, {useEffect, useState, useRef} from 'react';
 import './App.scss';
 import { Helmet } from 'react-helmet'
-import Emoji from './components/emoji'
 import localforage from 'localforage'
 import LOCAL from './config';
 import { Obj, Form } from './services'
@@ -175,13 +174,10 @@ function App() {
   const onMultipleFocus = e => {
     let temp = form
     let node = e.target.name.split('-')
-    // console.log(node)
     for(let i in temp.contents) {
       if(i !== node[0]) {
         temp.contents[i].focus = false
         temp.contents[i].infoFocus = false
-        // if(node[1] === 'info'){
-          // }
         }else{
           temp.contents[i].focus = true
           if(node[1] === 'info'){
@@ -210,14 +206,7 @@ function App() {
 
       <div className="app-frame">
         <Headbar />
-        <div className="list-wrapper">
-
-          {(data.filter(e => e.deleted === false).length) === 0 ?
-            <div className="on-list-empty">{LOCAL.onListEmpty}<br/><Emoji /></div>
-            : <List data={data} onEdit={onEdit} onCopy={onCopy} />
-          }
-
-        </div>
+        <List data={data} onEdit={onEdit} onCopy={onCopy} />
 
         <button className="add-button" onClick={modalOpen}>
           <FontAwesomeIcon icon="plus" />
@@ -236,10 +225,13 @@ function App() {
           infoSwitch={infoSwitch}
           onFocus={onMultipleFocus}
           onInfoBlur={onInfoBlur}
-          />
-        <Modal form={form} openModal={openEdit} 
-          onClose={onClose} onSubmit={onEditSubmit}
-          onChangeTitle={onChangeTitle} onChangeText={onChangeText}
+        />
+        <Modal form={form} 
+          openModal={openEdit} 
+          onClose={onClose} 
+          onSubmit={onEditSubmit}
+          onChangeTitle={onChangeTitle} 
+          onChangeText={onChangeText}
           onPin = {onPinEdit}
           ref={refEdit} btnOperations={btnOperations}
           addList={addList} closeList={closeList} 
