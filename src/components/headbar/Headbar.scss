@@ -6,8 +6,8 @@
     z-index: 99;
 }
 .headbar-frame {
-    width: calc(100% - 40px);
-    margin: 20px;
+    width: calc(100% - 30px);
+    margin: 15px;
     height: 48px;
     margin-bottom: 0px;
     margin-top: 15px;
@@ -28,11 +28,11 @@
     float: left;
     height: 100%;
     margin-left: 2px;
-    padding-top: 4px;
+    padding-top: 3px;
     color: $four;
     font-size: 14px;
     width: calc(100% - 58px);
 }
 .headbar-search::placeholder {
-    color: $font-blur;
+    color: $five;
 }

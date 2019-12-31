@@ -105,12 +105,12 @@ function App() {
     })
   }
 
-  const onCopy = (id, index) => {
+  const onCopy = (listIndex, contentIndex) => {
     let temp = data
-    temp[index].contents[0].copied = true
+    temp[listIndex].contents[contentIndex].copied = true
     setData(Obj.deepCopy(temp))
     setTimeout(() => {
-      temp[index].contents[0].copied = false
+      temp[listIndex].contents[contentIndex].copied = false
       setData(Obj.deepCopy(temp))
     }, 1300);
   }

@@ -9,6 +9,9 @@ export default {
     },
     frontZero: (str) => ('0' + str).slice(-2),
     jsxNewLine: (str) => {
+        console.log(str)
+        // debugger
+        if(str === "") return <br />
         if(!str || str.constructor !== String) throw new Error("Bad Argument, sir!")
         let temp = str.split('\n').map( (line, i) => (<React.Fragment key={i} >{line} <br /></React.Fragment>))
         return (temp)
