@@ -49,6 +49,11 @@
             .list-text, .list-text-normal, .list-text-withinfo{
                 font-size: 13px;
                 padding-top: 1px;
+                a {
+                    color: $three;
+                    font-weight: 600;
+                    text-decoration: none;
+                }
             }
             .list-text-normal {
                 width: calc(100% - 36px);

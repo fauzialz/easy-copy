@@ -10,7 +10,7 @@ const SingularContent = ({onCopy, index, e}) => (
     <div className="list-content"> 
         {/* TEXT Content */}
         <div className="list-text" >
-            {Str.jsxNewLine(e.contents[0].text)}
+            {Str.toJsx(e.contents[0].text)}
         </div>
 
         <div className="list-boundary-line" />
@@ -37,7 +37,7 @@ const MultipleContent = ({onCopy, index, e}) => (
         {e.contents.map((content, i) => (
             <div className="list-content-tile" key={i}>
                 <div className={content.withInfo? "list-text-withinfo" : "list-text-normal"} >
-                    {Str.jsxNewLine(content.text)}
+                    {Str.toJsx(content.text)}
                 </div>
                 
                 {/* COPY BUTTON */}
