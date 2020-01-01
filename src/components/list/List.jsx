@@ -46,7 +46,7 @@ const MultipleContent = ({onCopy, index, e}) => (
                         <div className="list-button-relative">
                             {content.withInfo? <span className="list-content-info">\ {content.info}</span>: null}
                             <button className="list-button multiple-button" onClick={e => e.stopPropagation()}>
-                                <CopyToClipboard text={!content.text===""?content.text: LOCAL.onTextEmpty} onCopy={() => onCopy(index, i)}>
+                                <CopyToClipboard text={content.text || LOCAL.onTextEmpty} onCopy={() => onCopy(index, i)}>
                                     <FontAwesomeIcon icon="copy" />
                                 </CopyToClipboard>
                             </button>
