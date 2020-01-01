@@ -26,14 +26,17 @@
         padding: 15px;
         border-radius: 4px;
         margin-bottom: 10px;
-        border: 1px solid $two-line;
+        border: 2px solid $two-line;
         box-shadow: 0px 3px 3px 1px rgba(0,0,0,0.09);
         color: $four;
 
-        .list-title {
-            font-size: 15.5px;
+        .list-title, .list-title-multiple {
+            font-size: 14.5px;
             font-weight: 600;
             margin-bottom: 10px;
+        }
+        .list-title-multiple {
+            margin-bottom: 12px;
         }
 
         .list-content, .list-content-tile {
@@ -43,8 +46,15 @@
             position: relative;
             padding-top: 4px;
             padding-bottom: 4px;
-            .list-text {
-                font-size: 14px;
+            .list-text, .list-text-normal, .list-text-withinfo{
+                font-size: 13px;
+                padding-top: 1px;
+            }
+            .list-text-normal {
+                width: calc(100% - 36px);
+            }
+            .list-text-withinfo {
+                width: calc(100% - 130px);
             }
             .list-boundary-line {
                 position: absolute;
@@ -69,14 +79,39 @@
                 right: 0;
                 top: 0;
                 .list-content-info {
+                    float: left;
                     transform: translate(75px);
-                    font-size: 14px;
-                    padding: 10px;
+                    font-size: 13px;
+                    padding: 1px;
                     padding-right: 50px;
+                    padding-top: 2px;
                     // padding-left: 20px;
-                    color: $three;
+                    color: $font-blur;
                     // border-radius: 20px 0 0 20px;
                     // background-color: $zero-one;
+                }
+                .list-button {
+                    // position: absolute;
+                    // right: 0;
+                    // top: 0;
+                    transform: translate(24px, 1px);
+                    width: 50px;
+                    border-radius: 4px;
+                    // border: 0px;
+                    // height: 30px;
+                    font-size: 16px;
+                    // padding-top: 8px;
+                    // padding-bottom: 7px;
+                    outline: none;
+                    background-color: $one;
+                    color: $three;
+                    padding-top: 0px;
+                    padding-bottom: 0px;
+                    transition: all .2s ease;
+                }
+                .multiple-button{
+                    float: left;
+                    background-color: transparent !important;
                 }
                 .list-button-tablecell {
                     display: table-cell;
@@ -84,28 +119,6 @@
                     vertical-align: middle;
                     .list-button-relative {
                         position: relative;
-                        .list-button {
-                            // position: absolute;
-                            // right: 0;
-                            // top: 0;
-                            transform: translate(24px, 1px);
-                            width: 50px;
-                            border-radius: 4px;
-                            // border: 0px;
-                            // height: 30px;
-                            font-size: 16px;
-                            // padding-top: 8px;
-                            // padding-bottom: 7px;
-                            outline: none;
-                            background-color: $one;
-                            color: $three;
-                            padding-top: 0px;
-                            padding-bottom: 0px;
-                            transition: all .2s ease;
-                        }
-                        .multiple-button{
-                            background-color: transparent !important;
-                        }
                         .copy-sign-on, .copy-sign-off {
                             position: absolute;
                             background-color: $four;
@@ -153,9 +166,9 @@
         .list-content-tile {
             width: calc(100% + 30px);
             transform: translate(-15px);
-            padding: 10px 12px;
+            padding: 8px 15px;
             // margin-bottom: 2px;
-            border-top: 1px solid $two-line;
+            // border-top: 1px solid $two-line;
             // background-color: $zero-one;
             .list-button-base {
                 transform: translate(-25px);
@@ -163,8 +176,14 @@
             
         }
         .list-content-tile:last-child {
-            border-bottom: 1px solid $two-line;
+            // border-bottom: 1px solid $two-line;
             // margin-bottom: 0px;
+            // padding-bottom: 6px;
+            margin-bottom: -4px;
+        }
+        .list-content-tile:first-child {
+            // padding-top: 2px;
+            margin-top: -4px;
         }
     }
 }

@@ -36,15 +36,15 @@ const MultipleContent = ({onCopy, index, e}) => (
         {/* TEXT Content */}
         {e.contents.map((content, i) => (
             <div className="list-content-tile" key={i}>
-                <div className="list-text" >
+                <div className={content.withInfo? "list-text-withinfo" : "list-text-normal"} >
                     {Str.jsxNewLine(content.text)}
                 </div>
                 
                 {/* COPY BUTTON */}
                 <div className="list-button-base">
-                    {content.withInfo? <div className="list-content-info">{content.info}</div>: null}
                     <div className="list-button-tablecell">
                         <div className="list-button-relative">
+                            {content.withInfo? <span className="list-content-info">\ {content.info}</span>: null}
                             <button className="list-button multiple-button" onClick={e => e.stopPropagation()}>
                                 <CopyToClipboard text={!content.text===""?content.text: LOCAL.onTextEmpty} onCopy={() => onCopy(index, i)}>
                                     <FontAwesomeIcon icon="copy" />
@@ -74,7 +74,7 @@ const List = ({data, onEdit, onCopy}) => {
                         return (
                             <div className="list-tile" key={e.id} onClick={() => onEdit(e)}>
                                 {/* TITLE */}
-                                {e.title?<div className="list-title" >{e.title}</div>: null}
+                                {e.title?<div className={e.listContents? "list-title-multiple" : "list-title"} >{e.title}</div>: null}
 
                                 {!e.listContents?
                                     <SingularContent onCopy={onCopy} index={i} e={e} />:
