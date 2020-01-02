@@ -22,12 +22,17 @@
             margin-top: 9px;
             margin-left: 24px;
         }
-        .multipletext-text {
+        .multipletext-text, .multipletext-text-onfocus {
             padding-left: 12px;
             color: $four;
             margin-top: 9px;
             font-size: 14px;
             width: calc(100% - 134px);
+            transition: all .1s ease;
+        }
+        .multipletext-text {
+            transition: all .3s ease;
+            width: calc(100% - 58px);
         }
         .multipletext-addinfo-off, .multipletext-addinfo-on {
             position: absolute;

@@ -49,7 +49,7 @@ const Multiple = ({form, onChange, infoSwitch, closeList, showAdd, onAddList, on
                     {/* CONTENT INPUT */}
                     <input
                         autoFocus
-                        className="multipletext-text"
+                        className={content.focus? "multipletext-text-onfocus" : "multipletext-text"}
                         name={i + "-text"}
                         value={content.text}
                         onChange={onChange}
