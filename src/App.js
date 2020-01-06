@@ -19,6 +19,7 @@ function App() {
   const refEdit = useRef(null)
 
   useEffect(() => {
+    console.log(window.navigator.userAgent) //Experiment for another project
     try {
       localforage.getItem(LOCAL.tableName).then( res => {
         if(res) {

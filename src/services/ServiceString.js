@@ -27,18 +27,18 @@ const _hashtagConverter = line => {
 
 const _isNotString = str => ((str? false : str === "" ? false : true) || str.constructor !== String)
 
-const _errorBadArgiment = () => { throw new Error("Bad Argument. The argument is not string or empty.") }
+const _errorBadArgument = () => { throw new Error("Bad Argument. The argument is not string or empty.") }
 
 export default {
     toTitleCase: str => {
-        if( _isNotString(str) ) _errorBadArgiment()
+        if( _isNotString(str) ) _errorBadArgument()
         return str.replace(/\w\S*/g, txt => (
             txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
         ));
     },
     frontZero: str => ('0' + str).slice(-2),
     toJsx: str => {
-        if( _isNotString(str) ) _errorBadArgiment()
+        if( _isNotString(str) ) _errorBadArgument()
         if(str === "") return <br />
         let temp = str.split('\n').map( (line, i) => (<React.Fragment key={i} >{_hashtagConverter(line)} <br /></React.Fragment>))
         return (temp)
