@@ -61,6 +61,10 @@ const MultipleContent = ({onCopy, index, e}) => (
 
 const List = ({data, onEdit, onCopy}) => {
 
+    React.useEffect(() => {
+        console.log(data)
+    }, [data])
+
     return (
         <div className="list-wrapper">
             {(data.filter(e => e.deleted === false).length) === 0 ?

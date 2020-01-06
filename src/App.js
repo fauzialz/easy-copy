@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useRef} from 'react';
+import React, {useEffect, useState, useRef, useContext} from 'react';
 import './App.scss';
 import { Helmet } from 'react-helmet'
 import localforage from 'localforage'
@@ -7,19 +7,24 @@ import { Obj, Form } from './services'
 import Modal from './components/modal';
 import Headbar from './components/headbar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { ModelContent, ModelForm } from './model';
+import { ModelContent/* , ModelForm */ } from './model';
 import List from './components/list';
+import { formContext, setForm, clearForm, setFormNewId } from './store';
 
 function App() {
+  // const formStore = useContext(formContext)
+  const { form, dispatch } = useContext(formContext)
   const [data, setData] = useState([])
   const [openAdd, setOpenAdd] = useState(false)
   const [openEdit, setOpenEdit] = useState(false)
-  const [form, setForm] = useState(new ModelForm())
+  // const [form, setForm] = useState(new ModelForm())
   const refAdd = useRef(null)
   const refEdit = useRef(null)
 
   useEffect(() => {
     console.log(window.navigator.userAgent) //Experiment for another project
+    // console.log(formStore) //Experiment for another project
+    // console.log(form) //Experiment for another project
     try {
       localforage.getItem(LOCAL.tableName).then( res => {
         if(res) {
@@ -36,24 +41,29 @@ function App() {
     setTimeout(() => {
       refAdd.current.focus()
     }, 100);
-    let temp = form
-    if(data.length === 0) {
-      temp.id = LOCAL.initPackId
-      // temp.contents[0].id = `${LOCAL.initPackId}-0001`
-    }else{
-      let id = data[data.length - 1].id
-      let counter = `${+id.slice(-7) + 1}`
-      id = id.slice(0,id.length - counter.length) + counter
-      temp.id = id
-      // temp.contents[0].id = `${id}-0001`
-    }
-    setForm(Obj.deepCopy(temp))
+    // let temp = form
+    // if(data.length === 0) {
+    //   temp.id = LOCAL.initPackId
+    //   // temp.contents[0].id = `${LOCAL.initPackId}-0001`
+    // }else{
+    //   let id = data[data.length - 1].id
+    //   let counter = `${+id.slice(-7) + 1}`
+    //   id = id.slice(0,id.length - counter.length) + counter
+    //   temp.id = id
+    //   // temp.contents[0].id = `${id}-0001`
+    // }
+    // setForm(Obj.deepCopy(temp))
+    // dispatch(setForm(temp))
+    dispatch(setFormNewId(data))
+    // console.log(formStore)
   }
 
   const onChangeTitle = e => {
     let temp = form
+    // console.log(formStore)
     temp.title = e.target.value
-    setForm(Obj.deepCopy(temp))
+    dispatch(setForm(temp)) // next we can move this to child
+    // setForm(Obj.deepCopy(temp))
   }
 
   const onChangeText = e => {
@@ -64,14 +74,16 @@ function App() {
         temp.contents[node[0]][node[1]] = e.target.value
       }
     }else temp.contents[node[0]][node[1]] = e.target.value
-    setForm(Obj.deepCopy(temp))
+    // setForm(Obj.deepCopy(temp))
+    dispatch(setForm(temp))
   }
 
   const onClose = () => {
     setOpenAdd(false)
     setOpenEdit(false)
     setTimeout(() => {
-      setForm(new ModelForm())
+      dispatch(clearForm())
+      // setForm(new ModelForm())
     }, 200);
   }
 
