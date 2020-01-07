@@ -32,7 +32,7 @@ const FormProvider = ({ children }) => {
                 return initialForm
             }
             default: {
-                throw new Error();
+                throw new Error()
             }
         }
     }, initialForm)

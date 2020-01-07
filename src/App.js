@@ -12,7 +12,6 @@ import List from './components/list';
 import { formContext, setForm, clearForm, setFormNewId } from './store';
 
 function App() {
-  // const formStore = useContext(formContext)
   const { form, dispatch } = useContext(formContext)
   const [data, setData] = useState([])
   const [openAdd, setOpenAdd] = useState(false)
@@ -23,59 +22,31 @@ function App() {
 
   useEffect(() => {
     console.log(window.navigator.userAgent) //Experiment for another project
-    // console.log(formStore) //Experiment for another project
-    // console.log(form) //Experiment for another project
-    try {
-      localforage.getItem(LOCAL.tableName).then( res => {
-        if(res) {
-          setData(res)
-        }else setData([])
-      })
-    } catch (err) {
-     console.log(err)
-    }
+    localforage.getItem(LOCAL.tableName).then( res => {
+      if(res) {
+        setData(res)
+      }else setData([])
+    })
+    .catch( err => console.log(err) )
   }, [])
 
-  const modalOpen = () => {
+  /* Modified this function to be used on further changes */
+  const modalOpen = (item = {})  => {
     setOpenAdd(true)
-    setTimeout(() => {
-      refAdd.current.focus()
-    }, 100);
-    // let temp = form
-    // if(data.length === 0) {
-    //   temp.id = LOCAL.initPackId
-    //   // temp.contents[0].id = `${LOCAL.initPackId}-0001`
-    // }else{
-    //   let id = data[data.length - 1].id
-    //   let counter = `${+id.slice(-7) + 1}`
-    //   id = id.slice(0,id.length - counter.length) + counter
-    //   temp.id = id
-    //   // temp.contents[0].id = `${id}-0001`
-    // }
-    // setForm(Obj.deepCopy(temp))
-    // dispatch(setForm(temp))
-    dispatch(setFormNewId(data))
-    // console.log(formStore)
+    if(Obj.isEmpty(item)) {
+      debugger
+      setTimeout(() => {
+        refAdd.current.focus()
+      }, 100);
+      dispatch(setFormNewId(data))
+    }else{
+      dispatch(setForm(item))
+    }
   }
-
-  const onChangeTitle = e => {
-    let temp = form
-    // console.log(formStore)
-    temp.title = e.target.value
-    dispatch(setForm(temp)) // next we can move this to child
-    // setForm(Obj.deepCopy(temp))
-  }
-
-  const onChangeText = e => {
-    let temp = form
-    let node = e.target.name.split('-')
-    if(node[1] === 'info') {
-      if(e.target.value.length <= LOCAL.infoLength) {
-        temp.contents[node[0]][node[1]] = e.target.value
-      }
-    }else temp.contents[node[0]][node[1]] = e.target.value
-    // setForm(Obj.deepCopy(temp))
-    dispatch(setForm(temp))
+  
+  const onEdit = item => {
+    dispatch(setForm(item))
+    setOpenEdit(true)
   }
 
   const onClose = () => {
@@ -83,16 +54,16 @@ function App() {
     setOpenEdit(false)
     setTimeout(() => {
       dispatch(clearForm())
-      // setForm(new ModelForm())
     }, 200);
   }
 
   /* Change pinned value on edit direcly change DB. */
-  const onPinEdit = () => {
+  const onPinEdit = () => { //MOVE TO CHILD AFTER DATA BEEN MIGRATED TO CONTEXT!!!!
     let dataTemp = data
     let formTemp = form
     formTemp.pinned = !form.pinned
-    setForm(Obj.deepCopy(formTemp))
+    dispatch(setForm(formTemp))
+    // setForm(Obj.deepCopy(formTemp))
     for(let i in dataTemp) {
       if(dataTemp[i].id === form.id) {
         dataTemp[i].pinned = formTemp.pinned
@@ -128,10 +99,6 @@ function App() {
     }, 1300);
   }
 
-  const onEdit = item => {
-    setForm(Obj.deepCopy(item))
-    setOpenEdit(true)
-  }
 
   const onEditSubmit = () => {
     let temp = data
@@ -154,25 +121,29 @@ function App() {
   const btnOperations = property => {
     let temp = form
     temp[property] = !form[property]
-    setForm(Obj.deepCopy(temp))
+    dispatch(setForm(temp))
+    // setForm(Obj.deepCopy(temp))
   }
 
   const addList = () => {
     let temp = form
     temp.contents.push(new ModelContent())
-    setForm(Obj.deepCopy(temp))
+    dispatch(setForm(temp))
+    // setForm(Obj.deepCopy(temp))
   }
 
   const closeList = i => {
     let temp = form
     temp.contents.splice(i, 1)
-    setForm(Obj.deepCopy(temp))
+    dispatch(setForm(temp))
+    // setForm(Obj.deepCopy(temp))
   }
 
   const infoSwitch = i => {
     let temp = form
     temp.contents[i].withInfo = !temp.contents[i].withInfo
-    setForm(Obj.deepCopy(temp))
+    dispatch(setForm(temp))
+    // setForm(Obj.deepCopy(temp))
   }
   
   const singularMultipleSwitch = () => {
@@ -180,7 +151,8 @@ function App() {
     if(temp.contents.length === 0) {
       temp.contents.push(new ModelContent())
     }
-    setForm(Obj.deepCopy(temp))
+    dispatch(setForm(temp))
+    // setForm(Obj.deepCopy(temp))
     btnOperations('listContents')
   }
 
@@ -198,7 +170,8 @@ function App() {
           }
         }
       }
-      setForm(Obj.deepCopy(temp))
+      dispatch(setForm(temp))
+      // setForm(Obj.deepCopy(temp))
     }
     
   const onInfoBlur = () => {
@@ -206,7 +179,8 @@ function App() {
     for(let i in temp.contents) {
       temp.contents[i].infoFocus = false
     }
-    setForm(Obj.deepCopy(temp))
+    dispatch(setForm(temp))
+    // setForm(Obj.deepCopy(temp))
   }
 
   return (
@@ -221,17 +195,15 @@ function App() {
         <Headbar />
         <List data={data} onEdit={onEdit} onCopy={onCopy} />
 
-        <button className="add-button" onClick={modalOpen}>
+        <button className="add-button" onClick={() => modalOpen()}>
           <FontAwesomeIcon icon="plus" />
         </button>
 
-        <Modal form={form} 
+        <Modal
           openModal={openAdd}
           onClose={onClose} 
           onPin = {() => btnOperations('pinned')}
-          onSubmit={onSubmit} 
-          onChangeTitle={onChangeTitle}
-          onChangeText={onChangeText}
+          onSubmit={onSubmit}
           ref={refAdd} btnOperations={btnOperations} 
           addList={addList} closeList={closeList} 
           singularMultipleSwitch={singularMultipleSwitch}
@@ -239,12 +211,10 @@ function App() {
           onFocus={onMultipleFocus}
           onInfoBlur={onInfoBlur}
         />
-        <Modal form={form} 
+        <Modal 
           openModal={openEdit} 
           onClose={onClose} 
           onSubmit={onEditSubmit}
-          onChangeTitle={onChangeTitle} 
-          onChangeText={onChangeText}
           onPin = {onPinEdit}
           ref={refEdit} btnOperations={btnOperations}
           addList={addList} closeList={closeList} 

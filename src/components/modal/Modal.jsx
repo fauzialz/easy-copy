@@ -1,16 +1,18 @@
-import React, {forwardRef, useState} from 'react'
+import React, {forwardRef, useState, useContext} from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Singular from './mode/Singular'
 import Multiple from './mode/Multiple'
 import './Modal.scss'
+import { formContext, setForm } from '../../store'
+import LOCAL from '../../config'
 
 const Modal = forwardRef(({
     openModal, onSubmit, onClose,
-    form, onChangeTitle, onChangeText,
     btnOperations, addList, closeList,
     singularMultipleSwitch, onPin, infoSwitch,
     onFocus, onInfoBlur }, ref ) => {
         
+    const {form, dispatch} = useContext(formContext)
     const [openOptions, setOpenOptions] = useState(false)
     const [showAdd, setShowAdd] = useState(true)
 
@@ -24,6 +26,25 @@ const Modal = forwardRef(({
                 fun()
             }, 200);
         }else fun()
+    }
+
+    /* Change title handler */
+    const onChangeTitle = e => {
+        let temp = form
+        temp.title = e.target.value
+        dispatch(setForm(temp))
+    }
+
+    /* Change content text and info handler */
+    const onChangeText = e => {
+        let temp = form
+        let node = e.target.name.split('-')
+        if(node[1] === 'info') {
+            if(e.target.value.length <= LOCAL.infoLength) {
+              temp.contents[node[0]][node[1]] = e.target.value
+            }
+        }else temp.contents[node[0]][node[1]] = e.target.value
+        dispatch(setForm(temp))
     }
 
     /* On delete button hit*/
