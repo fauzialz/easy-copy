@@ -1,7 +1,7 @@
 import React from 'react'
 import {formContext, FormProvider} from './context/formContext'
-import { setForm, clearForm, setFormNewId, setNoteList } from './actions'
-import { NoteListProvider } from './context/noteListContext'
+import { setForm, clearForm, setFormNewId } from './actions'
+import { NoteListProvider, noteListContext } from './context/noteListContext'
 
 const GlobalProvider = ({ children }) => (
     <NoteListProvider>
@@ -10,11 +10,12 @@ const GlobalProvider = ({ children }) => (
         </FormProvider>
     </NoteListProvider>
 )
-
 export {
     GlobalProvider,
+    
+    noteListContext,
+
     formContext,
-    setNoteList,
     setForm,
     setFormNewId,
     clearForm

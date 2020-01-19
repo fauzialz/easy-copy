@@ -9,14 +9,13 @@ import Headbar from './components/headbar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ModelContent/* , ModelForm */ } from './model';
 import List from './components/list';
-import { formContext, setForm, clearForm, setFormNewId } from './store';
+import { formContext, setForm, clearForm, setFormNewId, noteListContext } from './store';
 
 function App() {
   const { form, dispatch } = useContext(formContext)
-  const [data, setData] = useState([])
+  const { noteList, setNoteList } = useContext(noteListContext)
   const [openAdd, setOpenAdd] = useState(false)
   const [openEdit, setOpenEdit] = useState(false)
-  // const [form, setForm] = useState(new ModelForm())
   const refAdd = useRef(null)
   const refEdit = useRef(null)
 
@@ -24,10 +23,11 @@ function App() {
     console.log(window.navigator.userAgent) //Experiment for another project
     localforage.getItem(LOCAL.tableName).then( res => {
       if(res) {
-        setData(res)
-      }else setData([])
+        setNoteList(res)
+      }else setNoteList([])
     })
     .catch( err => console.log(err) )
+    // eslint-disable-next-line
   }, [])
 
   /* Modified this function to be used on further changes */
@@ -38,7 +38,7 @@ function App() {
       setTimeout(() => {
         refAdd.current.focus()
       }, 100);
-      dispatch(setFormNewId(data))
+      dispatch(setFormNewId(noteList))
     }else{
       dispatch(setForm(item))
     }
@@ -59,11 +59,10 @@ function App() {
 
   /* Change pinned value on edit direcly change DB. */
   const onPinEdit = () => { //MOVE TO CHILD AFTER DATA BEEN MIGRATED TO CONTEXT!!!!
-    let dataTemp = data
+    let dataTemp = noteList
     let formTemp = form
     formTemp.pinned = !form.pinned
     dispatch(setForm(formTemp))
-    // setForm(Obj.deepCopy(formTemp))
     for(let i in dataTemp) {
       if(dataTemp[i].id === form.id) {
         dataTemp[i].pinned = formTemp.pinned
@@ -71,12 +70,12 @@ function App() {
     }
     localforage.setItem(LOCAL.tableName, dataTemp).then( res => {
       console.log(res)
-      setData(res)
+      setNoteList(res)
     })
   }
 
   const onSubmit = () => {
-    let temp = data
+    let temp = noteList
     if(form.contents[0].text === "") {
       onClose()
       return
@@ -84,24 +83,24 @@ function App() {
     temp.push(Form.formFilter(form))
     localforage.setItem(LOCAL.tableName, temp).then( res => {
       console.log(res)
-      setData(res)
+      setNoteList(res)
       onClose()
     })
   }
 
   const onCopy = (listIndex, contentIndex) => {
-    let temp = data
+    let temp = noteList
     temp[listIndex].contents[contentIndex].copied = true
-    setData(Obj.deepCopy(temp))
+    setNoteList(Obj.deepCopy(temp))
     setTimeout(() => {
       temp[listIndex].contents[contentIndex].copied = false
-      setData(Obj.deepCopy(temp))
+      setNoteList(Obj.deepCopy(temp))
     }, 1300);
   }
 
 
   const onEditSubmit = () => {
-    let temp = data
+    let temp = noteList
     if(form.contents[0].text === "") {
       onClose()
       return
@@ -113,7 +112,7 @@ function App() {
     }
     localforage.setItem(LOCAL.tableName, temp).then( res => {
       console.log(res)
-      setData(res)
+      setNoteList(res)
       onClose()
     })
   }
@@ -122,28 +121,24 @@ function App() {
     let temp = form
     temp[property] = !form[property]
     dispatch(setForm(temp))
-    // setForm(Obj.deepCopy(temp))
   }
 
   const addList = () => {
     let temp = form
     temp.contents.push(new ModelContent())
     dispatch(setForm(temp))
-    // setForm(Obj.deepCopy(temp))
   }
 
   const closeList = i => {
     let temp = form
     temp.contents.splice(i, 1)
     dispatch(setForm(temp))
-    // setForm(Obj.deepCopy(temp))
   }
 
   const infoSwitch = i => {
     let temp = form
     temp.contents[i].withInfo = !temp.contents[i].withInfo
     dispatch(setForm(temp))
-    // setForm(Obj.deepCopy(temp))
   }
   
   const singularMultipleSwitch = () => {
@@ -152,7 +147,6 @@ function App() {
       temp.contents.push(new ModelContent())
     }
     dispatch(setForm(temp))
-    // setForm(Obj.deepCopy(temp))
     btnOperations('listContents')
   }
 
@@ -171,7 +165,6 @@ function App() {
         }
       }
       dispatch(setForm(temp))
-      // setForm(Obj.deepCopy(temp))
     }
     
   const onInfoBlur = () => {
@@ -180,7 +173,6 @@ function App() {
       temp.contents[i].infoFocus = false
     }
     dispatch(setForm(temp))
-    // setForm(Obj.deepCopy(temp))
   }
 
   return (
@@ -193,7 +185,7 @@ function App() {
 
       <div className="app-frame">
         <Headbar />
-        <List data={data} onEdit={onEdit} onCopy={onCopy} />
+        <List data={noteList} onEdit={onEdit} onCopy={onCopy} />
 
         <button className="add-button" onClick={() => modalOpen()}>
           <FontAwesomeIcon icon="plus" />

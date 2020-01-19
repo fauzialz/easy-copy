@@ -1,25 +1,15 @@
-import React, { createContext, useReducer} from 'react'
-import { ModelContent } from '../../model'
-import { SET_NOTE_LIST } from '../actionTypes'
+import React, { createContext, useState} from 'react'
+import { Obj } from '../../services'
 
-const initialNoteList = new ModelContent()
-const noteListContext = createContext(initialNoteList)
+const noteListContext = createContext([])
 const { Provider } = noteListContext
 
 const NoteListProvider = ({ children }) => {
-    const [noteList, dispatch] = useReducer((state, action) => {
-        switch(action.type) {
-            case SET_NOTE_LIST: {
-                const { newNoteList } = action.payload
-                return newNoteList
-            }
-            default: {
-                throw new Error()
-            }
-        }
-    }, initialNoteList)
+    const [note, setNote] = useState([])
 
-    return <Provider value={{ noteList, dispatch}} >{ children }</Provider>
+    const setNoteList = (payload) => setNote(Obj.deepCopy(payload))
+
+    return <Provider value={{ noteList: note, setNoteList}} >{ children }</Provider>
 }
 
 export {noteListContext, NoteListProvider}
