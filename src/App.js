@@ -1,9 +1,9 @@
-import React, {useEffect, useState, useRef, useContext} from 'react';
+import React, { useState, useRef, useContext} from 'react';
 import './App.scss';
 import { Helmet } from 'react-helmet'
 import localforage from 'localforage'
 import LOCAL from './config';
-import { Obj, Form } from './services'
+import { Obj } from './services'
 import Modal from './components/modal';
 import Headbar from './components/headbar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -18,17 +18,6 @@ function App() {
   const [openEdit, setOpenEdit] = useState(false)
   const refAdd = useRef(null)
   const refEdit = useRef(null)
-
-  useEffect(() => {
-    console.log(window.navigator.userAgent) //Experiment for another project
-    localforage.getItem(LOCAL.tableName).then( res => {
-      if(res) {
-        setNoteList(res)
-      }else setNoteList([])
-    })
-    .catch( err => console.log(err) )
-    // eslint-disable-next-line
-  }, [])
 
   /* Modified this function to be used on further changes */
   const modalOpen = (item = {})  => {
@@ -74,20 +63,6 @@ function App() {
     })
   }
 
-  const onSubmit = () => {
-    let temp = noteList
-    if(form.contents[0].text === "") {
-      onClose()
-      return
-    }
-    temp.push(Form.formFilter(form))
-    localforage.setItem(LOCAL.tableName, temp).then( res => {
-      console.log(res)
-      setNoteList(res)
-      onClose()
-    })
-  }
-
   const onCopy = (listIndex, contentIndex) => {
     let temp = noteList
     temp[listIndex].contents[contentIndex].copied = true
@@ -96,25 +71,6 @@ function App() {
       temp[listIndex].contents[contentIndex].copied = false
       setNoteList(Obj.deepCopy(temp))
     }, 1300);
-  }
-
-
-  const onEditSubmit = () => {
-    let temp = noteList
-    if(form.contents[0].text === "") {
-      onClose()
-      return
-    }
-    for(let i in temp) {
-      if(temp[i].id === form.id) {
-        temp[i] = Form.formFilter(form)
-      }
-    }
-    localforage.setItem(LOCAL.tableName, temp).then( res => {
-      console.log(res)
-      setNoteList(res)
-      onClose()
-    })
   }
 
   const btnOperations = property => {
@@ -185,7 +141,7 @@ function App() {
 
       <div className="app-frame">
         <Headbar />
-        <List data={noteList} onEdit={onEdit} onCopy={onCopy} />
+        <List onEdit={onEdit} onCopy={onCopy} />
 
         <button className="add-button" onClick={() => modalOpen()}>
           <FontAwesomeIcon icon="plus" />
@@ -195,7 +151,6 @@ function App() {
           openModal={openAdd}
           onClose={onClose} 
           onPin = {() => btnOperations('pinned')}
-          onSubmit={onSubmit}
           ref={refAdd} btnOperations={btnOperations} 
           addList={addList} closeList={closeList} 
           singularMultipleSwitch={singularMultipleSwitch}
@@ -205,8 +160,7 @@ function App() {
         />
         <Modal 
           openModal={openEdit} 
-          onClose={onClose} 
-          onSubmit={onEditSubmit}
+          onClose={onClose}
           onPin = {onPinEdit}
           ref={refEdit} btnOperations={btnOperations}
           addList={addList} closeList={closeList} 

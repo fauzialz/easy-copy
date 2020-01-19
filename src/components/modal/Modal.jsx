@@ -1,17 +1,20 @@
 import React, {forwardRef, useState, useContext} from 'react'
+import localforage from 'localforage'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Singular from './mode/Singular'
 import Multiple from './mode/Multiple'
 import './Modal.scss'
-import { formContext, setForm } from '../../store'
+import { formContext, setForm, noteListContext } from '../../store'
 import LOCAL from '../../config'
+import { Form, Obj } from '../../services'
 
 const Modal = forwardRef(({
-    openModal, onSubmit, onClose,
+    openModal, onClose,
     btnOperations, addList, closeList,
     singularMultipleSwitch, onPin, infoSwitch,
     onFocus, onInfoBlur }, ref ) => {
-        
+    
+    const { noteList, setNoteList } = useContext(noteListContext)
     const {form, dispatch} = useContext(formContext)
     const [openOptions, setOpenOptions] = useState(false)
     const [showAdd, setShowAdd] = useState(true)
@@ -69,6 +72,38 @@ const Modal = forwardRef(({
             setOpenOptions(false)
         }, 200);
     }
+
+    /* on submit basic work flow */
+    const onSubmitFrame = manipulateNoteList => {
+        if(form.contents[0].text === '') {
+            onClose()
+            return
+        }
+        let temp = manipulateNoteList(Obj.deepCopy(noteList))
+        localforage.setItem(LOCAL.tableName, temp).then ( res => {
+            console.log(res)
+            setNoteList(res)
+            onClose()
+        })
+    }
+
+    /* function callback for post new data to IndexedDB */
+    const postForm = temp => { 
+        temp.push(Form.formFilter(form))
+        return temp
+    }
+    /* function callback for put/edit data on IndexedDB */
+    const putForm = temp => {
+        for(let i in temp) {
+            if(temp[i].id === form.id) {
+                temp[i] = Form.formFilter(form)
+            }
+        }
+        return temp
+    }
+
+    /* on form submited */
+    const onSubmit = () => onSubmitFrame( form.newEntry? postForm : putForm )
 
     return (
         <div className={openModal? "modal-open" : "modal-close"}>

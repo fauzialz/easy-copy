@@ -5,7 +5,10 @@ const noteListContext = createContext([])
 const { Provider } = noteListContext
 
 const NoteListProvider = ({ children }) => {
-    const [note, setNote] = useState([])
+    /*  I decide to not using useReducer just because noteList suppose to have a simple purpose:
+        store temporary data from IndexedDB when the app is runing and update it periodically
+        whenever IndexedDB is update. UseState is the best answer for this simple data manipulations. */
+    const [note, setNote] = useState([]) 
 
     const setNoteList = (payload) => setNote(Obj.deepCopy(payload))
 

@@ -1,10 +1,12 @@
-import React, {Fragment} from 'react'
+import React, {Fragment, useContext} from 'react'
+import localforage from 'localforage'
 import LOCAL from '../../config'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {CopyToClipboard} from 'react-copy-to-clipboard'
 import { Str } from '../../services'
 import Emoji from '../emoji'
 import './List.scss'
+import { noteListContext } from '../../store'
 
 const SingularContent = ({onCopy, index, e}) => (
     <div className="list-content"> 
@@ -59,21 +61,28 @@ const MultipleContent = ({onCopy, index, e}) => (
     </div>
 )
 
-const List = ({data, onEdit, onCopy}) => {
+const List = ({ onEdit, onCopy}) => {
+    const { noteList, setNoteList } = useContext(noteListContext)
 
     React.useEffect(() => {
-        console.log(data)
-    }, [data])
+        console.log(window.navigator.userAgent) //Experiment for another project
+        localforage.getItem(LOCAL.tableName).then( res => {
+            if(res) {
+                setNoteList(res)
+            }
+        }).catch( err => console.error(err))
+        // eslint-disable-next-line
+    }, [])
 
     return (
         <div className="list-wrapper">
-            {(data.filter(e => e.deleted === false).length) === 0 ?
+            {(noteList.filter(e => e.deleted === false).length) === 0 ?
                 /* WHEN NO LIST FOUND */
                 <div className="on-list-empty">{LOCAL.onListEmpty}<br/><Emoji /></div> :
 
                 /* WHEN LIST EXIST */
                 <Fragment>
-                    {data.map((e, i) => {
+                    {noteList.map((e, i) => {
                         if(e.deleted) return null
                         return (
                             <div className="list-tile" key={e.id} onClick={() => onEdit(e)}>
