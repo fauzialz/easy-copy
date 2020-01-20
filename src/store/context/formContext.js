@@ -1,10 +1,10 @@
 import React, {createContext, useReducer} from 'react'
-import { ModelForm } from '../../model'
+import { makeForm } from '../../model'
 import { SET_FORM, CLEAR_FORM, SET_FORM_NEW_ID } from '../actionTypes'
 import LOCAL from '../../config'
 import { Obj } from '../../services'
 
-const initialForm = new ModelForm()
+const initialForm = makeForm()
 const formContext = createContext(initialForm)
 const { Provider } = formContext
 

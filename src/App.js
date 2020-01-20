@@ -7,7 +7,7 @@ import { Obj } from './services'
 import Modal from './components/modal';
 import Headbar from './components/headbar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { ModelContent/* , ModelForm */ } from './model';
+import { makeContent } from './model';
 import List from './components/list';
 import { formContext, setForm, clearForm, setFormNewId, noteListContext } from './store';
 
@@ -81,7 +81,7 @@ function App() {
 
   const addList = () => {
     let temp = form
-    temp.contents.push(new ModelContent())
+    temp.contents.push(makeContent())
     dispatch(setForm(temp))
   }
 
@@ -100,7 +100,7 @@ function App() {
   const singularMultipleSwitch = () => {
     let temp = form
     if(temp.contents.length === 0) {
-      temp.contents.push(new ModelContent())
+      temp.contents.push(makeContent())
     }
     dispatch(setForm(temp))
     btnOperations('listContents')
