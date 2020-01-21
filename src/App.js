@@ -9,6 +9,7 @@ import Headbar from './components/headbar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ModelContent, ModelForm } from './model';
 import List from './components/list';
+import {DeviceUUID} from 'device-uuid'
 
 function App() {
   const [data, setData] = useState([])
@@ -19,6 +20,7 @@ function App() {
   const refEdit = useRef(null)
 
   useEffect(() => {
+    alert(new DeviceUUID().get())
     console.log(window.navigator.userAgent) //Experiment for another project
     try {
       localforage.getItem(LOCAL.tableName).then( res => {
