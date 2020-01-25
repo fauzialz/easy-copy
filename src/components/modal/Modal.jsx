@@ -11,7 +11,7 @@ import { Form, Obj } from '../../services'
 const Modal = forwardRef(({
     openModal, onClose,
     btnOperations, addList, closeList,
-    singularMultipleSwitch, onPin, infoSwitch,
+    singularMultipleSwitch, infoSwitch,
     onFocus, onInfoBlur }, ref ) => {
     
     const { noteList, setNoteList } = useContext(noteListContext)
@@ -48,6 +48,28 @@ const Modal = forwardRef(({
             }
         }else temp.contents[node[0]][node[1]] = e.target.value
         dispatch(setForm(temp))
+    }
+
+    /* On pinned button hit */
+    const onPin = () => {
+        if(form.newEntry) { // if new entry no need to direcly change DB
+            btnOperations('pinned')
+            return
+        }
+        /* Change pinned value on edit direcly change DB. */
+        let noteListTemp = Obj.deepCopy(noteList)
+        let formTemp = Obj.deepCopy(form)
+        formTemp.pinned = !formTemp.pinned
+        dispatch(setForm(formTemp))
+        for(let i in noteListTemp) {
+            if(noteListTemp[i].id === formTemp.id) {
+                noteListTemp[i].pinned = formTemp.pinned
+            }
+        }
+        localforage.setItem(LOCAL.tableName, noteListTemp).then( res => {
+            console.log(res)
+            setNoteList(res)
+        })
     }
 
     /* On delete button hit*/

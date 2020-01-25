@@ -1,8 +1,6 @@
 import React, { useState, useRef, useContext} from 'react';
 import './App.scss';
 import { Helmet } from 'react-helmet'
-import localforage from 'localforage'
-import LOCAL from './config';
 import { Obj } from './services'
 import Modal from './components/modal';
 import Headbar from './components/headbar';
@@ -14,16 +12,13 @@ import { formContext, setForm, clearForm, setFormNewId, noteListContext } from '
 function App() {
   const { form, dispatch } = useContext(formContext)
   const { noteList, setNoteList } = useContext(noteListContext)
-  const [openAdd, setOpenAdd] = useState(false)
-  const [openEdit, setOpenEdit] = useState(false)
+  const [openModal, setOpenModal] = useState(false)
   const refAdd = useRef(null)
-  const refEdit = useRef(null)
 
   /* Modified this function to be used on further changes */
-  const modalOpen = (item = {})  => {
-    setOpenAdd(true)
+  const openModalHandler = (item = {})  => {
+    setOpenModal(true)
     if(Obj.isEmpty(item)) {
-      debugger
       setTimeout(() => {
         refAdd.current.focus()
       }, 100);
@@ -32,35 +27,12 @@ function App() {
       dispatch(setForm(item))
     }
   }
-  
-  const onEdit = item => {
-    dispatch(setForm(item))
-    setOpenEdit(true)
-  }
 
   const onClose = () => {
-    setOpenAdd(false)
-    setOpenEdit(false)
+    setOpenModal(false)
     setTimeout(() => {
       dispatch(clearForm())
     }, 200);
-  }
-
-  /* Change pinned value on edit direcly change DB. */
-  const onPinEdit = () => { //MOVE TO CHILD AFTER DATA BEEN MIGRATED TO CONTEXT!!!!
-    let dataTemp = noteList
-    let formTemp = form
-    formTemp.pinned = !form.pinned
-    dispatch(setForm(formTemp))
-    for(let i in dataTemp) {
-      if(dataTemp[i].id === form.id) {
-        dataTemp[i].pinned = formTemp.pinned
-      }
-    }
-    localforage.setItem(LOCAL.tableName, dataTemp).then( res => {
-      console.log(res)
-      setNoteList(res)
-    })
   }
 
   const onCopy = (listIndex, contentIndex) => {
@@ -141,31 +113,19 @@ function App() {
 
       <div className="app-frame">
         <Headbar />
-        <List onEdit={onEdit} onCopy={onCopy} />
+        <List onEdit={openModalHandler} onCopy={onCopy} />
 
-        <button className="add-button" onClick={() => modalOpen()}>
+        <button className="add-button" onClick={() => openModalHandler()}>
           <FontAwesomeIcon icon="plus" />
         </button>
 
         <Modal
-          openModal={openAdd}
-          onClose={onClose} 
-          onPin = {() => btnOperations('pinned')}
+          openModal={openModal}
+          onClose={onClose}
           ref={refAdd} btnOperations={btnOperations} 
           addList={addList} closeList={closeList} 
           singularMultipleSwitch={singularMultipleSwitch}
           infoSwitch={infoSwitch}
-          onFocus={onMultipleFocus}
-          onInfoBlur={onInfoBlur}
-        />
-        <Modal 
-          openModal={openEdit} 
-          onClose={onClose}
-          onPin = {onPinEdit}
-          ref={refEdit} btnOperations={btnOperations}
-          addList={addList} closeList={closeList} 
-          singularMultipleSwitch={singularMultipleSwitch}
-          infoSwitch={infoSwitch}  
           onFocus={onMultipleFocus}
           onInfoBlur={onInfoBlur}
         />
