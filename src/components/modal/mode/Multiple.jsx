@@ -1,9 +1,14 @@
-import React, {Fragment, useState} from 'react'
+import React, {Fragment, useState, useContext} from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import LOCAL from '../../../config'
 import './Multiple.scss'
+import { formContext, setForm } from '../../../store';
+import { Obj } from '../../../services';
+import { makeContent } from '../../../model';
 
-const Multiple = ({form, onChange, infoSwitch, closeList, showAdd, onAddList, onFocus, onInfoBlur }) => {
+const Multiple = ({ onChange }) => {
+    const {form, dispatch} = useContext(formContext)
+    const [showAdd, setShowAdd] = useState(true)
     const [refs, setRefs] = useState({})
     /* TODO!!! create refs for main input text */
 
@@ -18,24 +23,66 @@ const Multiple = ({form, onChange, infoSwitch, closeList, showAdd, onAddList, on
             }
         }
     }
-    
-    /* Reset Refs when deleting a list */
-    const onDelete = i => {
-        setRefs({})
-        closeList(i)
-    }
 
-    /* Make info input auto focus when input botton hited */
-    const onInfoButton = i => {
+    /*  On list focus handler.
+        Show/hide add info button, delete list button */
+    const onListFocus = e => {
+        let temp = form
+        let node = e.target.name.split('-') // value of node = [ index, "text"/"info"]
+        for(let i in temp.contents) {
+            if(i !== node[0]) {
+                temp.contents[i].focus = false
+                temp.contents[i].infoFocus = false
+            }else{
+                temp.contents[i].focus = true 
+                if(node[1] === 'info'){ // info focus true if only input info on focus
+                    temp.contents[i].infoFocus = true
+                }
+            }
+        }
+        dispatch(setForm(temp))
+    }
+    
+    /* On input info blur handler */
+    const onInfoBlur = () => {
+        let temp = form
+        for(let i in temp.contents) {
+          temp.contents[i].infoFocus = false
+        }
+        dispatch(setForm(temp))
+    }
+    
+    /* Open/close access to content list with info */
+    const infoButtonHandler = i => {
         let input = refs[`info${i}`]
         if(!form.contents[i].withInfo) {
             setTimeout(() => {
-                input.current.focus()
+                input.current.focus() //Make info input auto focus when add info button hit
             }, 300);
         }
-        infoSwitch(i)
+        form.contents[i].withInfo = !form.contents[i].withInfo
+        dispatch(setForm(form))
     }
-
+    
+    /* Add new content on list mode handler */
+    const addListHandler = () => {
+        let formTemp = Obj.deepCopy(form)
+        formTemp.contents.push(makeContent())
+        dispatch(setForm(formTemp))
+        setShowAdd(false)
+        setTimeout(() => {      /* Delay add botton show after hit */
+            setShowAdd(true)
+        }, 2400);
+    }
+    
+    /* Delete content on list mode handler */
+    const deleteListHandler = i => {
+        setRefs({}) /* Reset Refs when deleting a list */
+        let formTemp = form
+        formTemp.contents.splice(i, 1)
+        dispatch(setForm(formTemp))
+    }
+    
     return (
         <div className="multipletext-slot">{
             form.contents.map( (content, i) => (
@@ -54,7 +101,7 @@ const Multiple = ({form, onChange, infoSwitch, closeList, showAdd, onAddList, on
                         value={content.text}
                         onChange={onChange}
                         autoComplete="off"
-                        onFocus={onFocus}
+                        onFocus={onListFocus}
                     />
 
                     {/* LIST BUTTON SEGMENT */}
@@ -64,14 +111,14 @@ const Multiple = ({form, onChange, infoSwitch, closeList, showAdd, onAddList, on
                             {/* ADD INFO BUTTON */}
                             <button
                                 className={content.withInfo? "multipletext-addinfo-on" : "multipletext-addinfo-off"}
-                                onClick={() => onInfoButton(i)}>
+                                onClick={() => infoButtonHandler(i)}>
                                 <FontAwesomeIcon icon="comment-dots" />
                             </button>
 
                             {/* CLOSE/DELETE CONTENT BUTTON */}
                             <button
                                 className="multipletext-close"
-                                onClick={() => onDelete(i)}>
+                                onClick={() => deleteListHandler(i)}>
                                 <FontAwesomeIcon icon="times" />
                             </button>
                         </Fragment>: null
@@ -92,7 +139,7 @@ const Multiple = ({form, onChange, infoSwitch, closeList, showAdd, onAddList, on
                                 name={i + "-info"}
                                 value={content.info}
                                 onChange={onChange}
-                                onFocus={onFocus}
+                                onFocus={onListFocus}
                                 onBlur={onInfoBlur}
                                 autoComplete="off"
                             />
@@ -112,7 +159,7 @@ const Multiple = ({form, onChange, infoSwitch, closeList, showAdd, onAddList, on
             {/* ADD CONTENT BUTTON */}
             {showAdd?
                 <button className="mutlipletext-add" 
-                    onClick={onAddList}>
+                    onClick={addListHandler}>
                     <FontAwesomeIcon icon="plus" />
                     <div>New Text</div>
                 </button> : null

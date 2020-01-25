@@ -5,17 +5,16 @@ import { Obj } from './services'
 import Modal from './components/modal';
 import Headbar from './components/headbar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { makeContent } from './model';
 import List from './components/list';
 import { formContext, setForm, clearForm, setFormNewId, noteListContext } from './store';
 
 function App() {
-  const { form, dispatch } = useContext(formContext)
+  const { dispatch } = useContext(formContext)
   const { noteList, setNoteList } = useContext(noteListContext)
   const [openModal, setOpenModal] = useState(false)
   const refAdd = useRef(null)
 
-  /* Modified this function to be used on further changes */
+  /* Open Modal handler */
   const openModalHandler = (item = {})  => {
     setOpenModal(true)
     if(Obj.isEmpty(item)) {
@@ -45,64 +44,6 @@ function App() {
     }, 1300);
   }
 
-  const btnOperations = property => {
-    let temp = form
-    temp[property] = !form[property]
-    dispatch(setForm(temp))
-  }
-
-  const addList = () => {
-    let temp = form
-    temp.contents.push(makeContent())
-    dispatch(setForm(temp))
-  }
-
-  const closeList = i => {
-    let temp = form
-    temp.contents.splice(i, 1)
-    dispatch(setForm(temp))
-  }
-
-  const infoSwitch = i => {
-    let temp = form
-    temp.contents[i].withInfo = !temp.contents[i].withInfo
-    dispatch(setForm(temp))
-  }
-  
-  const singularMultipleSwitch = () => {
-    let temp = form
-    if(temp.contents.length === 0) {
-      temp.contents.push(makeContent())
-    }
-    dispatch(setForm(temp))
-    btnOperations('listContents')
-  }
-
-  const onMultipleFocus = e => {
-    let temp = form
-    let node = e.target.name.split('-')
-    for(let i in temp.contents) {
-      if(i !== node[0]) {
-        temp.contents[i].focus = false
-        temp.contents[i].infoFocus = false
-        }else{
-          temp.contents[i].focus = true
-          if(node[1] === 'info'){
-            temp.contents[i].infoFocus = true
-          }
-        }
-      }
-      dispatch(setForm(temp))
-    }
-    
-  const onInfoBlur = () => {
-    let temp = form
-    for(let i in temp.contents) {
-      temp.contents[i].infoFocus = false
-    }
-    dispatch(setForm(temp))
-  }
-
   return (
     <div className="outer-wrapper">
       
@@ -122,12 +63,7 @@ function App() {
         <Modal
           openModal={openModal}
           onClose={onClose}
-          ref={refAdd} btnOperations={btnOperations} 
-          addList={addList} closeList={closeList} 
-          singularMultipleSwitch={singularMultipleSwitch}
-          infoSwitch={infoSwitch}
-          onFocus={onMultipleFocus}
-          onInfoBlur={onInfoBlur}
+          ref={refAdd}
         />
       </div>
     </div>

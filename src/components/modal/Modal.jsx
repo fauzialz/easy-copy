@@ -7,17 +7,13 @@ import './Modal.scss'
 import { formContext, setForm, noteListContext } from '../../store'
 import LOCAL from '../../config'
 import { Form, Obj } from '../../services'
+import { makeContent } from '../../model';
 
-const Modal = forwardRef(({
-    openModal, onClose,
-    btnOperations, addList, closeList,
-    singularMultipleSwitch, infoSwitch,
-    onFocus, onInfoBlur }, ref ) => {
+const Modal = forwardRef(({ openModal, onClose }, ref ) => {
     
     const { noteList, setNoteList } = useContext(noteListContext)
     const {form, dispatch} = useContext(formContext)
     const [openOptions, setOpenOptions] = useState(false)
-    const [showAdd, setShowAdd] = useState(true)
 
     /*  To make the user see that 
         options was closed first
@@ -33,7 +29,7 @@ const Modal = forwardRef(({
 
     /* Change title handler */
     const onChangeTitle = e => {
-        let temp = form
+        let temp = form 
         temp.title = e.target.value
         dispatch(setForm(temp))
     }
@@ -53,7 +49,8 @@ const Modal = forwardRef(({
     /* On pinned button hit */
     const onPin = () => {
         if(form.newEntry) { // if new entry no need to direcly change DB
-            btnOperations('pinned')
+            form.pinned = !form.pinned
+            dispatch(setForm(form))
             return
         }
         /* Change pinned value on edit direcly change DB. */
@@ -74,22 +71,23 @@ const Modal = forwardRef(({
 
     /* On delete button hit*/
     const onDelete = () => {
-        btnOperations('deleted')
+        form.deleted = true
+        dispatch(setForm(form))
         checkOptions(onSubmit)
-    }
-
-    /* Delay add botton show after hit */
-    const onAddList = () => {
-        addList()
-        setShowAdd(false)
-        setTimeout(() => {
-            setShowAdd(true)
-        }, 2400);
     }
 
     /* Swithcing mode singular/multiple input handler */
     const changeMode = () => {
-        singularMultipleSwitch()
+        let formTemp = Obj.deepCopy(form)
+
+        // incase user delete all the list content when on list mode
+        // and then change it to singular mode.
+        if(formTemp.contents.length === 0) {
+            formTemp.contents.push(makeContent())
+        }
+        dispatch(setForm(formTemp))
+        form.listContents = !form.listContents
+        dispatch(setForm(form))
         setTimeout(() => {
             setOpenOptions(false)
         }, 200);
@@ -169,14 +167,7 @@ const Modal = forwardRef(({
                     :
                     /* MULITPLE INPUT TEXT */
                     <Multiple
-                        form={form}
                         onChange={onChangeText}
-                        infoSwitch={infoSwitch}
-                        closeList={closeList}
-                        showAdd={showAdd}
-                        onAddList={onAddList}
-                        onFocus={onFocus}
-                        onInfoBlur={onInfoBlur}
                     />
                 }
 
