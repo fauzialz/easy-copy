@@ -10,7 +10,7 @@ import { formContext, setForm, clearForm, setFormNewId, noteListContext } from '
 
 function App() {
   const { dispatch } = useContext(formContext)
-  const { noteList, setNoteList } = useContext(noteListContext)
+  const { noteList } = useContext(noteListContext)
   const [openModal, setOpenModal] = useState(false)
   const refAdd = useRef(null)
 
@@ -34,16 +34,6 @@ function App() {
     }, 200);
   }
 
-  const onCopy = (listIndex, contentIndex) => {
-    let temp = noteList
-    temp[listIndex].contents[contentIndex].copied = true
-    setNoteList(Obj.deepCopy(temp))
-    setTimeout(() => {
-      temp[listIndex].contents[contentIndex].copied = false
-      setNoteList(Obj.deepCopy(temp))
-    }, 1300);
-  }
-
   return (
     <div className="outer-wrapper">
       
@@ -54,7 +44,7 @@ function App() {
 
       <div className="app-frame">
         <Headbar />
-        <List onEdit={openModalHandler} onCopy={onCopy} />
+        <List onEdit={openModalHandler} />
 
         <button className="add-button" onClick={() => openModalHandler()}>
           <FontAwesomeIcon icon="plus" />

@@ -3,14 +3,13 @@ import localforage from 'localforage'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Singular from './mode/Singular'
 import Multiple from './mode/Multiple'
-import './Modal.scss'
 import { formContext, setForm, noteListContext } from '../../store'
 import LOCAL from '../../config'
 import { Form, Obj } from '../../services'
 import { makeContent } from '../../model';
+import './Modal.scss'
 
 const Modal = forwardRef(({ openModal, onClose }, ref ) => {
-    
     const { noteList, setNoteList } = useContext(noteListContext)
     const {form, dispatch} = useContext(formContext)
     const [openOptions, setOpenOptions] = useState(false)
@@ -161,7 +160,6 @@ const Modal = forwardRef(({ openModal, onClose }, ref ) => {
                     /* SIUNGLAR INPUT TEXT */
                     <Singular
                         ref={ref}
-                        form={form}
                         onChange={onChangeText}
                     /> 
                     :

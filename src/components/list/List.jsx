@@ -1,71 +1,16 @@
-import React, {Fragment, useContext} from 'react'
-import localforage from 'localforage'
-import LOCAL from '../../config'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {CopyToClipboard} from 'react-copy-to-clipboard'
-import { Str } from '../../services'
-import Emoji from '../emoji'
-import './List.scss'
+import React, { Fragment, useContext, useEffect } from 'react'
 import { noteListContext } from '../../store'
+import localforage from 'localforage'
+import SingularContent from './mode/SingularContent'
+import MultipleContent from './mode/MultipleContent'
+import Emoji from '../emoji'
+import LOCAL from '../../config'
+import './List.scss'
 
-const SingularContent = ({onCopy, index, e}) => (
-    <div className="list-content"> 
-        {/* TEXT Content */}
-        <div className="list-text" >
-            {Str.toJsx(e.contents[0].text)}
-        </div>
-
-        <div className="list-boundary-line" />
-        
-        {/* COPY BUTTON */}
-        <div className="list-button-base">
-            <div className="list-button-tablecell">
-                <div className="list-button-relative">
-                    <button className="list-button" onClick={e => e.stopPropagation()}>
-                        <CopyToClipboard text={e.contents[0].text} onCopy={() => onCopy(index, 0)}>
-                            <FontAwesomeIcon icon="copy" />
-                        </CopyToClipboard>
-                    </button>
-                    <div className={e.contents[0].copied? "copy-sign-on" : "copy-sign-off"}>{LOCAL.onCopy}</div>
-                </div>
-            </div>
-        </div>
-    </div>
-)
-
-const MultipleContent = ({onCopy, index, e}) => (
-    <div className="list-content-listed"> 
-        {/* TEXT Content */}
-        {e.contents.map((content, i) => (
-            <div className="list-content-tile" key={i}>
-                <div className={content.withInfo? "list-text-withinfo" : "list-text-normal"} >
-                    {Str.toJsx(content.text)}
-                </div>
-                
-                {/* COPY BUTTON */}
-                <div className="list-button-base">
-                    <div className="list-button-tablecell">
-                        <div className="list-button-relative">
-                            {content.withInfo? <span className="list-content-info">\ {content.info}</span>: null}
-                            <button className="list-button multiple-button" onClick={e => e.stopPropagation()}>
-                                <CopyToClipboard text={content.text || LOCAL.onTextEmpty} onCopy={() => onCopy(index, i)}>
-                                    <FontAwesomeIcon icon="copy" />
-                                </CopyToClipboard>
-                            </button>
-                            <div className={content.copied? "copy-sign-on" : "copy-sign-off"}>{LOCAL.onCopy}</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        ))}
-    </div>
-)
-
-const List = ({ onEdit, onCopy}) => {
+const List = ({ onEdit }) => {
     const { noteList, setNoteList } = useContext(noteListContext)
 
-    React.useEffect(() => {
-        console.log(window.navigator.userAgent) //Experiment for another project
+    useEffect(() => {
         localforage.getItem(LOCAL.tableName).then( res => {
             if(res) {
                 setNoteList(res)
@@ -76,24 +21,23 @@ const List = ({ onEdit, onCopy}) => {
 
     return (
         <div className="list-wrapper">
-            {(noteList.filter(e => e.deleted === false).length) === 0 ?
+            {(noteList.filter(singleNote => singleNote.deleted === false).length) === 0 ?
                 /* WHEN NO LIST FOUND */
                 <div className="on-list-empty">{LOCAL.onListEmpty}<br/><Emoji /></div> :
 
                 /* WHEN LIST EXIST */
                 <Fragment>
-                    {noteList.map((e, i) => {
-                        if(e.deleted) return null
+                    {noteList.map((singleNote, noteListIndex) => {
+                        if(singleNote.deleted) return null
                         return (
-                            <div className="list-tile" key={e.id} onClick={() => onEdit(e)}>
+                            <div className="list-tile" key={singleNote.id} onClick={() => onEdit(singleNote)}>
                                 {/* TITLE */}
-                                {e.title?<div className={e.listContents? "list-title-multiple" : "list-title"} >{e.title}</div>: null}
-
-                                {!e.listContents?
-                                    <SingularContent onCopy={onCopy} index={i} e={e} />:
-                                    <MultipleContent onCopy={onCopy} index={i} e={e} />
+                                {singleNote.title?<div className={singleNote.listContents? "list-title-multiple" : "list-title"} >{singleNote.title}</div>: null}
+                                {/* CONTENT/s */}
+                                {!singleNote.listContents?
+                                    <SingularContent noteListIndex={noteListIndex} singleNote={singleNote} />:
+                                    <MultipleContent noteListIndex={noteListIndex} singleNote={singleNote} />
                                 }
-                                
                             </div>
                         )
                     })}
