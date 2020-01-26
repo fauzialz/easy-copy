@@ -6,10 +6,15 @@ import * as serviceWorker from './serviceWorker';
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { fab } from '@fortawesome/free-brands-svg-icons'
 import { fas } from '@fortawesome/free-solid-svg-icons'
+import { GlobalProvider } from './store';
 
 library.add( fab, fas )
 
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(
+    <GlobalProvider>
+        <App />
+    </GlobalProvider>
+, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
