@@ -1,4 +1,4 @@
-import React, { createElement } from 'react'
+import React, { Fragment } from 'react'
 
 const _hashtagTemplate = (hashtag, i) => (
     <a  key={i} 
@@ -14,14 +14,18 @@ const _hashtagTemplate = (hashtag, i) => (
 )
 
 const _markStringTemplate = (substring) => (
-    `<span
-        style="color: #ffff; background-color: #00adb5; padding: 2px 0"
-    >${substring}</span>`
+    <span
+        style={{
+            color: '#ffff',
+            backgroundColor: '#00adb5',
+            padding: '2px 0'
+        }}
+    >{substring}</span>
 )
 
 const _getHashtag = text => text.match(/#[a-z0-1A-Z.*]+/g)
 
-const _builNewLine = (arrayLine) => arrayLine.map( (word, i) => {
+const _buildNewLine = (arrayLine) => arrayLine.map( (word, i) => {
     let hashtag = _getHashtag(word)
     if(!hashtag) return `${word} `
     let subWord = word.split(hashtag[0])
@@ -32,13 +36,31 @@ const _builNewLine = (arrayLine) => arrayLine.map( (word, i) => {
 const _hashtagConverter = line => {
     if( !_getHashtag(line) ) return line
     let arrayLine = line.split(" ")
-    let newLine = _builNewLine(arrayLine)
+    let newLine = _buildNewLine(arrayLine)
+    return newLine
+}
+
+const _markedStringConverter = (line, searchText) => {
+    let newLine = line.map( (subLine, i) => (
+        (i + 1) === line.length? 
+        subLine: <Fragment key={i}>{subLine}{_markStringTemplate(searchText)}</Fragment>)
+    )
     return newLine
 }
 
 const _markString = (line, searchText) => {
-    let newLine = line.split(searchText).join(_markStringTemplate(searchText))
-    return createElement('span', { dangerouslySetInnerHTML: { __html: newLine }})
+    if(!line.match('\n')) {
+        return _markedStringConverter(line.split(searchText), searchText)
+    }
+    let newLine = line.split('\n')
+    newLine = newLine.map( (subLine, i) => (
+        (i + 1) === newLine.length?
+        subLine: 
+        <Fragment key={i}>{
+            _markedStringConverter(subLine.split(searchText), searchText)
+        }<br /></Fragment>
+    ))
+    return newLine
 }
 
 const _isNotString = str => ((str? false : str === "" ? false : true) || str.constructor !== String)
