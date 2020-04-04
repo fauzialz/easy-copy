@@ -22,12 +22,17 @@ const Headbar = ({onEdit}) => {
                     <button className="headbar-btn" onClick={headbarButtonHandler}>
                         <FontAwesomeIcon icon={searchFocus? "arrow-left" : "bars"} />
                     </button>
-                    <input className="headbar-search" 
+                    <input className={searchText !== ''? "headbar-search-focus": "headbar-search" }
                         onFocus={() => setSearchFocus(true)}
                         placeholder={searchFocus? "Search your text" : ""}
                         value={searchText}
                         onChange={e => setSearchText(e.target.value)}
                     />
+                    {searchText !== '' &&
+                        <button className="headbar-btn headbar-btn--close" onClick={() => setSearchText('')}>
+                            <FontAwesomeIcon icon="times" />
+                        </button>
+                    }
                 </div>
 
                 <SearchResult searchText={searchText} onEdit={onEdit} />

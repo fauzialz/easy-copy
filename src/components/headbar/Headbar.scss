@@ -63,16 +63,22 @@
     height: 100%;
     padding-top: 2px;
     float: left;
+    &--close {
+        width: 52px;
+    }
 }
-.headbar-search {
+.headbar-search, .headbar-search-focus {
     float: left;
     height: 100%;
     margin-left: 2px;
     padding-top: 3px;
     color: $four;
     font-size: 14px;
-    width: calc(100% - 78px);
+    width: calc(100% - 56px);
+    &::placeholder {
+        color: $five;
+    }
 }
-.headbar-search::placeholder {
-    color: $five;
+.headbar-search-focus {
+    width: calc(100% - 107px);
 }
