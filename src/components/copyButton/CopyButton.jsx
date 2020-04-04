@@ -2,16 +2,17 @@ import React, { useContext } from 'react'
 import { noteListContext } from '../../store'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
-import { Obj } from '../../services'
+import { Obj, Str } from '../../services'
 import LOCAL from '../../config'
 import './CopyButton.scss'
 
-const CopyButton = ({content, noteListIndex, contentIndex = 0}) => {
+const CopyButton = ({content, noteListId, contentIndex = 0, searchText }) => {
     const { noteList, setNoteList } = useContext(noteListContext)
     const listButtonClass = content.listContents? "list-button multiple-button" : "list-button"
 
     const onCopy = () => {
         let temp = noteList
+        let noteListIndex = noteList.findIndex( note => note.id === noteListId)
         temp[noteListIndex].contents[contentIndex].copied = true
         setNoteList(Obj.deepCopy(temp))
         setTimeout(() => {
@@ -24,7 +25,11 @@ const CopyButton = ({content, noteListIndex, contentIndex = 0}) => {
         <div className="list-button-base">
             <div className="list-button-tablecell">
                 <div className="list-button-relative">
-                    {content.withInfo? <span className="list-content-info">\ {content.info}</span>: null}
+                    {content.withInfo? <span className="list-content-info">\ {
+                        searchText?
+                        Str.markString(content.info, searchText):
+                        content.info
+                    }</span>: null}
                     <button className={listButtonClass} onClick={e => e.stopPropagation()}>
                         <CopyToClipboard text={content.text || LOCAL.onTextEmpty} onCopy={() => onCopy()}>
                             <FontAwesomeIcon icon="copy" />

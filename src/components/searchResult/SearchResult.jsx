@@ -37,7 +37,7 @@ const SearchResult = ({searchText, onEdit}) => {
             {searchText === ''? null :
                 noteListResult.length === 0? 
                 <div className="searchResult__empty">{LOCAL.onSearchEmpty}</div>:
-                <ListTile noteList={noteListResult} onEdit={onEdit} />
+                <ListTile noteList={noteListResult} onEdit={onEdit} searchText={searchText} />
             }
         </div>
     )

@@ -3,18 +3,21 @@ import { Str } from '../../../services'
 import CopyButton from '../../copyButton'
 import './MultipleContent.scss'
 
-const MultipleContent = ({noteListIndex, singleNote}) => (
+const MultipleContent = ({noteListId, singleNote, searchText}) => (
     <div className="list-content-listed"> 
 
         {/* TEXT Content */}
         {singleNote.contents.map((content, contentIndex) => (
             <div className="list-content-tile" key={contentIndex}>
                 <div className={content.withInfo? "list-text-withinfo" : "list-text-normal"} >
-                    {Str.toJsx(content.text)}
+                    {searchText?
+                        Str.markString(content.text, searchText):
+                        Str.toJsx(content.text)
+                    }
                 </div>
                 
                 {/* COPY BUTTON */}
-                <CopyButton content={content} noteListIndex={noteListIndex} contentIndex={contentIndex} />
+                <CopyButton content={content} noteListId={noteListId} contentIndex={contentIndex} searchText={searchText} />
             </div>
         ))}
     </div>
