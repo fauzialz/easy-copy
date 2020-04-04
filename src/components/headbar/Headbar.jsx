@@ -3,8 +3,9 @@ import React from 'react'
 import './Headbar.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useState } from 'react'
+import SearchResult from '../searchResult'
 
-const Headbar = (props) => {
+const Headbar = ({onEdit}) => {
     const [searchFocus, setSearchFocus] = useState(false)
     const [searchText, setSearchText] = useState('')
 
@@ -15,18 +16,21 @@ const Headbar = (props) => {
         }
     }
     return (
-        <div className="headbar-base">
+        <div className={`headbar-base`}>
             <div className={searchFocus? "headbar-frame-focus" : "headbar-frame"}>
-                <button className="headbar-btn" onClick={headbarButtonHandler}>
-                    <FontAwesomeIcon icon={searchFocus? "arrow-left" : "bars"} />
-                </button>
-                <input className="headbar-search" 
-                    onFocus={() => setSearchFocus(true)}
-                    // onBlur={() => setSearchFocus(false)}
-                    placeholder="Search your text"
-                    value={searchText}
-                    onChange={e => setSearchText(e.target.value)}
-                />
+                <div className={searchFocus? "headbar-bar-focus" : "headbar-bar"} >
+                    <button className="headbar-btn" onClick={headbarButtonHandler}>
+                        <FontAwesomeIcon icon={searchFocus? "arrow-left" : "bars"} />
+                    </button>
+                    <input className="headbar-search" 
+                        onFocus={() => setSearchFocus(true)}
+                        placeholder={searchFocus? "Search your text" : ""}
+                        value={searchText}
+                        onChange={e => setSearchText(e.target.value)}
+                    />
+                </div>
+
+                <SearchResult searchText={searchText} onEdit={onEdit} />
             </div>   
         </div>
     )

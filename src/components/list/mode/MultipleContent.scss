@@ -1,0 +1,34 @@
+@import '../../../styles/pallete';
+
+.list-content-listed {
+    width: 100%;
+    position: relative;
+    .list-content-tile {
+        width: calc(100% + 30px);
+        transform: translate(-15px);
+        padding: 8px 15px;
+        position: relative;
+        .list-text-normal, .list-text-withinfo {
+            font-size: 13px;
+            padding-top: 1px;
+            a {
+                color: $three;
+                font-weight: 600;
+                text-decoration: none;
+            }
+        }
+        .list-text-normal {
+            width: calc(100% - 36px);
+        }
+        .list-text-withinfo {
+            width: calc(100% - 130px);
+        }
+    }
+    .list-content-tile:last-child {
+        margin-bottom: -4px;
+    }
+    .list-content-tile:first-child {
+        // padding-top: 2px;
+        margin-top: -4px;
+    }
+}

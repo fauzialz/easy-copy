@@ -1,6 +1,7 @@
 import React from 'react'
 import { Str } from '../../../services'
 import CopyButton from '../../copyButton'
+import './MultipleContent.scss'
 
 const MultipleContent = ({noteListIndex, singleNote}) => (
     <div className="list-content-listed"> 

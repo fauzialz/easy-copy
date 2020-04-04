@@ -43,7 +43,7 @@ function App() {
       </Helmet>
 
       <div className="app-frame">
-        <Headbar />
+        <Headbar onEdit={openModalHandler} />
         <List onEdit={openModalHandler} />
 
         <button className="add-button" onClick={() => openModalHandler()}>

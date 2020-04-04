@@ -1,0 +1,30 @@
+@import '../../../styles/pallete';
+
+.list-content {
+    width: calc(100% - 10px);
+    padding-right: 30px;
+    position: relative;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    .list-text {
+        font-size: 13px;
+        padding-top: 1px;
+        a {
+            color: $three;
+            font-weight: 600;
+            text-decoration: none;
+        }
+    }
+    .list-boundary-line {
+        position: absolute;
+        width: 15px;
+        right: 0;
+        top: 0;
+        height: calc(100% - 12px);
+        margin-top: 6.5px;
+        border-top: 1px solid $two-line;
+        border-bottom: 1px solid $two-line;
+        border-right: 1px solid $two-line;
+        border-radius: 0 5px 5px 0;
+    }
+}

@@ -4,25 +4,52 @@
     width: 100%;
     position: absolute;
     z-index: 99;
+    transition: all .3s ease;
+    &--on {
+        height: 100vh;
+        background-color: $one;
+    }
+    &--off {
+        height: 48px;
+        background-color: $two;
+    }
 }
 .headbar-frame, .headbar-frame-focus {
     width: calc(100% - 30px);
     margin: 15px;
-    height: 48px;
-    margin-bottom: 0px;
-    margin-top: 15px;
-    background-color: $two;
-    border-radius: 6px;
-    // border: 1px solid $two;
+    height: 46px;
     box-shadow: 0px 3px 3px 1px rgba(0,0,0,0.09);
     transition: all .3s ease;
-    // box-shadow: 0px 1px 8px 1px rgba(0,0,0,0.26);
+    border-radius: 6px;
+    margin-bottom: 0px;
+    margin-top: 15px;
+    overflow: hidden;
+    box-sizing: border-box;
+    background-color: $two;
 }
 .headbar-frame-focus {
     width: 100%;
     margin: 0px;
     height: 63px;
     border-radius: 0px;
+    height: 100vh;
+    background-color: $one;
+}
+.headbar-bar, .headbar-bar-focus {
+    height: 48px;
+    box-sizing: border-box;
+    margin-bottom: 0px;
+    background-color: $two;
+    border-radius: 6px;
+    transition: all .3s ease;
+    border-bottom: 2px solid transparent;
+}
+.headbar-bar-focus {
+    width: 100%;
+    margin: 0px;
+    height: 63px;
+    border-radius: 0px;
+    border-bottom: 3px solid $two-line;
     .headbar-btn {
         font-size: 18px;
         padding-top: 6px;
