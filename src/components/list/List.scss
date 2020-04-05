@@ -2,7 +2,6 @@
 
 .list-wrapper {
     padding: 7.5px;
-    padding-top: 80px; //ready for header
     padding-bottom: 90px;
     height: 100%;
     width: 100%;
@@ -19,6 +18,12 @@
             height: 20px;
             margin-top: 7px;
         }
+    }
+    .section-title {
+        font-size: 9px;
+        font-weight: bold;
+        color: $font-blur;
+        padding: 12px 15px;
     }
 }
 

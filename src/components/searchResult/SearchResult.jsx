@@ -27,16 +27,16 @@ const SearchResult = ({searchText, onEdit}) => {
 
     const filterPriority = () => {
         let resultPriorityTemp = noteList.filter( note => (
-            !note.listContents? (
+            !note.listContents? ((
                 note.title.includes(searchText) || 
                 note.contents[0].text.includes(searchText)
-            ):(
+            ) && !note.deleted) :((
                 note.title.includes(searchText) ||
                 searchListContents(note.contents, (content) => (
                     content.text.includes(searchText) ||
                     content.info.includes(searchText)
                 ))
-            )
+            ) && !note.deleted)
         ))
         let priorityId = resultPriorityTemp.map( result => result.id)
         filterNormal(priorityId)
@@ -49,7 +49,7 @@ const SearchResult = ({searchText, onEdit}) => {
                 (
                     note.title.toLowerCase().includes(searchText.toLowerCase()) || 
                     note.contents[0].text.toLowerCase().includes(searchText.toLowerCase())
-                ) && !priorityId.includes(note.id)
+                ) && !priorityId.includes(note.id) && !note.deleted
             ):(
                 (
                     note.title.toLowerCase().includes(searchText.toLowerCase()) ||
@@ -57,7 +57,7 @@ const SearchResult = ({searchText, onEdit}) => {
                         content.text.toLowerCase().includes(searchText.toLowerCase()) ||
                         content.info.toLowerCase().includes(searchText.toLowerCase())
                     ))
-                ) && !priorityId.includes(note.id)
+                ) && !priorityId.includes(note.id) && !note.deleted
             )
         ))
         setResultNormal(resultNormalTemp)

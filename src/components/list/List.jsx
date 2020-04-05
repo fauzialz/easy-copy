@@ -1,32 +1,54 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, Fragment } from 'react'
 import { noteListContext } from '../../store'
-import localforage from 'localforage'
 import Emoji from '../emoji'
 import LOCAL from '../../config'
 import './List.scss'
 import ListTile from './ListTile.jsx'
+import { useState } from 'react'
 
 const List = ({ onEdit }) => {
-    const { noteList, setNoteList } = useContext(noteListContext)
+    const { noteList } = useContext(noteListContext)
+    const [ pinnedList, setPinnedList] = useState([])
+    const [ otherList, setOtherList] = useState([])
 
     useEffect(() => {
-        localforage.getItem(LOCAL.tableName).then( res => {
-            if(res) {
-                debugger
-                setNoteList(res)
-            }
-        }).catch( err => console.error(err))
+        filterPinnedList()
         // eslint-disable-next-line
-    }, [])
+    }, [noteList])
+
+    const filterPinnedList = () => {
+        let pinnedListTemp = noteList.filter( note => ( note.pinned && !note.deleted ))
+        let pinnedId = pinnedListTemp.map( pinned => pinned.id )
+        filterOtherList(pinnedId)
+        setPinnedList(pinnedListTemp)
+    }
+
+    const filterOtherList = (pinnedId) => {
+        let otherListTemp = noteList.filter( note => ( !pinnedId.includes(note.id) && !note.deleted ))
+        setOtherList(otherListTemp)
+    }
 
     return (
-        <div className="list-wrapper">
+        <div className="list-wrapper"
+            style={{ paddingTop: pinnedList.length > 0 && otherList.length > 0? '70px': '80px' }}
+        >
             {(noteList.filter(singleNote => singleNote.deleted === false).length) === 0 ?
                 /* WHEN NO LIST FOUND */
                 <div className="on-list-empty">{LOCAL.onListEmpty}<br/><Emoji /></div> :
 
                 /* WHEN LIST EXIST */
-                <ListTile noteList={noteList} onEdit={onEdit} />
+                <Fragment>
+                    {pinnedList.length > 0 && otherList.length > 0 &&
+                        <div className="section-title">PINNED</div>
+                    }
+                    <ListTile noteList={pinnedList} onEdit={onEdit} />
+
+                    {pinnedList.length > 0 && otherList.length > 0 &&
+                        <div className="section-title">OTHERS</div>
+                    }
+                    <ListTile noteList={otherList} onEdit={onEdit} />
+                
+                </Fragment>
             }
         </div>
     )

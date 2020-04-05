@@ -1,18 +1,29 @@
-import React, { useState, useRef, useContext} from 'react';
+import React, { useState, useRef, useContext, useEffect} from 'react';
 import './App.scss';
 import { Helmet } from 'react-helmet'
 import { Obj } from './services'
 import Modal from './components/modal';
 import Headbar from './components/headbar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import localforage from 'localforage'
 import List from './components/list';
 import { formContext, setForm, clearForm, setFormNewId, noteListContext } from './store';
+import LOCAL from './config';
 
 function App() {
   const { dispatch } = useContext(formContext)
-  const { noteList } = useContext(noteListContext)
+  const { noteList, setNoteList } = useContext(noteListContext)
   const [openModal, setOpenModal] = useState(false)
   const refAdd = useRef(null)
+
+  useEffect(() => {
+    localforage.getItem(LOCAL.tableName).then( res => {
+        if(res) {
+            setNoteList(res)
+        }
+    }).catch( err => console.error(err))
+    // eslint-disable-next-line
+}, [])
 
   /* Open Modal handler */
   const openModalHandler = (item = {})  => {
