@@ -1,11 +1,10 @@
-import React, { Fragment, useContext, useEffect } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { noteListContext } from '../../store'
 import localforage from 'localforage'
-import SingularContent from './mode/SingularContent'
-import MultipleContent from './mode/MultipleContent'
 import Emoji from '../emoji'
 import LOCAL from '../../config'
 import './List.scss'
+import ListTile from './ListTile.jsx'
 
 const List = ({ onEdit }) => {
     const { noteList, setNoteList } = useContext(noteListContext)
@@ -13,6 +12,7 @@ const List = ({ onEdit }) => {
     useEffect(() => {
         localforage.getItem(LOCAL.tableName).then( res => {
             if(res) {
+                debugger
                 setNoteList(res)
             }
         }).catch( err => console.error(err))
@@ -26,22 +26,7 @@ const List = ({ onEdit }) => {
                 <div className="on-list-empty">{LOCAL.onListEmpty}<br/><Emoji /></div> :
 
                 /* WHEN LIST EXIST */
-                <Fragment>
-                    {noteList.map((singleNote, noteListIndex) => {
-                        if(singleNote.deleted) return null
-                        return (
-                            <div className="list-tile" key={singleNote.id} onClick={() => onEdit(singleNote)}>
-                                {/* TITLE */}
-                                {singleNote.title?<div className={singleNote.listContents? "list-title-multiple" : "list-title"} >{singleNote.title}</div>: null}
-                                {/* CONTENT/s */}
-                                {!singleNote.listContents?
-                                    <SingularContent noteListIndex={noteListIndex} singleNote={singleNote} />:
-                                    <MultipleContent noteListIndex={noteListIndex} singleNote={singleNote} />
-                                }
-                            </div>
-                        )
-                    })}
-                </Fragment>
+                <ListTile noteList={noteList} onEdit={onEdit} />
             }
         </div>
     )
