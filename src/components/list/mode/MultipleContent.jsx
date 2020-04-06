@@ -1,26 +1,45 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Str } from '../../../services'
 import CopyButton from '../../copyButton'
 import './MultipleContent.scss'
+import { settingContext } from '../../../store'
 
-const MultipleContent = ({noteListId, singleNote, searchText}) => (
-    <div className="list-content-listed"> 
+const MultipleContent = ({noteListId, singleNote, searchText}) => {
+    const { setting } = useContext(settingContext)
+    const { mosaicView } = setting
 
-        {/* TEXT Content */}
-        {singleNote.contents.map((content, contentIndex) => (
-            <div className="list-content-tile" key={contentIndex}>
-                <div className={content.withInfo? "list-text-withinfo" : "list-text-normal"} >
-                    {searchText?
-                        Str.markString(content.text, searchText):
-                        Str.toJsx(content.text)
+    return (
+        <div className="list-content-listed"> 
+
+            {/* TEXT Content */}
+            {singleNote.contents.map((content, contentIndex) => (
+                <div 
+                    key={contentIndex}
+                    className={`list-content-tile${mosaicView? ' list-content-tile--mosaic': ''}`}
+                    style={
+                        mosaicView && content.withInfo?
+                        {flexWrap: 'wrap'}: {flexWrap: 'nowrap'}
+                    }
+                >
+                    {mosaicView && content.withInfo &&
+                        <CopyButton content={content} noteListId={noteListId} contentIndex={contentIndex} searchText={searchText} head/>
+                    }
+
+                    <div className="list-text" >
+                        {searchText?
+                            Str.markString(content.text, searchText):
+                            Str.toJsx(content.text)
+                        }
+                    </div>
+                    
+                    {/* COPY BUTTON */}
+                    {mosaicView && content.withInfo? null :
+                        <CopyButton content={content} noteListId={noteListId} contentIndex={contentIndex} searchText={searchText} />
                     }
                 </div>
-                
-                {/* COPY BUTTON */}
-                <CopyButton content={content} noteListId={noteListId} contentIndex={contentIndex} searchText={searchText} />
-            </div>
-        ))}
-    </div>
-)
+            ))}
+        </div>
+    )
+}
 
 export default MultipleContent

@@ -7,12 +7,14 @@ import Headbar from './components/headbar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import localforage from 'localforage'
 import List from './components/list';
-import { formContext, setForm, clearForm, setFormNewId, noteListContext } from './store';
+import { formContext, setForm, clearForm, setFormNewId, noteListContext, settingContext } from './store';
 import LOCAL from './config';
+import { makeSetting } from './model';
 
 function App() {
   const { dispatch } = useContext(formContext)
   const { noteList, setNoteList } = useContext(noteListContext)
+  const { setSetting } = useContext(settingContext)
   const [openModal, setOpenModal] = useState(false)
   const refAdd = useRef(null)
 
@@ -22,6 +24,16 @@ function App() {
             setNoteList(res)
         }
     }).catch( err => console.error(err))
+
+    localforage.getItem(LOCAL.appSetting).then( res => {
+      if(res) {
+        setSetting({...res})
+        return
+      }
+      localforage.setItem(LOCAL.appSetting, makeSetting()).then( res => {
+        setSetting({...res})
+      }).catch(err => console.log(err))
+    }).catch(err => console.log(err))
     // eslint-disable-next-line
 }, [])
 

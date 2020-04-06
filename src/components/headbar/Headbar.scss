@@ -66,6 +66,13 @@
     &--close {
         width: 52px;
     }
+    &--rotate, &--normal {
+        color: $font-blur;
+        font-size: 18px;
+    }
+    &--rotate svg {
+        transform: rotate(90deg);
+    }
 }
 .headbar-search, .headbar-search-focus {
     float: left;
@@ -74,7 +81,7 @@
     padding-top: 5px;
     color: $four;
     font-size: 14px;
-    width: calc(100% - 56px);
+    width: calc(100% - 108px);
     &::placeholder {
         color: $five;
     }
