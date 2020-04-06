@@ -2,10 +2,12 @@
 
 .list-content {
     width: calc(100% - 10px);
-    padding-right: 30px;
     position: relative;
     padding-top: 4px;
     padding-bottom: 4px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     .list-text {
         font-size: 13px;
         padding-top: 1px;
@@ -13,7 +15,7 @@
     .list-boundary-line {
         position: absolute;
         width: 15px;
-        right: 0;
+        right: 15px;
         top: 0;
         height: calc(100% - 12px);
         margin-top: 6.5px;
