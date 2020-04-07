@@ -1,12 +1,10 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import SingularContent from './mode/SingularContent'
 import MultipleContent from './mode/MultipleContent'
 import './ListTile.scss'
 import { Str } from '../../services'
 import { settingContext } from '../../store'
 import StackGrid from "react-stack-grid"
-import { useState } from 'react'
-import { useEffect } from 'react'
 
 const ListTile = ({noteList, onEdit, searchText}) => {
     // eslint-disable-next-line
