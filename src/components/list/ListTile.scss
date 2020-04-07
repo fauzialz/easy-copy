@@ -1,6 +1,6 @@
 @import '../../styles/pallete';
 
-.list-tile, .list-tile-mosaic {
+.list-tile {
     background-color: $one;
     padding: 15px;
     padding-right: 0px;
@@ -20,16 +20,4 @@
     .list-title-multiple {
         margin-bottom: 12px;
     }
-}
-
-.list-tile-wrapper-mosaic {
-    width: 100%;
-    columns: 2;
-    column-gap: 8px;
-    position: relative;
-}
-
-.list-tile-mosaic {
-    break-inside: avoid !important;
-    position: relative;
 }

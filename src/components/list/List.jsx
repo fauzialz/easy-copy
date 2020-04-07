@@ -30,7 +30,7 @@ const List = ({ onEdit }) => {
 
     return (
         <div className="list-wrapper"
-            style={{ paddingTop: pinnedList.length > 0 && otherList.length > 0? '60px': '80px' }}
+            style={{ paddingTop: pinnedList.length > 0 && otherList.length > 0? '70px': '80px' }}
         >
             {(noteList.filter(singleNote => singleNote.deleted === false).length) === 0 ?
                 /* WHEN NO LIST FOUND */
