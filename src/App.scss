@@ -58,6 +58,7 @@ button, input {
   transition: all .2s ease;
   text-align: center;
   user-select: none;
+  z-index: 3;
 }
 .add-button:active {
   transform: translate(0px, -6px);

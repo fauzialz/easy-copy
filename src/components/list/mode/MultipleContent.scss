@@ -20,6 +20,9 @@
             border-bottom: 1px solid $two-line;
             align-content: flex-start;
             &:last-child { border-bottom: none;;}
+            .list-text {
+                margin-right: 5px;
+            }
         }
         .list-text {
             font-size: 13px;
