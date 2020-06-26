@@ -1,9 +1,7 @@
-import { Obj } from "."
-
 export default {
     /* Fitler mutliple text input before save to DB */
     formFilter : formData => {
-      let temp = Obj.deepCopy(formData)
+      let temp = {...formData}
       if(temp.listContents) {
         for(let i in temp.contents) {
           if(temp.contents[i].withInfo && temp.contents[i].info.length === 0) {

@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import { noteListContext } from '../../store'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
-import { Obj, Str } from '../../services'
+import { Str } from '../../services'
 import LOCAL from '../../config'
 import './CopyButton.scss'
 
@@ -11,13 +11,14 @@ const CopyButton = ({content, noteListId, contentIndex = 0, searchText, head }) 
     const listButtonClass = content.withInfo? "list-button withInfo-button" : "list-button"
 
     const onCopy = () => {
-        let temp = noteList
-        let noteListIndex = noteList.findIndex( note => note.id === noteListId)
-        temp[noteListIndex].contents[contentIndex].copied = true
-        setNoteList(Obj.deepCopy(temp))
+        let newNoteList = [...noteList]
+        let noteListIndex = newNoteList.findIndex( note => note.id === noteListId)
+        newNoteList[noteListIndex].contents[contentIndex].copied = true
+        setNoteList(newNoteList)
         setTimeout(() => {
-          temp[noteListIndex].contents[contentIndex].copied = false
-          setNoteList(Obj.deepCopy(temp))
+            let resetNoteList = [...noteList]
+            resetNoteList[noteListIndex].contents[contentIndex].copied = false
+            setNoteList(resetNoteList)
         }, 1300);
     }
 

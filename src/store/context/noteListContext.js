@@ -1,5 +1,4 @@
 import React, { createContext, useState} from 'react'
-import { Obj } from '../../services'
 
 const noteListContext = createContext([])
 const { Provider } = noteListContext
@@ -10,7 +9,7 @@ const NoteListProvider = ({ children }) => {
         whenever IndexedDB is update. UseState is the best answer for this simple data manipulations. */
     const [note, setNote] = useState([]) 
 
-    const setNoteList = (payload) => setNote(Obj.deepCopy(payload))
+    const setNoteList = (payload) => setNote([...payload])
 
     return <Provider value={{ noteList: note, setNoteList}} >{ children }</Provider>
 }

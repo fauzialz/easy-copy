@@ -1,5 +1,5 @@
 function makeContent() {
-    return Object.freeze({
+    return ({
         text : '',
         copied : false,
         withInfo : false,

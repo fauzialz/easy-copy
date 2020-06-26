@@ -8,7 +8,7 @@ import StackGrid from "react-stack-grid"
 
 const ListTile = ({noteList, onEdit, searchText}) => {
     // eslint-disable-next-line
-    const [ heigthCorrection, setHeightCorrection ] = useState(true)
+    const [ , setHeightCorrection ] = useState(true)
     const { setting } = useContext(settingContext)
     const { mosaicView } = setting
 

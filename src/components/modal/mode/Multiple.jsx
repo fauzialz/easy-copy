@@ -3,7 +3,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import LOCAL from '../../../config'
 import './Multiple.scss'
 import { formContext, setForm } from '../../../store';
-import { Obj } from '../../../services';
 import { makeContent } from '../../../model';
 
 const Multiple = ({ onChange }) => {
@@ -66,7 +65,7 @@ const Multiple = ({ onChange }) => {
     
     /* Add new content on list mode handler */
     const addListHandler = () => {
-        let formTemp = Obj.deepCopy(form)
+        let formTemp = {...form}
         formTemp.contents.push(makeContent())
         dispatch(setForm(formTemp))
         setShowAdd(false)

@@ -5,7 +5,7 @@ import Singular from './mode/Singular'
 import Multiple from './mode/Multiple'
 import { formContext, setForm, noteListContext } from '../../store'
 import LOCAL from '../../config'
-import { Form, Obj } from '../../services'
+import { Form } from '../../services'
 import { makeContent } from '../../model';
 import './Modal.scss'
 
@@ -28,14 +28,14 @@ const Modal = forwardRef(({ openModal, onClose }, ref ) => {
 
     /* Change title handler */
     const onChangeTitle = e => {
-        let temp = form 
+        let temp = {...form} 
         temp.title = e.target.value
         dispatch(setForm(temp))
     }
 
     /* Change content text and info handler */
     const onChangeText = e => {
-        let temp = form
+        let temp = {...form}
         let node = e.target.name.split('-')
         if(node[1] === 'info') {
             if(e.target.value.length <= LOCAL.infoLength) {
@@ -53,8 +53,8 @@ const Modal = forwardRef(({ openModal, onClose }, ref ) => {
             return
         }
         /* Change pinned value on edit direcly change DB. */
-        let noteListTemp = Obj.deepCopy(noteList)
-        let formTemp = Obj.deepCopy(form)
+        let noteListTemp = [...noteList]
+        let formTemp = {...form}
         formTemp.pinned = !formTemp.pinned
         dispatch(setForm(formTemp))
         for(let i in noteListTemp) {
@@ -77,7 +77,7 @@ const Modal = forwardRef(({ openModal, onClose }, ref ) => {
 
     /* Swithcing mode singular/multiple input handler */
     const changeMode = () => {
-        let formTemp = Obj.deepCopy(form)
+        let formTemp = {...form}
 
         // incase user delete all the list content when on list mode
         // and then change it to singular mode.
@@ -98,7 +98,7 @@ const Modal = forwardRef(({ openModal, onClose }, ref ) => {
             onClose()
             return
         }
-        let temp = manipulateNoteList(Obj.deepCopy(noteList))
+        let temp = manipulateNoteList([...noteList])
         localforage.setItem(LOCAL.tableName, temp).then ( res => {
             console.log(res)
             setNoteList(res)

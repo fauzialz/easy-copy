@@ -1,7 +1,7 @@
 import makeContent from './MakeContent'
 
 function makeForm() {
-    return Object.freeze({
+    return ({
         id : '',
         title :  '',
         listContents : false,
