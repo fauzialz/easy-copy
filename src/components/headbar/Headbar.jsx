@@ -31,8 +31,8 @@ const Headbar = ({onEdit}) => {
         <div className={`headbar-base`}>
             <div className={searchFocus? "headbar-frame-focus" : "headbar-frame"}>
                 <div className={searchFocus? "headbar-bar-focus" : "headbar-bar"} >
-                    <button className="headbar-btn" onClick={headbarButtonHandler}>
-                        <FontAwesomeIcon icon={searchFocus? "arrow-left" : "bars"} />
+                    <button className={`headbar-btn${!searchFocus? ' headbar-btn--normal': ''}`} onClick={headbarButtonHandler}>
+                        <FontAwesomeIcon icon={searchFocus? "arrow-left" : "search"} />
                     </button>
                     <input className={searchText !== ''? "headbar-search-focus": "headbar-search" }
                         onFocus={() => setSearchFocus(true)}
