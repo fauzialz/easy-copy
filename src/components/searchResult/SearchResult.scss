@@ -1,0 +1,16 @@
+@import '../../styles/pallete';
+
+.searchResult {
+    height: calc(100vh - 64px);
+    width: 100%;
+    padding: 18px 8px;
+    overflow-y: auto;
+    &__empty {
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 13px;
+        color: $font-blur;
+    }
+}

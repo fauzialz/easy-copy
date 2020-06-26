@@ -1,0 +1,133 @@
+@import '../../../styles/pallete';
+
+.multipletext-slot {
+    width: 100%;
+    height: calc(100vh - 160px);
+    overflow-y: auto;
+    padding-bottom: 10px;
+
+    /* MULTIPLE TEXT LIST CONTENT */
+    .multipletext-list, .multipletext-list-withInfo {
+        height: 36px;
+        width: 100%;
+        position: relative;
+        transition: all .2s ease;
+        overflow: hidden;
+        .multipletext-arrow {
+            svg {
+                color: $font-blur;
+                font-size: 18px;
+            }
+            float: left;
+            margin-top: 9px;
+            margin-left: 24px;
+        }
+        .multipletext-text, .multipletext-text-onfocus {
+            padding-left: 12px;
+            color: $four;
+            margin-top: 9px;
+            font-size: 14px;
+            width: calc(100% - 134px);
+            transition: all .1s ease;
+        }
+        .multipletext-text {
+            transition: all .3s ease;
+            width: calc(100% - 58px);
+        }
+        .multipletext-addinfo-off, .multipletext-addinfo-on {
+            position: absolute;
+            right: 0;
+            width: 40px;
+            height: 30px;
+            margin-right: 50px;
+            font-size: 14px;
+            padding-top: 2px ;
+            color: $five;
+            margin-top: 3px;
+            font-size: 17px;
+        }
+        .multipletext-addinfo-on{
+            color: $three;
+        }
+        .multipletext-close {
+            position: absolute;
+            right: 0;
+            width: 50px;
+            height: 36px;
+            color: $five;
+            font-size: 16px;
+            padding-right: 22px;
+            padding-bottom: 3px;
+            padding-top: 3px;
+        }
+    }
+    .multipletext-list-withInfo {
+        height: 72px;
+    }
+
+    /* INFO INPUT */
+    .info-base {
+        width: 100%;
+        height: 36px;
+        position: absolute;
+        top: 0;
+        transform: translate(0px, 36px);
+        .info-relative {
+            position: relative;
+            height: 100%;
+            width: calc(100% - 40px);
+            .info-pipe {
+                margin-left: 25px;
+                height: 19px;
+                width: 9px;
+                float: left;
+                border-left: 2px solid $zero;
+                border-bottom: 2px solid $zero;
+                border-radius: 0 4px;
+            }
+            .info-text {
+                color: $three;
+                margin-top: 4px;
+                width: 200px;
+                padding: 5px 8px;
+                font-size: 14px;
+                border-radius: 4px;
+                margin-right: 20px;
+            }
+            .info-text::placeholder {
+                color: $font-blur;
+            }
+            .info-count {
+                position: absolute;
+                right: 0;
+                top: 0;
+                font-size: 12px;
+                color: $font-blur;
+                margin-right: 23px;
+                margin-top: 10px;
+            }
+        }
+    }
+
+    /* ADD BUTTON */
+    .mutlipletext-add {
+        height: 32px;
+        padding-left: 20px;
+        margin-left: 20px;
+        margin-top: 2px;
+        color: $four;
+        font-size: 14px;
+        text-align: left;
+        width: 120px;
+        svg {
+            float: left;
+            font-size: 15px;
+            color: $five;
+        }
+        div {
+            float: left;
+            margin-left: 12px;
+            margin-top: 0px;
+        }
+    }
+}

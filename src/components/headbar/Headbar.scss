@@ -1,0 +1,91 @@
+@import '../../styles/pallete';
+
+.headbar-base {
+    width: 100%;
+    position: absolute;
+    z-index: 99;
+    transition: all .3s ease;
+    &--on {
+        height: 100vh;
+        background-color: $one;
+    }
+    &--off {
+        height: 48px;
+        background-color: $two;
+    }
+}
+.headbar-frame, .headbar-frame-focus {
+    width: calc(100% - 30px);
+    margin: 15px;
+    height: 46px;
+    box-shadow: 0px 3px 3px 1px rgba(0,0,0,0.09);
+    transition: all .3s ease;
+    border-radius: 6px;
+    margin-bottom: 0px;
+    margin-top: 15px;
+    overflow: hidden;
+    box-sizing: border-box;
+    background-color: $two;
+}
+.headbar-frame-focus {
+    width: 100%;
+    margin: 0px;
+    height: 63px;
+    border-radius: 0px;
+    height: 100vh;
+    background-color: $one;
+}
+.headbar-bar, .headbar-bar-focus {
+    height: 48px;
+    box-sizing: border-box;
+    margin-bottom: 0px;
+    background-color: $two;
+    border-radius: 6px;
+    transition: all .3s ease;
+    border-bottom: 2px solid transparent;
+}
+.headbar-bar-focus {
+    width: 100%;
+    margin: 0px;
+    height: 63px;
+    border-radius: 0px;
+    border-bottom: 3px solid $two-line;
+    .headbar-btn {
+        font-size: 18px;
+        padding-top: 6px;
+    }
+}
+.headbar-btn {
+    font-size: 20px;
+    transition: all .3s ease;
+    color: $four;
+    padding: 0 18px;
+    height: 100%;
+    padding-top: 2px;
+    float: left;
+    &--close {
+        width: 52px;
+    }
+    &--rotate, &--normal {
+        color: $font-blur;
+        font-size: 18px;
+    }
+    &--rotate svg {
+        transform: rotate(90deg);
+    }
+}
+.headbar-search, .headbar-search-focus {
+    float: left;
+    height: 100%;
+    margin-left: 2px;
+    padding-top: 5px;
+    color: $four;
+    font-size: 14px;
+    width: calc(100% - 108px);
+    &::placeholder {
+        color: $five;
+    }
+}
+.headbar-search-focus {
+    width: calc(100% - 107px);
+}
