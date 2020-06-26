@@ -15,16 +15,20 @@ const List = ({ onEdit }) => {
     // eslint-disable-next-line
     }, [noteList])
 
+    const filterEditedOn = noteListInput => noteListInput.sort( (a, b) => (b.editedOn - a.editedOn))
+
     const filterPinnedList = () => {
         let pinnedListTemp = noteList.filter( note => ( note.pinned && !note.deleted ))
         let pinnedId = pinnedListTemp.map( pinned => pinned.id )
         filterOtherList(pinnedId)
+        pinnedListTemp = filterEditedOn([...pinnedListTemp])
         setPinnedList(pinnedListTemp)
     }
 
     const filterOtherList = (pinnedId) => {
         let otherListTemp = noteList.filter( note => ( !pinnedId.includes(note.id) && !note.deleted ))
         otherListTemp.reverse()
+        otherListTemp = filterEditedOn([...otherListTemp])
         setOtherList(otherListTemp)
     }
 

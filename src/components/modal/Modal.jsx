@@ -5,7 +5,7 @@ import Singular from './mode/Singular'
 import Multiple from './mode/Multiple'
 import { formContext, setForm, noteListContext } from '../../store'
 import LOCAL from '../../config'
-import { Form } from '../../services'
+import { Form, Str } from '../../services'
 import { makeContent } from '../../model';
 import './Modal.scss'
 
@@ -98,8 +98,8 @@ const Modal = forwardRef(({ openModal, onClose }, ref ) => {
             onClose()
             return
         }
-        let temp = manipulateNoteList([...noteList])
-        localforage.setItem(LOCAL.tableName, temp).then ( res => {
+        let newNoteList = manipulateNoteList([...noteList])
+        localforage.setItem(LOCAL.tableName, newNoteList).then ( res => {
             console.log(res)
             setNoteList(res)
             onClose()
@@ -107,18 +107,18 @@ const Modal = forwardRef(({ openModal, onClose }, ref ) => {
     }
 
     /* function callback for post new data to IndexedDB */
-    const postForm = temp => { 
-        temp.push(Form.formFilter(form))
-        return temp
+    const postForm = newNoteList => { 
+        newNoteList.push(Form.formFilter(form))
+        return newNoteList
     }
     /* function callback for put/edit data on IndexedDB */
-    const putForm = temp => {
-        for(let i in temp) {
-            if(temp[i].id === form.id) {
-                temp[i] = Form.formFilter(form)
+    const putForm = newNoteList => {
+        for(let i in newNoteList) {
+            if(newNoteList[i].id === form.id) {
+                newNoteList[i] = Form.formFilter(form)
             }
         }
-        return temp
+        return newNoteList
     }
 
     /* on form submited */
@@ -178,6 +178,10 @@ const Modal = forwardRef(({ openModal, onClose }, ref ) => {
                         onClick={() => setOpenOptions(!openOptions)}>
                         <FontAwesomeIcon icon="ellipsis-v" />
                     </button>
+
+                    <div className="modal-time-socket">
+                        {Str.getEditOnTime(form.editedOn)}
+                    </div>
 
                     {/* SAVE BUTTON */}
                     <button

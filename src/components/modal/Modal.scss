@@ -72,16 +72,16 @@
         /* MODAL FOOTER TILE */
         .modal-footer {
             z-index: 1;
-            position: absolute;
+            position: fixed;
             bottom: 0;
             height: 52px;
             width: 100%;
             padding-bottom: 12px;
             background-color: $one;
+            display: grid;
+            grid-template-columns: [f0] 50px [f1] 1fr [f2] 62px [f3];
             .modal-left-btn, .modal-right-btn {
                 outline: none;
-                position: absolute;
-                margin-left: 20px;
                 background-color: transparent;
                 color: $five;
                 border: 0px;
@@ -91,16 +91,23 @@
                 font-weight: 600;
             }
             .modal-right-btn {
-                right: 0;
-                margin-right: 12px;
-                padding-top: 2px;
-                border-radius: 8px;
+                grid-column: f2 / f3;
                 color: $four;
                 font-size: 22px;
                 }
             .modal-left-btn {
                 margin-left: 1px;
                 font-size: 17px;
+            }
+            .modal-time-socket {
+                width: 100%;
+                height: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 12px;
+                padding-top: 2px;
+                color: $five;
             }
         }
         

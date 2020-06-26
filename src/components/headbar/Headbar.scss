@@ -2,7 +2,7 @@
 
 .headbar-base {
     width: 100%;
-    position: absolute;
+    position: fixed;
     z-index: 99;
     transition: all .3s ease;
     &--on {

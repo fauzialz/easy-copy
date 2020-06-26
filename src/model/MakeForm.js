@@ -11,7 +11,8 @@ function makeForm() {
         tags : [],
         deleted : false,
         pinned : false,
-        newEntry : true
+        newEntry : true,
+        editedOn : new Date()
     })
 }
 

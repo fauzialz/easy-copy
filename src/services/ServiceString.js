@@ -1,5 +1,15 @@
 import React, { Fragment } from 'react'
 
+const _monthList = [ 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+
+const _isToday = editOn => {
+    let now = new Date()
+    let year = now.getFullYear() === editOn.getFullYear()
+    let month = now.getMonth() === editOn.getMonth()
+    let date = now.getDate() === editOn.getDate()
+    return ( year && month && date)
+}
+
 const _hashtagTemplate = (hashtag, i) => (
     <a  key={i} 
         onClick={e => e.stopPropagation()} 
@@ -80,6 +90,12 @@ export default {
         if(str === "") return <br />
         let temp = str.split('\n').map( (line, i) => (<React.Fragment key={i} >{_hashtagConverter(line)} <br /></React.Fragment>))
         return (temp)
+    },
+    getEditOnTime: editOn => {
+        let timeString = _isToday(editOn) ? 
+            `Edited ${editOn.getHours() % 12 ? editOn.getHours() % 12 : 12 }:${editOn.getMinutes()} ${editOn.getHours() >= 12 ? 'PM' : 'AM'}` :
+            `Edited ${_monthList[editOn.getMonth()]} ${editOn.getDate()}, ${editOn.getFullYear()}`
+        return timeString
     },
     hashtagConverter: _hashtagConverter,
     markString: _markString
