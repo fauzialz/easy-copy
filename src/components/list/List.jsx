@@ -33,9 +33,7 @@ const List = ({ onEdit }) => {
     }
 
     return (
-        <div className="list-wrapper"
-            style={{ paddingTop: pinnedList.length > 0 && otherList.length > 0? '70px': '80px' }}
-        >
+        <div className="list-wrapper">
             {(noteList.filter(singleNote => singleNote.deleted === false).length) === 0 ?
                 /* WHEN NO LIST FOUND */
                 <div className="on-list-empty">{LOCAL.onListEmpty}<br/><Emoji /></div> :

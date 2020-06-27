@@ -2,6 +2,8 @@
 
 .headbar-base {
     width: 100%;
+    max-width: 768px;
+    margin: 0 auto;
     position: fixed;
     z-index: 99;
     transition: all .3s ease;
@@ -15,14 +17,13 @@
     }
 }
 .headbar-frame, .headbar-frame-focus {
-    width: calc(100% - 30px);
-    margin: 15px;
+    width: calc(100% - 40px);
+    margin: 20px;
     height: 46px;
     box-shadow: 0px 3px 3px 1px rgba(0,0,0,0.09);
     transition: all .3s ease;
     border-radius: 6px;
     margin-bottom: 0px;
-    margin-top: 15px;
     overflow: hidden;
     box-sizing: border-box;
     background-color: $two;
@@ -31,8 +32,8 @@
     width: 100%;
     margin: 0px;
     height: 63px;
-    border-radius: 0px;
-    height: 100vh;
+    border-radius: 20px;
+    height: calc(100vh - 200px);
     background-color: $one;
 }
 .headbar-bar, .headbar-bar-focus {
@@ -88,4 +89,21 @@
 }
 .headbar-search-focus {
     width: calc(100% - 107px);
+}
+
+@media( max-width : 768px ) {
+    .headbar-frame, .headbar-frame-focus {
+        width: calc(100% - 30px);
+        margin: 15px;
+    }
+    .headbar-base {
+        top: 0;
+    }
+    .headbar-frame-focus {
+        width: 100%;
+        margin: 0px;
+        height: 63px;
+        border-radius: 0px;
+        height: 100vh;
+    }
 }

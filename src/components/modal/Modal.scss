@@ -6,7 +6,7 @@
     opacity: 1;
     position: absolute;
     width: 100%;
-    height: 100vh;
+    height: calc(100vh - 200px);
     z-index: 100;
     background-color: $one;
     top: 0;
@@ -14,7 +14,7 @@
     transform: translate(0px, 0px);
     .modal-wrapper {
         position: relative;
-        height: 100vh;
+        height: inherit;
         width: 100%;
         margin: 0 auto;
         padding-top: 2px;
@@ -145,4 +145,10 @@
     visibility: hidden;
     opacity: 0;
     transform: translate(0px, 30px);
+}
+
+@media( max-width : 768px ) {
+    .modal-open, .modal-close {
+        height: 100vh;
+    }
 }

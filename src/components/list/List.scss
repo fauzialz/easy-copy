@@ -1,12 +1,12 @@
 @import '../../styles/pallete';
 
 .list-wrapper {
-    padding: 7.5px;
-    padding-bottom: 90px;
     height: 100%;
     width: 100%;
     overflow-x: auto;
-
+    padding: 20px;
+    padding-bottom: 90px;
+    padding-top: 80px;
     .on-list-empty {
         text-align: center;
         font-size: 13px;
@@ -27,3 +27,9 @@
     }
 }
 
+@media( max-width : 768px ) {
+    .list-wrapper {
+        padding: 7.5px;
+        padding-top: 70px;
+    }
+}

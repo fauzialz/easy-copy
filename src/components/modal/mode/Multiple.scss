@@ -2,7 +2,7 @@
 
 .multipletext-slot {
     width: 100%;
-    height: calc(100vh - 160px);
+    height: calc(100vh - 360px);
     overflow-y: auto;
     padding-bottom: 10px;
 
@@ -129,5 +129,11 @@
             margin-left: 12px;
             margin-top: 0px;
         }
+    }
+}
+
+@media( max-width : 768px ) {
+    .multipletext-slot {
+        height: calc(100vh - 160px);
     }
 }
