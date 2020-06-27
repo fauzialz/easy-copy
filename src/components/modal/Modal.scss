@@ -6,7 +6,7 @@
     opacity: 1;
     position: absolute;
     width: 100%;
-    height: 100vh;
+    height: calc(100vh - 200px);
     z-index: 100;
     background-color: $one;
     top: 0;
@@ -14,7 +14,7 @@
     transform: translate(0px, 0px);
     .modal-wrapper {
         position: relative;
-        height: 100vh;
+        height: inherit;
         width: 100%;
         margin: 0 auto;
         padding-top: 2px;
@@ -72,16 +72,16 @@
         /* MODAL FOOTER TILE */
         .modal-footer {
             z-index: 1;
-            position: absolute;
+            position: fixed;
             bottom: 0;
             height: 52px;
             width: 100%;
             padding-bottom: 12px;
             background-color: $one;
+            display: grid;
+            grid-template-columns: [f0] 50px [f1] 1fr [f2] 62px [f3];
             .modal-left-btn, .modal-right-btn {
                 outline: none;
-                position: absolute;
-                margin-left: 20px;
                 background-color: transparent;
                 color: $five;
                 border: 0px;
@@ -91,16 +91,23 @@
                 font-weight: 600;
             }
             .modal-right-btn {
-                right: 0;
-                margin-right: 12px;
-                padding-top: 2px;
-                border-radius: 8px;
+                grid-column: f2 / f3;
                 color: $four;
                 font-size: 22px;
                 }
             .modal-left-btn {
                 margin-left: 1px;
                 font-size: 17px;
+            }
+            .modal-time-socket {
+                width: 100%;
+                height: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 12px;
+                padding-top: 2px;
+                color: $five;
             }
         }
         
@@ -138,4 +145,10 @@
     visibility: hidden;
     opacity: 0;
     transform: translate(0px, 30px);
+}
+
+@media( max-width : 768px ) {
+    .modal-open, .modal-close {
+        height: 100vh;
+    }
 }

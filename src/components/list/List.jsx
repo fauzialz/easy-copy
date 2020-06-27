@@ -15,26 +15,32 @@ const List = ({ onEdit }) => {
     // eslint-disable-next-line
     }, [noteList])
 
+    const filterEditedOn = noteListInput => noteListInput.sort( (a, b) => (b.editedOn - a.editedOn))
+
     const filterPinnedList = () => {
         let pinnedListTemp = noteList.filter( note => ( note.pinned && !note.deleted ))
         let pinnedId = pinnedListTemp.map( pinned => pinned.id )
         filterOtherList(pinnedId)
+        pinnedListTemp = filterEditedOn([...pinnedListTemp])
         setPinnedList(pinnedListTemp)
     }
 
     const filterOtherList = (pinnedId) => {
         let otherListTemp = noteList.filter( note => ( !pinnedId.includes(note.id) && !note.deleted ))
         otherListTemp.reverse()
+        otherListTemp = filterEditedOn([...otherListTemp])
         setOtherList(otherListTemp)
     }
 
     return (
-        <div className="list-wrapper"
-            style={{ paddingTop: pinnedList.length > 0 && otherList.length > 0? '70px': '80px' }}
-        >
+        <div className="list-wrapper">
             {(noteList.filter(singleNote => singleNote.deleted === false).length) === 0 ?
                 /* WHEN NO LIST FOUND */
-                <div className="on-list-empty">{LOCAL.onListEmpty}<br/><Emoji /></div> :
+                <div className="on-list-empty">
+                    <div className="note">
+                        {LOCAL.onListEmpty}<br/><Emoji />
+                    </div>
+                </div> :
 
                 /* WHEN LIST EXIST */
                 <Fragment>

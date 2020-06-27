@@ -1,18 +1,45 @@
-import React, {forwardRef, useState, useContext} from 'react'
+import React, { useState, useContext, useRef } from 'react'
 import localforage from 'localforage'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Singular from './mode/Singular'
 import Multiple from './mode/Multiple'
 import { formContext, setForm, noteListContext } from '../../store'
 import LOCAL from '../../config'
-import { Form } from '../../services'
+import { Form, Str } from '../../services'
 import { makeContent } from '../../model';
 import './Modal.scss'
+import { useEffect } from 'react'
+import { useHistory } from 'react-router-dom'
 
-const Modal = forwardRef(({ openModal, onClose }, ref ) => {
+const Modal = () => {
     const { noteList, setNoteList } = useContext(noteListContext)
     const {form, dispatch} = useContext(formContext)
     const [openOptions, setOpenOptions] = useState(false)
+    const [openModal, setOpenModal] = useState(false)
+    const inputRef = useRef(null)
+    const history = useHistory()
+
+    useEffect(() => {
+        if(form.id === '') {
+            history.replace('/')
+            return
+        }
+        setOpenModal(true)
+        if(!form.newEntry) return
+        setTimeout(() => {
+            inputRef.current.focus()
+        }, 100);
+         // eslint-disable-next-line
+    }, [])
+
+    const onCloseHandler = () => {
+        setOpenModal(false)
+        // onClose()
+        setTimeout(() => {
+            history.replace('/')
+            // dispatch(clearForm())
+        }, 200);
+    }
 
     /*  To make the user see that 
         options was closed first
@@ -95,30 +122,30 @@ const Modal = forwardRef(({ openModal, onClose }, ref ) => {
     /* on submit basic work flow */
     const onSubmitFrame = manipulateNoteList => {
         if(form.contents[0].text === '') {
-            onClose()
+            onCloseHandler()
             return
         }
-        let temp = manipulateNoteList([...noteList])
-        localforage.setItem(LOCAL.tableName, temp).then ( res => {
+        let newNoteList = manipulateNoteList([...noteList])
+        localforage.setItem(LOCAL.tableName, newNoteList).then ( res => {
             console.log(res)
             setNoteList(res)
-            onClose()
+            onCloseHandler()
         })
     }
 
     /* function callback for post new data to IndexedDB */
-    const postForm = temp => { 
-        temp.push(Form.formFilter(form))
-        return temp
+    const postForm = newNoteList => { 
+        newNoteList.push(Form.formFilter(form))
+        return newNoteList
     }
     /* function callback for put/edit data on IndexedDB */
-    const putForm = temp => {
-        for(let i in temp) {
-            if(temp[i].id === form.id) {
-                temp[i] = Form.formFilter(form)
+    const putForm = newNoteList => {
+        for(let i in newNoteList) {
+            if(newNoteList[i].id === form.id) {
+                newNoteList[i] = Form.formFilter(form)
             }
         }
-        return temp
+        return newNoteList
     }
 
     /* on form submited */
@@ -134,7 +161,7 @@ const Modal = forwardRef(({ openModal, onClose }, ref ) => {
                     {/* BACK BUTTON */}
                     <button
                         className="modal-back-btn" 
-                        onClick={() => checkOptions(onClose)} >
+                        onClick={() => checkOptions(onCloseHandler)} >
                         <FontAwesomeIcon icon="arrow-left" />
                     </button>
 
@@ -159,7 +186,7 @@ const Modal = forwardRef(({ openModal, onClose }, ref ) => {
 
                     /* SIUNGLAR INPUT TEXT */
                     <Singular
-                        ref={ref}
+                        ref={inputRef}
                         onChange={onChangeText}
                     /> 
                     :
@@ -178,6 +205,10 @@ const Modal = forwardRef(({ openModal, onClose }, ref ) => {
                         onClick={() => setOpenOptions(!openOptions)}>
                         <FontAwesomeIcon icon="ellipsis-v" />
                     </button>
+
+                    <div className="modal-time-socket">
+                        {Str.getEditOnTime(form.editedOn)}
+                    </div>
 
                     {/* SAVE BUTTON */}
                     <button
@@ -209,6 +240,6 @@ const Modal = forwardRef(({ openModal, onClose }, ref ) => {
             </div>
         </div>
     )
-})
+}
 
 export default Modal

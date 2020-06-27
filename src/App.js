@@ -1,4 +1,4 @@
-import React, { useState, useRef, useContext, useEffect} from 'react';
+import React, { useContext, useEffect, useRef} from 'react';
 import './App.scss';
 import { Helmet } from 'react-helmet'
 import { Obj } from './services'
@@ -10,15 +10,22 @@ import List from './components/list';
 import { formContext, setForm, clearForm, setFormNewId, noteListContext, settingContext } from './store';
 import LOCAL from './config';
 import { makeSetting } from './model';
+import { Switch, Route, useHistory, useLocation, Redirect } from 'react-router-dom';
 
 function App() {
   const { dispatch } = useContext(formContext)
   const { noteList, setNoteList } = useContext(noteListContext)
   const { setSetting } = useContext(settingContext)
-  const [openModal, setOpenModal] = useState(false)
-  const refAdd = useRef(null)
+  const init = useRef(true)
+  let history = useHistory()
+  let { pathname } = useLocation()
 
   useEffect(() => {
+    if(pathname !== '/') return //whenever close modal
+    dispatch(clearForm())
+
+    if(!init.current) return
+
     localforage.getItem(LOCAL.tableName).then( res => {
         if(res) {
             setNoteList(res)
@@ -34,27 +41,18 @@ function App() {
         setSetting({...res})
       }).catch(err => console.log(err))
     }).catch(err => console.log(err))
+    init.current = false
     // eslint-disable-next-line
-}, [])
+}, [pathname])
 
   /* Open Modal handler */
   const openModalHandler = (item = {})  => {
-    setOpenModal(true)
+    history.push('/modal')
     if(Obj.isEmpty(item)) {
-      setTimeout(() => {
-        refAdd.current.focus()
-      }, 100);
       dispatch(setFormNewId(noteList))
-    }else{
-      dispatch(setForm(item))
+      return
     }
-  }
-
-  const onClose = () => {
-    setOpenModal(false)
-    setTimeout(() => {
-      dispatch(clearForm())
-    }, 200);
+    dispatch(setForm(item))
   }
 
   return (
@@ -73,11 +71,15 @@ function App() {
           <FontAwesomeIcon icon="plus" />
         </button>
 
-        <Modal
-          openModal={openModal}
-          onClose={onClose}
-          ref={refAdd}
-        />
+        <Switch>
+          <Route exact path="/modal" >
+            <Modal />
+          </Route>
+          <Route path="*">
+            <Redirect to={{pathname : '/'}} />
+          </Route>
+        </Switch>
+
       </div>
     </div>
   );

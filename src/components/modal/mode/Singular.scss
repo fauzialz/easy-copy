@@ -1,7 +1,7 @@
 @import '../../../styles/pallete';
 
 .modal-textarea {
-    height: calc(100vh - 160px);
+    height: calc(100vh - 360px);
     width: 100%;
     resize: none;
     padding: 10px 20px;
@@ -13,4 +13,10 @@
 }
 .modal-textarea::placeholder {
     color: $font-blur;
+}
+
+@media( max-width : 768px ) {
+    .modal-textarea {
+        height: calc(100vh - 160px);
+    }
 }
