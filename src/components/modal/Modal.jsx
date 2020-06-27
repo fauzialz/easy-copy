@@ -206,9 +206,9 @@ const Modal = () => {
                         <FontAwesomeIcon icon="ellipsis-v" />
                     </button>
 
-                    <div className="modal-time-socket">
+                    {form.editedOn && <div className="modal-time-socket">
                         {Str.getEditOnTime(form.editedOn)}
-                    </div>
+                    </div>}
 
                     {/* SAVE BUTTON */}
                     <button
