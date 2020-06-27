@@ -36,7 +36,11 @@ const List = ({ onEdit }) => {
         <div className="list-wrapper">
             {(noteList.filter(singleNote => singleNote.deleted === false).length) === 0 ?
                 /* WHEN NO LIST FOUND */
-                <div className="on-list-empty">{LOCAL.onListEmpty}<br/><Emoji /></div> :
+                <div className="on-list-empty">
+                    <div className="note">
+                        {LOCAL.onListEmpty}<br/><Emoji />
+                    </div>
+                </div> :
 
                 /* WHEN LIST EXIST */
                 <Fragment>

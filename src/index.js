@@ -7,12 +7,15 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 import { fab } from '@fortawesome/free-brands-svg-icons'
 import { fas } from '@fortawesome/free-solid-svg-icons'
 import { GlobalProvider } from './store';
+import { BrowserRouter } from 'react-router-dom';
 
 library.add( fab, fas )
 
 ReactDOM.render(
     <GlobalProvider>
-        <App />
+        <BrowserRouter>
+            <App />
+        </BrowserRouter>
     </GlobalProvider>
 , document.getElementById('root'));
 

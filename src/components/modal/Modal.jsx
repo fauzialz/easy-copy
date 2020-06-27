@@ -1,4 +1,4 @@
-import React, {forwardRef, useState, useContext} from 'react'
+import React, { useState, useContext, useRef } from 'react'
 import localforage from 'localforage'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Singular from './mode/Singular'
@@ -8,11 +8,38 @@ import LOCAL from '../../config'
 import { Form, Str } from '../../services'
 import { makeContent } from '../../model';
 import './Modal.scss'
+import { useEffect } from 'react'
+import { useHistory } from 'react-router-dom'
 
-const Modal = forwardRef(({ openModal, onClose }, ref ) => {
+const Modal = () => {
     const { noteList, setNoteList } = useContext(noteListContext)
     const {form, dispatch} = useContext(formContext)
     const [openOptions, setOpenOptions] = useState(false)
+    const [openModal, setOpenModal] = useState(false)
+    const inputRef = useRef(null)
+    const history = useHistory()
+
+    useEffect(() => {
+        if(form.id === '') {
+            history.replace('/')
+            return
+        }
+        setOpenModal(true)
+        if(!form.newEntry) return
+        setTimeout(() => {
+            inputRef.current.focus()
+        }, 100);
+         // eslint-disable-next-line
+    }, [])
+
+    const onCloseHandler = () => {
+        setOpenModal(false)
+        // onClose()
+        setTimeout(() => {
+            history.replace('/')
+            // dispatch(clearForm())
+        }, 200);
+    }
 
     /*  To make the user see that 
         options was closed first
@@ -95,14 +122,14 @@ const Modal = forwardRef(({ openModal, onClose }, ref ) => {
     /* on submit basic work flow */
     const onSubmitFrame = manipulateNoteList => {
         if(form.contents[0].text === '') {
-            onClose()
+            onCloseHandler()
             return
         }
         let newNoteList = manipulateNoteList([...noteList])
         localforage.setItem(LOCAL.tableName, newNoteList).then ( res => {
             console.log(res)
             setNoteList(res)
-            onClose()
+            onCloseHandler()
         })
     }
 
@@ -134,7 +161,7 @@ const Modal = forwardRef(({ openModal, onClose }, ref ) => {
                     {/* BACK BUTTON */}
                     <button
                         className="modal-back-btn" 
-                        onClick={() => checkOptions(onClose)} >
+                        onClick={() => checkOptions(onCloseHandler)} >
                         <FontAwesomeIcon icon="arrow-left" />
                     </button>
 
@@ -159,7 +186,7 @@ const Modal = forwardRef(({ openModal, onClose }, ref ) => {
 
                     /* SIUNGLAR INPUT TEXT */
                     <Singular
-                        ref={ref}
+                        ref={inputRef}
                         onChange={onChangeText}
                     /> 
                     :
@@ -213,6 +240,6 @@ const Modal = forwardRef(({ openModal, onClose }, ref ) => {
             </div>
         </div>
     )
-})
+}
 
 export default Modal
