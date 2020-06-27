@@ -26,7 +26,7 @@ const Multiple = ({ onChange }) => {
     /*  On list focus handler.
         Show/hide add info button, delete list button */
     const onListFocus = e => {
-        let temp = form
+        let temp = {...form}
         let node = e.target.name.split('-') // value of node = [ index, "text"/"info"]
         for(let i in temp.contents) {
             if(i !== node[0]) {
@@ -44,7 +44,7 @@ const Multiple = ({ onChange }) => {
     
     /* On input info blur handler */
     const onInfoBlur = () => {
-        let temp = form
+        let temp = {...form}
         for(let i in temp.contents) {
           temp.contents[i].infoFocus = false
         }
@@ -53,14 +53,15 @@ const Multiple = ({ onChange }) => {
     
     /* Open/close access to content list with info */
     const infoButtonHandler = i => {
+        let formTemp = {...form}
         let input = refs[`info${i}`]
-        if(!form.contents[i].withInfo) {
+        if(!formTemp.contents[i].withInfo) {
             setTimeout(() => {
                 input.current.focus() //Make info input auto focus when add info button hit
             }, 300);
         }
-        form.contents[i].withInfo = !form.contents[i].withInfo
-        dispatch(setForm(form))
+        formTemp.contents[i].withInfo = !formTemp.contents[i].withInfo
+        dispatch(setForm(formTemp))
     }
     
     /* Add new content on list mode handler */
@@ -77,7 +78,7 @@ const Multiple = ({ onChange }) => {
     /* Delete content on list mode handler */
     const deleteListHandler = i => {
         setRefs({}) /* Reset Refs when deleting a list */
-        let formTemp = form
+        let formTemp = {...form}
         formTemp.contents.splice(i, 1)
         dispatch(setForm(formTemp))
     }
