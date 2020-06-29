@@ -7,7 +7,6 @@ import { makeContent } from '../../../model';
 
 const Multiple = ({ onChange }) => {
     const {form, dispatch} = useContext(formContext)
-    const [showAdd, setShowAdd] = useState(true)
     const [refs, setRefs] = useState({})
     /* TODO!!! create refs for main input text */
 
@@ -69,10 +68,6 @@ const Multiple = ({ onChange }) => {
         let formTemp = {...form}
         formTemp.contents.push(makeContent())
         dispatch(setForm(formTemp))
-        setShowAdd(false)
-        setTimeout(() => {      /* Delay add botton show after hit */
-            setShowAdd(true)
-        }, 2400);
     }
     
     /* Delete content on list mode handler */
@@ -157,13 +152,11 @@ const Multiple = ({ onChange }) => {
             ))
         }
             {/* ADD CONTENT BUTTON */}
-            {showAdd?
-                <button className="mutlipletext-add" 
-                    onClick={addListHandler}>
-                    <FontAwesomeIcon icon="plus" />
-                    <div>New Text</div>
-                </button> : null
-            }
+            <button className="mutlipletext-add" 
+                onClick={addListHandler}>
+                <FontAwesomeIcon icon="plus" />
+                <div>New Text</div>
+            </button>
         </div>
     )
 }
