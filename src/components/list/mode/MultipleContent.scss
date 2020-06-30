@@ -14,8 +14,8 @@
         align-items: center;
         &--mosaic {
             margin-left: -15px;
-            padding: 10px;
-            padding-left: 15px;
+            padding: 15px;
+            padding-right: 10px;
             width: calc(100% + 15px);
             border-bottom: 1px solid $two-line;
             align-content: flex-start;
@@ -25,14 +25,14 @@
             }
         }
         .list-text {
-            font-size: 13px;
+            font-size: 12px;
             padding-top: 1px;
         }
     }
     .list-content-tile:last-child {
-        margin-bottom: -4px;
+        margin-bottom: -11px;
     }
     .list-content-tile:first-child {
-        margin-top: -4px;
+        margin-top: -11px;
     }
 }
