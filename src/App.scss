@@ -45,20 +45,33 @@ button {
   opacity: 1;
 }
 
-.add-button {
-  cursor: pointer;
+.button-wrapper {
+  display: flex;
+  margin-bottom: 30px;
+  margin-right: 26px;
   position: absolute;
   bottom: 0;
   right: 0;
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
+  button:first-child {
+    border-radius: 20px 0 0 20px;
+    border-right: .5px solid $two-line;
+    padding-left: 10px;
+  }
+  button:last-child {
+    border-radius: 0 20px 20px 0;
+    border-left: .5px solid $two-line;
+    padding-right: 10px;
+  }
+}
+
+.add-button {
+  cursor: pointer;
+  box-shadow: 2px 4px 3px 1px rgba(0,0,0,0.09);
+  width: 60px;
+  height: 42px;
   border: 0px;
   background-color: $two;
-  margin-right: 26px;
-  box-shadow: 2px 4px 3px 1px rgba(0,0,0,0.09);
-  margin-bottom: 30px;
-  font-size: 20px;
+  font-size: 18px;
   color: $three;
   padding-top: 3.5px;
   outline: none;
@@ -76,7 +89,8 @@ button {
     height: 100%;
     border-radius: 0px;
   }
-  .add-button {
+  .button-wrapper {
     position: fixed;
+    margin-right: 20px;
   }
 }

@@ -1,4 +1,4 @@
-export default {
+const Obj = {
     isEmpty: (obj) => Object.entries(obj).length === 0 && obj.constructor === Object,
     deleteProps: (obj, propNames) => {
         if(propNames.constructor !== Array) throw new Error('Wrong argument type. propNames not an array!')
@@ -10,3 +10,5 @@ export default {
         return obj
     }
 }
+
+export default Obj
