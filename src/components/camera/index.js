@@ -1,11 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useUserMedia } from '../../services/serviceMediaStream'
-import { useOffsets } from '../../services/serviceOffset';
+// import { useOffsets } from '../../services/serviceOffset';
 import './styles.scss'
 
 const CAPTURE_OPTIONS = {
     audio: false,
-    video: { facingMode: "environtment" },
+    video: { facingMode: "environment" },
 };
 
 const Camera = ({onCapture, onClear}) => {
@@ -16,7 +16,7 @@ const Camera = ({onCapture, onClear}) => {
     const [container, setContainer] = useState({ width: 0, height: 0 })
     const [isVideoPlaying, setIsVideoPlaying] = useState(false)
     const [isCanvasEmpty, setIsCanvasEmpty] = useState(true)
-    const [isFlashing, setIsFlashing] = useState(false)
+    // const [isFlashing, setIsFlashing] = useState(false)
 
     const mediaStream = useUserMedia(CAPTURE_OPTIONS)
     // const offsets = useOffsets(
@@ -48,7 +48,7 @@ const Camera = ({onCapture, onClear}) => {
         
         canvasRef.current.toBlob(blob => onCapture(blob), "image/jpeg", 1);
         setIsCanvasEmpty(false);
-        setIsFlashing(true);
+        // setIsFlashing(true);
     }
 
     const handleClear = () => {
