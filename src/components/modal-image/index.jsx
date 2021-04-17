@@ -1,7 +1,9 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { useEffect, useRef, useState } from 'react'
 import { useHistory } from 'react-router-dom'
-import Tesseract, { createWorker } from 'tesseract.js'
+import { createWorker } from 'tesseract.js'
+import Camera from '../camera'
+import './styles.scss'
 
 const ModalImage = () => {
     const [openModal, setOpenModal] = useState(false)
@@ -95,17 +97,28 @@ const ModalImage = () => {
 
     return (
         <div className={openModal? "modal-open" : "modal-close"}>
-            <div className="modal-wrapper">
+            <div className="modal-wrapper" style={{position: 'relative'}}>
                 {/* MODAL HEADER SECTION */}
-                <div className="modal-header">
+                <div className="modal-header" style={{position: 'absolute', top:0, left: 0, zIndex: 2}}>
 
                     {/* BACK BUTTON */}
                     <button
-                        className="modal-back-btn"
+                        className="modal-back-btn btn-img"
                         onClick={() => checkOptions(onCloseHandler)} >
                         <FontAwesomeIcon icon="arrow-left" />
                     </button>
 
+                </div>
+
+                <div style={{width: '100%', height: '100%', position: 'absolute', top: 0, display:'flex', justifyContent: 'center'}}>
+                    <Camera
+                        onCapture={(blob) => {
+                            console.log(blob)
+                        }}
+                        onClear={() => {
+                            
+                        }}
+                    />
                 </div>
 
                 <div style={{padding: 20}}>
