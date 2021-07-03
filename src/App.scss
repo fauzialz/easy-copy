@@ -18,6 +18,7 @@ button, input {
 
 button {
   cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .outer-wrapper {
@@ -52,6 +53,7 @@ button {
   position: absolute;
   bottom: 0;
   right: 0;
+  z-index: 2;
   button:first-child {
     border-radius: 20px 0 0 20px;
     border-right: .5px solid $two-line;

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 
 export const useUserMedia = (requestedMedia) => {
     const [mediaStream, setMediaStream] = useState(null)
+    const [err, setErr] = useState('')
 
     useEffect(() => {
         const enableStream = async () => {
@@ -10,6 +11,7 @@ export const useUserMedia = (requestedMedia) => {
                 setMediaStream(stream)
             } catch (err) {
                 console.error(err)
+                setErr(err)
             }
         }
 
@@ -26,5 +28,5 @@ export const useUserMedia = (requestedMedia) => {
         }
     }, [mediaStream, requestedMedia])
 
-    return mediaStream
+    return [mediaStream, err]
 }

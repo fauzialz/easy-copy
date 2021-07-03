@@ -6,7 +6,7 @@ const LOCAL = {
     onCopy : 'Ready to paste!',
     infoLength : 10,
     onTextEmpty : 'Easy Copy says: "Dear Mr. User, you copy a blank text."',
-    onSearchEmpty : 'No maching text'
+    onSearchEmpty : 'No maching text',
 }
 
 export default LOCAL

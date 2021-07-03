@@ -1,4 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
+import { useHistory, useLocation } from 'react-router';
 import { useUserMedia } from '../../services/serviceMediaStream'
 // import { useOffsets } from '../../services/serviceOffset';
 import './styles.scss'
@@ -8,17 +9,18 @@ const CAPTURE_OPTIONS = {
     video: { facingMode: "environment" },
 };
 
-const Camera = ({onCapture, onClear}) => {
+const Camera = ({onCapture, onClear, onCameraStateChange, isVideoPlaying, isCapture, disabled}) => {
     const wrapperRef = useRef()
     const videoRef = useRef()
     const canvasRef = useRef()
+    const history = useHistory()
+    const { pathname } = useLocation()
 
     const [container, setContainer] = useState({ width: 0, height: 0 })
-    const [isVideoPlaying, setIsVideoPlaying] = useState(false)
     const [isCanvasEmpty, setIsCanvasEmpty] = useState(true)
-    // const [isFlashing, setIsFlashing] = useState(false)
+    const [isFlashing, setIsFlashing] = useState(false)
 
-    const mediaStream = useUserMedia(CAPTURE_OPTIONS)
+    const [mediaStream, err] = useUserMedia(CAPTURE_OPTIONS)
     // const offsets = useOffsets(
     //     videoRef.current && videoRef.current.videoWidth,
     //     videoRef.current && videoRef.current.videoHeight,
@@ -32,11 +34,12 @@ const Camera = ({onCapture, onClear}) => {
 
     const handleCanPlay = () => {
         videoRef.current.play();
-        setIsVideoPlaying(true);
+        onCameraStateChange('MEDIA_ONLINE');
         handleResize()
     }
 
     const handleCapture = () => {
+        setIsFlashing(true)
         const context = canvasRef.current.getContext("2d")
         context.drawImage(
             videoRef.current,
@@ -48,14 +51,20 @@ const Camera = ({onCapture, onClear}) => {
         
         canvasRef.current.toBlob(blob => onCapture(blob), "image/jpeg", 1);
         setIsCanvasEmpty(false);
-        // setIsFlashing(true);
+        setTimeout(() => {
+            setIsFlashing(false)
+        }, 100);
     }
 
-    const handleClear = () => {
+    const handleClear = useCallback( () => {
         const context = canvasRef.current.getContext("2d");
         context.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
         setIsCanvasEmpty(true);
-        onClear();
+        onClear && onClear();
+    }, [onClear])
+
+    const handleReset = () => {
+        history.replace(pathname)
     }
 
     const handleResize = () => {
@@ -72,6 +81,21 @@ const Camera = ({onCapture, onClear}) => {
         handleResize()
     }, [])
 
+    useEffect(() => {
+        if (!isCapture) {
+            handleClear()
+        }
+    }, [isCapture, handleClear])
+
+    useEffect(() => {
+        if (isVideoPlaying) return
+        if (err) {
+            onCameraStateChange('NO_MEDIA')
+        } else {
+            onCameraStateChange('LOADING')
+        }
+    }, [mediaStream, err, isVideoPlaying, onCameraStateChange])
+
     return (
         <div
             ref={wrapperRef}
@@ -85,11 +109,6 @@ const Camera = ({onCapture, onClear}) => {
                     playsInline
                     muted
                     style={{left: 0, top: 0, height: '100%'}}
-                        
-                    // style={{
-                    //     top: `-${offsets.y}px`,
-                    //     left: `-${offsets.x}px`
-                    // }}
                     hidden={!isVideoPlaying}
                 />
             </div>
@@ -97,7 +116,7 @@ const Camera = ({onCapture, onClear}) => {
             <div className='camera-container'>
                 <canvas
                     ref={canvasRef}
-                    width={container.width}
+                    width={container.width || 0}
                     height={container.height}
                     style={{
                         height: '100%',
@@ -105,12 +124,18 @@ const Camera = ({onCapture, onClear}) => {
                 />
             </div>
 
+            <div className={isFlashing && isVideoPlaying? 'camera-flash camera-flash-on' : 'camera-flash'} />
+
             <div className='camera-container-btn'>
                 <button
-                    className='camera-btn'
-                    onClick={isCanvasEmpty ? handleCapture : handleClear}
+                    className={!isVideoPlaying? 'camera-btn-hide' : 'camera-btn'}
+                    onClick={isCanvasEmpty ? handleCapture : handleReset}
+                    disabled={disabled}
                 />
             </div>
+            
+            {/* Blcok camera view when disabled */}
+            <div className={`camera-container camera-block-${disabled? 'on' : 'off'}`} />
         </div>
     )
 }

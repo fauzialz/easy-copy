@@ -1,48 +1,99 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { useEffect, useRef, useState } from 'react'
-import { useHistory } from 'react-router-dom'
+import { useHistory, useLocation } from 'react-router-dom'
+import queryString from 'query-string'
 import { createWorker } from 'tesseract.js'
 import Camera from '../camera'
+import LoadingSpinner from '../loadingSpinner'
 import './styles.scss'
+
+const INPUT_TYPE = {
+    FILE: 'file',
+    CAMERA: 'camera',
+}
+
+const OCR_STATUS = {
+    IDLE: 'idle',
+    RUNNING: 'running',
+    COMPLETE: 'done',
+}
 
 const ModalImage = () => {
     const [openModal, setOpenModal] = useState(false)
     const [openOptions, setOpenOptions] = useState(false)
-    const [ocrResult, setOcrResult] = useState('')
-    const history = useHistory()
-    const mount = useRef(false)
 
+    // OCR STATUS
+    const [ocrStatus, setOcrStatus] = useState(OCR_STATUS.IDLE)
+    const [ocrMessage, setOcrMessage] = useState('')
+    const [ocrResult, setOcrResult] = useState('')
+    const [ocrInputType, setOcrInputType] = useState('')
+
+    // CAMERA STATUS
+    const [cameraState, setCameraState] = useState('LOADING')
+
+    const history = useHistory()
+    const location = useLocation()
+    
+    const mount = useRef(false)
     const inputRef = useRef()
+    const workerRef = useRef()
+
+    // PARAMS
+    const query = queryString.parse(location.search)
+    const capture = Boolean(query?.capture)
+    const result = query?.result || ''
 
     useEffect(() => {
         mount.current = true
         setOpenModal(true)
         return () => {
             mount.current = false
+            const worker = workerRef.current
+            if (worker) {
+                worker.terminate()
+            }
         }
     }, [])
 
-    const worker = createWorker({
-        logger: m => {
-            console.log(m)
-            if (m?.jobId) {
-                const progress = Number(m.progress)
-                const message = `recognizing... (${progress.toFixed(2) * 100}%)`
-                setOcrResult(message)
-            }
-        },
-    })
+    const resetAllOcrState = () => {
+        setOcrStatus(OCR_STATUS.IDLE)
+        setOcrInputType('')
+        setOcrMessage('')
+        setOcrResult('')
+    }
 
-    const runOCR = async (scr) => {
+    const runOCR = async (scr, inputType) => {
+        setOcrStatus(OCR_STATUS.RUNNING)
+        setOcrInputType(inputType)
+        setOcrMessage('preparing...')
+
+        const worker = createWorker({
+            logger: m => {
+                if (m?.jobId) {
+                    const progress = Number(m.progress)
+                    const message = `recognizing... (${Math.floor(progress.toFixed(2) * 100)}%)`
+                    setOcrMessage(message)
+                }
+            },
+        })
+        workerRef.current = worker
+        
         await worker.load()
         await worker.loadLanguage('eng')
         await worker.initialize('eng')
         const { data: { text } } = await worker.recognize(scr)
+        await worker.terminate()
+
         if (!mount.current) {
-            console.log('component unmounted')
+            console.info('component unmounted')
             return
         }
+
+        setOcrStatus(OCR_STATUS.COMPLETE)
+        setOcrMessage('done')
         setOcrResult(text)
+        const params = queryString.stringify({ ...query, result : text})
+        history.push(`${location.pathname}?${params}`)
     }
 
     /*  To make the user see that
@@ -57,21 +108,27 @@ const ModalImage = () => {
         }else fun()
     }
 
+    const getBackRoute = () => {
+        if (!capture && !result) {
+            return '/'
+        }
+        if (capture && result) {
+            return `${location.pathname}?capture=true`
+        }
+        return location.pathname
+    }    
+
     const onCloseHandler = () => {
-        setOpenModal(false)
-        // onClose()
+        setOpenModal(capture || result)
+        if (result) resetAllOcrState()
         setTimeout(() => {
-            history.replace('/')
-            // dispatch(clearForm())
+            history.replace(getBackRoute())
         }, 200);
     }
 
     const readFile = (e) => {
         if (e.target.files) {
             const file = e.target.files[0];
-            // const allowedExt = ['image/png', 'image/jpg', 'image/jpeg'];
-            // debugger
-            // if (!allowedExt.includes(file.type)) return;
 
             const reader = new FileReader();
 
@@ -84,16 +141,26 @@ const ModalImage = () => {
                     let image = new Image()
                     image.addEventListener('load', (loadedImage) => {
                         let url = loadedImage.srcElement.src
-                        setOcrResult('preparing...')
-                        runOCR(url)
+                        runOCR(url, INPUT_TYPE.FILE)
                     })
                     image.src = url
                 }
             };
-            // debugger
             reader.readAsDataURL(file);
         }
     }
+
+    const handlerCameraState = (status) => {
+        setCameraState(status)
+    }
+
+    const isVideoPlaying = cameraState === 'MEDIA_ONLINE'
+    const cameraIsLoading = cameraState === 'LOADING'
+    const noCamera = cameraState === 'NO_MEDIA'
+
+    const ocrIsRunning = ocrStatus === OCR_STATUS.RUNNING
+    const ocrIsDone = ocrStatus === OCR_STATUS.COMPLETE
+    const ocrInputIsFile = ocrInputType === INPUT_TYPE.FILE
 
     return (
         <div className={openModal? "modal-open" : "modal-close"}>
@@ -110,31 +177,46 @@ const ModalImage = () => {
 
                 </div>
 
+                {noCamera &&
+                    <div style={{width: '100%', height: '100%', position: 'absolute', top: 0, display:'flex', justifyContent: 'center', alignItems: 'center'}}>
+                        <div className="note">
+                            No camera detected.<br/>
+                            Convert a picture from your local storage instead.
+                        </div>
+                    </div>
+                }
+
+                {cameraIsLoading && 
+                    <div style={{width: '100%', height: '100%', position: 'absolute', top: 0, display:'flex', justifyContent: 'center', alignItems: 'center'}}>
+                        <LoadingSpinner />
+                    </div>
+                }
+
                 <div style={{width: '100%', height: '100%', position: 'absolute', top: 0, display:'flex', justifyContent: 'center'}}>
                     <Camera
                         onCapture={(blob) => {
                             console.log(blob)
+                            history.push(`${location.pathname}?capture=true`)
                         }}
-                        onClear={() => {
-                            
-                        }}
+                        onCameraStateChange={handlerCameraState}
+                        isVideoPlaying={isVideoPlaying}
+                        isCapture={capture}
+                        disabled={ocrInputIsFile}
                     />
                 </div>
 
-                <div style={{padding: 20}}>
-                    {ocrResult}
-                </div>
-
-                <div style={{position: 'fixed', bottom: 0, padding: 10}}>
+                <div className={!isVideoPlaying? 'btn-file-socket-mid' : 'btn-file-socket'}>
                     <button
-                        style={{ color: 'white', }}
+                        className='btn-img btn-file'
                         onClick={() => {
                             if (inputRef.current) {
                                 inputRef.current.value = '';
                                 inputRef.current.click();
                             }
-                        }}>
-                        select image
+                        }}
+                        disabled={ocrIsRunning}
+                    >
+                            <FontAwesomeIcon icon='folder' />
                     </button>
                 </div>
             </div>
@@ -146,6 +228,23 @@ const ModalImage = () => {
                 onChange={readFile}
                 accept='image/*'
             />
+
+            <div
+                style={{
+                    transition: 'all .3s ease',
+                    width: '100%',
+                    height: ocrIsDone? '100%' : 62,
+                    position: 'fixed',
+                    bottom: 0,
+                    boxShadow: '0px -8px 6px -3px rgba(0, 0, 0, 0.089)',
+                    backgroundColor: ocrIsDone? '#303841' : '#3a4750',
+                    padding: ocrIsDone? '62px 24px' : '20px 24px',
+                    transform: `translateY(${ocrIsRunning || ocrIsDone? '0px' : '100%'})`,
+                    overflow: 'auto',
+                }}
+            >
+                {ocrIsRunning? ocrMessage : ocrResult}
+            </div>
         </div>
     )
 }
