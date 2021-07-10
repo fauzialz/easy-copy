@@ -6,16 +6,11 @@ import { createWorker } from 'tesseract.js'
 import Camera from '../camera'
 import LoadingSpinner from '../loadingSpinner'
 import './styles.scss'
+import OcrPanel, { OCR_STATUS } from '../ocr-panel'
 
 const INPUT_TYPE = {
     FILE: 'file',
     CAMERA: 'camera',
-}
-
-const OCR_STATUS = {
-    IDLE: 'idle',
-    RUNNING: 'running',
-    COMPLETE: 'done',
 }
 
 const ModalImage = () => {
@@ -25,7 +20,6 @@ const ModalImage = () => {
     // OCR STATUS
     const [ocrStatus, setOcrStatus] = useState(OCR_STATUS.IDLE)
     const [ocrMessage, setOcrMessage] = useState('')
-    const [ocrResult, setOcrResult] = useState('')
     const [ocrInputType, setOcrInputType] = useState('')
 
     // CAMERA STATUS
@@ -43,6 +37,15 @@ const ModalImage = () => {
     const capture = Boolean(query?.capture)
     const result = query?.result || ''
 
+    const isVideoPlaying = cameraState === 'MEDIA_ONLINE'
+    const cameraIsLoading = cameraState === 'LOADING'
+    const noCamera = cameraState === 'NO_MEDIA'
+
+    const ocrIsPreparing = ocrStatus === OCR_STATUS.PREPARING
+    const ocrIsRunning = ocrStatus === OCR_STATUS.RUNNING
+    const ocrIsDone = ocrStatus === OCR_STATUS.COMPLETE || result
+    const ocrInputIsFile = ocrInputType === INPUT_TYPE.FILE
+
     useEffect(() => {
         mount.current = true
         setOpenModal(true)
@@ -55,23 +58,31 @@ const ModalImage = () => {
         }
     }, [])
 
+    useEffect(() => {
+        if (!result && ocrIsDone) {
+            resetAllOcrState()
+        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [result])
+
     const resetAllOcrState = () => {
         setOcrStatus(OCR_STATUS.IDLE)
         setOcrInputType('')
         setOcrMessage('')
-        setOcrResult('')
+        // setOcrResult('')
     }
 
     const runOCR = async (scr, inputType) => {
-        setOcrStatus(OCR_STATUS.RUNNING)
+        setOcrStatus(OCR_STATUS.PREPARING)
         setOcrInputType(inputType)
         setOcrMessage('preparing...')
 
         const worker = createWorker({
             logger: m => {
                 if (m?.jobId) {
+                    setOcrStatus(OCR_STATUS.RUNNING)
                     const progress = Number(m.progress)
-                    const message = `recognizing... (${Math.floor(progress.toFixed(2) * 100)}%)`
+                    const message = `${Math.floor(progress.toFixed(2) * 100)}%`
                     setOcrMessage(message)
                 }
             },
@@ -91,7 +102,6 @@ const ModalImage = () => {
 
         setOcrStatus(OCR_STATUS.COMPLETE)
         setOcrMessage('done')
-        setOcrResult(text)
         const params = queryString.stringify({ ...query, result : text})
         history.push(`${location.pathname}?${params}`)
     }
@@ -154,14 +164,6 @@ const ModalImage = () => {
         setCameraState(status)
     }
 
-    const isVideoPlaying = cameraState === 'MEDIA_ONLINE'
-    const cameraIsLoading = cameraState === 'LOADING'
-    const noCamera = cameraState === 'NO_MEDIA'
-
-    const ocrIsRunning = ocrStatus === OCR_STATUS.RUNNING
-    const ocrIsDone = ocrStatus === OCR_STATUS.COMPLETE
-    const ocrInputIsFile = ocrInputType === INPUT_TYPE.FILE
-
     return (
         <div className={openModal? "modal-open" : "modal-close"}>
             <div className="modal-wrapper" style={{position: 'relative'}}>
@@ -214,7 +216,7 @@ const ModalImage = () => {
                                 inputRef.current.click();
                             }
                         }}
-                        disabled={ocrIsRunning}
+                        disabled={ocrIsPreparing || ocrIsRunning}
                     >
                             <FontAwesomeIcon icon='folder' />
                     </button>
@@ -229,22 +231,16 @@ const ModalImage = () => {
                 accept='image/*'
             />
 
-            <div
-                style={{
-                    transition: 'all .3s ease',
-                    width: '100%',
-                    height: ocrIsDone? '100%' : 62,
-                    position: 'fixed',
-                    bottom: 0,
-                    boxShadow: '0px -8px 6px -3px rgba(0, 0, 0, 0.089)',
-                    backgroundColor: ocrIsDone? '#303841' : '#3a4750',
-                    padding: ocrIsDone? '62px 24px' : '20px 24px',
-                    transform: `translateY(${ocrIsRunning || ocrIsDone? '0px' : '100%'})`,
-                    overflow: 'auto',
-                }}
+            <OcrPanel
+                status={ocrStatus}
+                isDone={ocrIsDone}
+                progress={ocrMessage}
             >
-                {ocrIsRunning? ocrMessage : ocrResult}
-            </div>
+                {ocrIsPreparing
+                    ? ocrMessage : ocrIsRunning
+                    ? `recognizing... (${ocrMessage})` : result
+                }
+            </OcrPanel>
         </div>
     )
 }
