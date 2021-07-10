@@ -17,6 +17,6 @@
 
 @media( max-width : 768px ) {
     .modal-textarea {
-        height: calc(100vh - 160px);
+        height: calc(100% - 160px);
     }
 }

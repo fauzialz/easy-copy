@@ -43,7 +43,7 @@ const List = ({ onEdit }) => {
                 </div> :
 
                 /* WHEN LIST EXIST */
-                <div style={{overflowY: 'hidden'}}>
+                <div style={{overflowY: 'hidden', padding: 1}}>
                     {pinnedList.length > 0 && otherList.length > 0 &&
                         <div className="section-title">PINNED</div>
                     }

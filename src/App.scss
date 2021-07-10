@@ -9,6 +9,9 @@
 body {
   background-color: $zero;
 }
+html, body, #root {
+  height: 100%;
+}
 
 button, input {
   border: none;
@@ -24,7 +27,7 @@ button {
 .outer-wrapper {
   max-width: 768px;
   margin: 0 auto;
-  height: 100vh;
+  height: 100%;
   visibility: hidden;
   opacity: 0;
   display: flex;
@@ -32,7 +35,7 @@ button {
 }
 .app-frame {
   background-color: $one;
-  height: calc(100vh - 200px);
+  height: calc(100% - 200px);
   width: 100%;
   position: relative;
   color: $four;
