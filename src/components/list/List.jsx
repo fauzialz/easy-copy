@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, Fragment, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { noteListContext } from '../../store'
 import Emoji from '../emoji'
 import LOCAL from '../../config'
@@ -43,7 +43,7 @@ const List = ({ onEdit }) => {
                 </div> :
 
                 /* WHEN LIST EXIST */
-                <Fragment>
+                <div style={{overflowY: 'hidden'}}>
                     {pinnedList.length > 0 && otherList.length > 0 &&
                         <div className="section-title">PINNED</div>
                     }
@@ -54,7 +54,7 @@ const List = ({ onEdit }) => {
                     }
                     <ListTile noteList={otherList} onEdit={onEdit} />
                 
-                </Fragment>
+                </div>
             }
         </div>
     )
