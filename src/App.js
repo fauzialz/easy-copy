@@ -11,7 +11,7 @@ import { formContext, setForm, clearForm, setFormNewId, noteListContext, setting
 import LOCAL from './config';
 import { makeSetting } from './model';
 import { Switch, Route, useHistory, useLocation, Redirect } from 'react-router-dom';
-import ModalImage from './components/modal-image';
+import ModalImage from './components/modalImage';
 
 function App() {
   const { dispatch } = useContext(formContext)

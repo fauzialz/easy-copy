@@ -44,9 +44,9 @@ const CopyButton = ({content, noteListId, contentIndex = 0, searchText, head }) 
                         className={content.copied?
                             `copy-sign-on${head? ' copy-sign-on--head': ''}` :
                             `copy-sign-off${head? ' copy-sign-off--head': ''}`}
-                        >
-                            {LOCAL.onCopy}
-                        </div>
+                    >
+                        {LOCAL.onCopy}
+                    </div>
                 </div>
             </div>
         </div>

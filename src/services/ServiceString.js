@@ -91,7 +91,7 @@ const Str = {
         let temp = str.split('\n').map( (line, i) => (<React.Fragment key={i} >{_hashtagConverter(line)} <br /></React.Fragment>))
         return (temp)
     },
-    getEditOnTime: editOn => {
+    getEditOnValue: editOn => {
         let timeString = _isToday(editOn) ?
             `Edited ${editOn.getHours() % 12 ? editOn.getHours() % 12 : 12 }:${editOn.getMinutes()} ${editOn.getHours() >= 12 ? 'PM' : 'AM'}` :
             `Edited ${_monthList[editOn.getMonth()]} ${editOn.getDate()}, ${editOn.getFullYear()}`

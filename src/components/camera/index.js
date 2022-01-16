@@ -49,7 +49,7 @@ const Camera = ({onCapture, onClear, onCameraStateChange, isVideoPlaying, isCapt
             container.height,
         )
         
-        canvasRef.current.toBlob(blob => onCapture(blob), "image/jpeg", 1);
+        canvasRef.current.toBlob(blob => onCapture(blob), "image/webp", 1);
         setIsCanvasEmpty(false);
         setTimeout(() => {
             setIsFlashing(false)

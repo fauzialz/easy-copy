@@ -1,12 +1,15 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import { useHistory, useLocation } from 'react-router-dom'
 import queryString from 'query-string'
 import { createWorker } from 'tesseract.js'
 import Camera from '../camera'
 import LoadingSpinner from '../loadingSpinner'
 import './styles.scss'
-import OcrPanel, { OCR_STATUS } from '../ocr-panel'
+import OcrPanel, { OCR_STATUS } from '../ocrPanel'
+import { clearForm, formContext, noteListContext, setForm, setFormNewId } from '../../store'
+import { ModalConetent } from '../modal/ModalContent'
+import { ModalImageFooter } from './ModalImageFooter'
 
 const INPUT_TYPE = {
     FILE: 'file',
@@ -46,6 +49,10 @@ const ModalImage = () => {
     const ocrIsDone = ocrStatus === OCR_STATUS.COMPLETE || result
     const ocrInputIsFile = ocrInputType === INPUT_TYPE.FILE
 
+    // RESULT FORM
+    const { form, dispatch } = useContext(formContext)
+    const { noteList } = useContext(noteListContext)
+
     useEffect(() => {
         mount.current = true
         setOpenModal(true)
@@ -62,8 +69,22 @@ const ModalImage = () => {
         if (!result && ocrIsDone) {
             resetAllOcrState()
         }
+
+        if (result) {
+            dispatch(setFormNewId(noteList))
+        }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [result])
+
+    useEffect(() => {
+        if (!form.id || !!form.contents[0].text) return
+        const temp = {...form}
+        temp.contents[0].text = result
+        dispatch(setForm(temp))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [form])
+
+    console.log(form)
 
     const resetAllOcrState = () => {
         setOcrStatus(OCR_STATUS.IDLE)
@@ -75,7 +96,7 @@ const ModalImage = () => {
     const runOCR = async (scr, inputType) => {
         setOcrStatus(OCR_STATUS.PREPARING)
         setOcrInputType(inputType)
-        setOcrMessage('preparing...')
+        setOcrMessage('Preparing...')
 
         const worker = createWorker({
             logger: m => {
@@ -86,6 +107,9 @@ const ModalImage = () => {
                     setOcrMessage(message)
                 }
             },
+            errorHandler: m => {
+                console.error('TESSERACT ERROR:\n', m)
+            }
         })
         workerRef.current = worker
         
@@ -125,6 +149,7 @@ const ModalImage = () => {
         if (capture && result) {
             return `${location.pathname}?capture=true`
         }
+        dispatch(clearForm())
         return location.pathname
     }    
 
@@ -134,6 +159,13 @@ const ModalImage = () => {
         setTimeout(() => {
             history.replace(getBackRoute())
         }, 200);
+    }
+
+    const onCaptureHandler = (blob) => {
+        const url = URL.createObjectURL(blob)
+        if(!url || (typeof url !== 'string')) return
+
+        runOCR(url, INPUT_TYPE.CAMERA)
     }
 
     const readFile = (e) => {
@@ -163,6 +195,8 @@ const ModalImage = () => {
     const handlerCameraState = (status) => {
         setCameraState(status)
     }
+
+    console.log('ocrIsDone', ocrIsDone)
 
     return (
         <div className={openModal? "modal-open" : "modal-close"}>
@@ -197,7 +231,7 @@ const ModalImage = () => {
                 <div style={{width: '100%', height: '100%', position: 'absolute', top: 0, display:'flex', justifyContent: 'center'}}>
                     <Camera
                         onCapture={(blob) => {
-                            console.log(blob)
+                            onCaptureHandler(blob)
                             history.push(`${location.pathname}?capture=true`)
                         }}
                         onCameraStateChange={handlerCameraState}
@@ -236,10 +270,21 @@ const ModalImage = () => {
                 isDone={ocrIsDone}
                 progress={ocrMessage}
             >
-                {ocrIsPreparing
-                    ? ocrMessage : ocrIsRunning
-                    ? `recognizing... (${ocrMessage})` : result
+                {
+                    ocrIsPreparing || ocrIsRunning
+                    ? <div className='ocr-status'>
+                        {
+                            ocrIsPreparing
+                                ? ocrMessage
+                                : `Recognizing... (${ocrMessage})`
+                        }
+                    </div>
+                    : null
                 }
+                    <div className='ocr-result' style={{display: ocrIsDone ? 'block' : 'none'}}>
+                        <ModalConetent />
+                        <ModalImageFooter />
+                    </div>
             </OcrPanel>
         </div>
     )

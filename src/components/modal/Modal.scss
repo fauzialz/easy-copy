@@ -52,23 +52,6 @@
             }
         }
         
-        /* MODAL TITLE */
-        .modal-title {
-            width: 100%;
-            height: 40px;
-            margin-top: 10px;
-            background-color: transparent;
-            border: 0px;
-            padding: 0 20px;
-            outline: none;
-            color: $four;
-            font-size: 15.5px;
-            font-weight: 600;
-        }
-        .modal-title::placeholder {
-            color: $font-blur;
-        }
-        
         /* MODAL FOOTER TILE */
         .modal-footer {
             z-index: 1;
@@ -94,7 +77,7 @@
                 grid-column: f2 / f3;
                 color: $four;
                 font-size: 22px;
-                }
+            }
             .modal-left-btn {
                 margin-left: 1px;
                 font-size: 17px;
@@ -145,6 +128,23 @@
     visibility: hidden;
     opacity: 0;
     transform: translate(0px, 30px);
+}
+        
+/* MODAL TITLE */
+.modal-title {
+    width: 100%;
+    height: 40px;
+    margin-top: 10px;
+    background-color: transparent;
+    border: 0px;
+    padding: 0 20px;
+    outline: none;
+    color: $four;
+    font-size: 15.5px;
+    font-weight: 600;
+}
+.modal-title::placeholder {
+    color: $font-blur;
 }
 
 @media( max-width : 768px ) {

@@ -28,11 +28,7 @@ const OcrPanel = ({children, status, isDone, progress}: OcrPanelProps) => {
                 'ocrPanel--spread': isDone,
             })
         }>
-            <div className={
-                classNames('ocrPanel__socket', {
-                    'ocrPanel__socket--done': isDone,
-                })
-            }>
+            <div className='ocrPanel__socket'>
                 {isPreparing || isRunning ?
                     <div className='ocrLoading'>
                         <div
