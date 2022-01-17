@@ -1,0 +1,121 @@
+@import '../../styles/pallete';
+
+.btn-img {
+    color: $four !important;
+    svg {
+        filter: drop-shadow( 0px 0px 4px rgba(0, 0, 0, .75));
+    }
+}
+
+.btn-file-socket, .btn-file-socket-mid {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    margin-bottom: 20px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    transition: all 0.4s;
+    padding: 0px 20px;
+    justify-content: center;
+}
+
+.btn-file {
+    font-size: 25px;
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    transition: all .3s;
+}
+
+.btn-file-socket {
+    width: 90px;
+    .btn-file {
+        margin-top: 8px;
+        font-size: 20px;
+    }
+}
+
+.ocr-status {
+    padding: 20px 24px 24px;
+}
+
+.ocr-result {
+    padding: 59px 0px 0px 0px;
+    height: calc(100% + 50px);
+}
+
+.modal-img-footer {
+    z-index: 1;
+    position: fixed;
+    bottom: 0;
+    height: 52px;
+    width: 100%;
+    padding-bottom: 12px;
+    background-color: $one;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .modal-img-time-socket {
+        font-size: 12px;
+        padding-top: 2px;
+        margin-left: 20px;
+        color: $five;
+    }
+    .modal-img-right {
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        .modal-right-btn-save {
+            outline: none;
+            background-color: transparent;
+            border: 0px;
+            width: 50px;
+            height: 40px;
+            color: $four;
+            font-size: 22px;
+            font-weight: 600;
+        }
+        .modal-right-btn-copy {
+            z-index: 4;
+            margin-right: 20px;
+            padding: 8px 14px;
+            margin-bottom: 4px;
+            margin-left: 6px;
+            border-radius: 5px;
+            background-color: $three;
+            box-shadow: 2px 4px 3px 1px rgba(0,0,0,0.09);
+        }
+    }
+}
+
+.modal-img-copy {
+    position: relative;
+    .modal-img-copy-sign-on, .modal-img-copy-sign-off {
+        position: absolute;
+        background-color: $four;
+        font-weight: 400;
+        color: $zero;
+        width: 124px;
+        right: 0;
+        font-size: 14px;
+        top: 0;
+        transform: translate(-94px, 0px);
+        text-align: center;
+        box-shadow: 0px 4px 3px 1px rgba(0, 0, 0, 0.15);
+        visibility: visible;
+        opacity: 1;
+        transition: all .3s ease;
+
+        
+        padding: 6.5px;
+        border-radius: 5px;
+        z-index: 1;
+    }
+    .modal-img-copy-sign-off {
+        transform: translate(-84px, 0px);
+        visibility: hidden;
+        opacity: 0;
+    }
+}

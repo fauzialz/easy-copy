@@ -1,0 +1,68 @@
+@import '../../styles/pallete';
+
+.ocrPanel {
+    transition: all .5s ease;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    bottom: 0;
+    font-size: 14px;
+    line-height: 1.35;
+    box-shadow: 0px -8px 6px -3px rgba(0, 0, 0, 0.089);
+    background-color: $two;
+    transform: translateY(100%);
+    box-sizing: border-box;
+    &--show {
+        transform: translateY(calc(100% - 59px));
+    }
+    &--spread {
+        background-color: $one;
+        transform: translateY(0px);
+    }
+
+    &__socket{
+        position: relative;
+        width: 100%;
+        height: 100%;
+    }
+}
+
+.ocrLoading {
+    width: 100%;
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 4px;
+    background-color: $three-transparent;
+    &__line{
+        height: 100%;
+        transition: width .3s ease;
+        background-color: $three;
+        &--prepare {
+            background-color: $five;
+            animation: load-prepare 3s infinite;
+        }
+    }
+}
+
+@keyframes load-prepare {
+    0% {
+        transform: translateX(0px);
+        width: 0%;
+    }
+    25% {
+        transform: translateX(0px);
+        width: 100%;
+    }
+    50% {
+        transform: translateX(100%)
+    }
+    75% {
+        transform: translateX(0px);
+        width: 100%;
+    }
+    100% {
+        width: 0%;
+    }
+  }

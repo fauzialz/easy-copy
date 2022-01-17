@@ -11,6 +11,7 @@ import { formContext, setForm, clearForm, setFormNewId, noteListContext, setting
 import LOCAL from './config';
 import { makeSetting } from './model';
 import { Switch, Route, useHistory, useLocation, Redirect } from 'react-router-dom';
+import ModalImage from './components/modalImage';
 
 function App() {
   const { dispatch } = useContext(formContext)
@@ -57,7 +58,7 @@ function App() {
 
   return (
     <div className="outer-wrapper">
-      
+
       <Helmet>
         <title>Easy Copy</title>
         <meta name="App to store your text and copy it with ease." content="Easy Copy Mobile Web Application." />
@@ -67,13 +68,21 @@ function App() {
         <Headbar onEdit={openModalHandler} />
         <List onEdit={openModalHandler} />
 
-        <button className="add-button" onClick={() => openModalHandler()}>
-          <FontAwesomeIcon icon="plus" />
-        </button>
+        <div className="button-wrapper">
+          <button className="add-button rounded-left" onClick={() => history.push('/image')}>
+            <FontAwesomeIcon icon="file-image" />
+          </button>
+          <button className="add-button" onClick={() => openModalHandler()}>
+            <FontAwesomeIcon icon="plus" />
+          </button>
+        </div>
 
         <Switch>
           <Route exact path="/modal" >
             <Modal />
+          </Route>
+          <Route exact path="/image" >
+            <ModalImage />
           </Route>
           <Route path="*">
             <Redirect to={{pathname : '/'}} />

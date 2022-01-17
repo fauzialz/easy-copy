@@ -1,14 +1,35 @@
-import React, {createContext, useReducer} from 'react'
+import React, {createContext, FC, useReducer} from 'react'
 import { makeForm } from '../../model'
 import { SET_FORM, CLEAR_FORM, SET_FORM_NEW_ID } from '../actionTypes'
 import LOCAL from '../../config'
+import { FormType } from '../../model/MakeForm'
+
+type FormDispatch = {
+    type: typeof SET_FORM;
+    payload: { newForm: FormType };
+} | {
+    type: typeof CLEAR_FORM;
+    payload?: {};
+} | {
+    type: typeof SET_FORM_NEW_ID;
+    payload: { noteList: FormType[]};
+}
+
+type FormCtx = {
+    form: FormType;
+    dispatch: (f: FormDispatch) => void;
+}
 
 const initialForm = makeForm()
-const formContext = createContext(initialForm)
+
+const formContext = createContext<FormCtx>({
+    form: makeForm(),
+    dispatch: () => {}
+})
 const { Provider } = formContext
 
-const FormProvider = ({ children }) => {
-    const [form, dispatch] = useReducer((state, action) => {
+const FormProvider: FC = ({ children }) => {
+    const [form, dispatch] = useReducer((state: FormType, action: FormDispatch) => {
         switch(action.type) {
             case SET_FORM: {
                 const { newForm } = action.payload
@@ -40,3 +61,4 @@ const FormProvider = ({ children }) => {
 }
 
 export {formContext, FormProvider}
+export type { FormDispatch }

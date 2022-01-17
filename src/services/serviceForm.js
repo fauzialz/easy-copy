@@ -1,4 +1,4 @@
-export default {
+const Form = {
     /* Fitler mutliple text input before save to DB */
     formFilter : formData => {
       let newFormData = {...formData}
@@ -14,5 +14,7 @@ export default {
         newFormData.contents[i].infoFocu = false
       }
       return newFormData
-    } 
+    }
 }
+
+export default Form

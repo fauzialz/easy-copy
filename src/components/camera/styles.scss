@@ -1,0 +1,67 @@
+@import '../../styles/pallete';
+
+.camera-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.camera-container {
+    width: inherit;
+    height: inherit;
+    display: flex;
+    justify-content: center;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.camera-block-on, .camera-block-off {
+    background-color: $one;
+    transition: all .3s;
+}
+.camera-block-on {
+    visibility: visible;
+    opacity: 1;
+}
+.camera-block-off {
+    visibility: hidden;
+    opacity: 0;
+}
+
+.camera-container-btn {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: inherit;
+    display: flex;
+    justify-content: center;
+}
+
+.camera-btn, .camera-btn-hide {
+    flex-shrink: 0;
+    height: 56px;
+    width: 56px;
+    border-radius: 50%;
+    background-color: rgba(238, 238, 238, 0.212);
+    margin-bottom: 20px;
+    border: 4px solid $four;
+    box-shadow: 0px 0px 4px rgba(0, 0, 0, .45);
+    transition: all .3s;
+}
+
+.camera-btn-hide {
+    transform: translateY(90px);
+}
+
+.camera-flash {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    inset: 0;
+    transition: all .2s;
+    background-color: transparent;
+    &-on {
+        background-color: white;
+    }
+}
