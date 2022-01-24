@@ -84,8 +84,6 @@ const ModalImage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [form])
 
-    console.log(form)
-
     const resetAllOcrState = () => {
         setOcrStatus(OCR_STATUS.IDLE)
         setOcrInputType('')
@@ -195,8 +193,6 @@ const ModalImage = () => {
     const handlerCameraState = (status) => {
         setCameraState(status)
     }
-
-    console.log('ocrIsDone', ocrIsDone)
 
     return (
         <div className={openModal? "modal-open" : "modal-close"}>

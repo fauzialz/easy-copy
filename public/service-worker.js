@@ -1,3 +1,3 @@
 /* eslint-disable no-restricted-globals */
 
-self.addEventListener('fetch',() => console.log("fetch"));
+self.addEventListener('install',() => console.log("app is working! ✨"));
