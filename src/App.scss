@@ -49,14 +49,27 @@ button {
   opacity: 1;
 }
 
-.button-wrapper {
-  display: flex;
+.elevate-buttons {
   margin-bottom: 30px;
   margin-right: 26px;
   position: absolute;
   bottom: 0;
   right: 0;
   z-index: 2;
+}
+
+.button-reset {
+  margin-bottom: 12px;
+  background-color: $three;
+  border-radius: 20px;
+  box-shadow: 2px 4px 3px 1px rgba(0,0,0,0.09);
+  height: 37px;
+  width: 100%;
+  border: 1px solid rgba(0, 0, 0, 0.185);
+}
+
+.button-wrapper {
+  display: flex;
   button:first-child {
     border-radius: 20px 0 0 20px;
     border-right: .5px solid $two-line;
@@ -80,13 +93,16 @@ button {
   color: $three;
   padding-top: 3.5px;
   outline: none;
-  transition: all .2s ease;
   text-align: center;
   user-select: none;
   z-index: 3;
 }
-.add-button:active {
-  transform: translate(0px, -6px);
+
+.button-bounce {
+  transition: all .2s ease;
+  &:active {
+    transform: translate(0px, -6px);
+  }
 }
 
 @media( max-width : 768px ) {
@@ -94,7 +110,12 @@ button {
     height: 100%;
     border-radius: 0px;
   }
-  .button-wrapper {
+  // .button-wrapper {
+  //   position: fixed;
+  //   margin-right: 20px;
+  // }
+
+  .elevate-buttons {
     position: fixed;
     margin-right: 20px;
   }

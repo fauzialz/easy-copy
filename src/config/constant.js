@@ -1,6 +1,7 @@
 const LOCAL = {
     tableName : 'userDataList',
     appSetting : 'settings',
+    isOngoing: 'isOngoing',
     initPackId : 'DL0000001',
     onListEmpty : "It seems that you don't have data to copy. Please add some.",
     onCopy : 'Ready to paste!',
