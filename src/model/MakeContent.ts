@@ -1,18 +1,18 @@
 export type Content = {
     text: string;
     copied: boolean;
-    withInfo: false;
+    withInfo: boolean;
     info: string;
     focus: boolean;
     infoFocus: boolean;
 }
 
-function makeContent(): Content {
+function makeContent(text?: string, info?: string): Content {
     return ({
-        text : '',
+        text : text ?? '',
         copied : false,
-        withInfo : false,
-        info : '',
+        withInfo : !!info ,
+        info : info ?? '',
         focus : false,
         infoFocus : false
     })

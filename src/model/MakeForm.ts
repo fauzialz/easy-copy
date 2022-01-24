@@ -10,6 +10,7 @@ export type FormType = {
     pinned: boolean;
     newEntry: boolean;
     editedOn: Date;
+    isFirstTimeData: boolean;
 }
 
 function makeForm(): FormType {
@@ -24,7 +25,8 @@ function makeForm(): FormType {
         deleted : false,
         pinned : false,
         newEntry : true,
-        editedOn : new Date()
+        editedOn : new Date(),
+        isFirstTimeData: false,
     })
 }
 
